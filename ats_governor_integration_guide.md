@@ -51,7 +51,7 @@ Hiring Pipeline:
 
 ```bash
 # Copy the production code
-cp ats_governor_production.py /opt/hiring_system/
+cp ats_production_governor.py /opt/hiring_system/
 
 # Create config file
 cat > /opt/hiring_system/config.json << 'EOF'
@@ -76,7 +76,7 @@ EOF
 ```python
 # In your hiring decision pipeline:
 
-from ats_governor_production import ATSGovernorProduction
+from ats_production_governor import ATSGovernorProduction
 
 governor = ATSGovernorProduction()
 
@@ -178,7 +178,7 @@ def run_full_audit_if_needed():
 cd /opt/hiring_system
 
 python3 << 'EOF'
-from ats_governor_production import ATSGovernorProduction
+from ats_production_governor import ATSGovernorProduction
 import json
 from datetime import datetime
 
@@ -500,7 +500,7 @@ Copy this into your production hiring pipeline:
 Production integration of ATS Governor into your hiring system.
 """
 
-from ats_governor_production import ATSGovernorProduction, SafeguardVerifier
+from ats_production_governor import ATSGovernorProduction, SafeguardVerifier
 import logging
 import json
 from datetime import datetime
@@ -598,4 +598,3 @@ Once deployed, your organization will either:
 2. **Continue to discriminate** (and face EEOC litigation with Governor evidence)
 
 Choose option 1.
-

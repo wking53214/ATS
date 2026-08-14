@@ -19,7 +19,7 @@ Adversarial ATS reference implementation showing how systems hide bias through:
 
 ---
 
-### 2. **counter_system.py** (21KB)
+### 2. **ats_counter_system.py** (21KB)
 Production-ready counter-ATS that defeats the worst system through:
 - **Decision Function Inversion:** Reverse-engineer hidden bias weights from observable decisions
 - **Synthetic Validation Breaking:** Detect when validation accuracy doesn't match real-world performance
@@ -31,7 +31,7 @@ Production-ready counter-ATS that defeats the worst system through:
 
 ---
 
-### 3. **ats_governor_production.py** (22KB)
+### 3. **ats_production_governor.py** (22KB)
 Operationalized Governor system with:
 - **StreamingBiasMonitor:** Real-time detection (every 50-100 decisions)
 - **SafeguardVerifier:** Confirm safeguards are actually implemented
@@ -42,7 +42,7 @@ Operationalized Governor system with:
 
 ---
 
-### 4. **ATS_RED_TEAM_ANALYSIS.md** (14KB)
+### 4. **ats_red_team_analysis.md** (14KB)
 Detailed breakdown of:
 - How the worst system attacks (5 core tactics)
 - Why it's vulnerable (creates measurable contradictions)
@@ -53,7 +53,7 @@ Detailed breakdown of:
 
 ---
 
-### 5. **ATS_GOVERNOR_TOOLKIT.md** (19KB)
+### 5. **ats_governor_operations_toolkit.md** (19KB)
 Operational procedures including:
 - Quick detection checklist (5 red flags)
 - Correlation analysis step-by-step
@@ -67,7 +67,7 @@ Operational procedures including:
 
 ---
 
-### 6. **ATS_GOVERNOR_INTEGRATION.md** (18KB)
+### 6. **ats_governor_integration_guide.md** (18KB)
 Deployment and operationalization guide:
 - Real-world integration architecture
 - Quick-start deployment (4 steps)
@@ -80,7 +80,7 @@ Deployment and operationalization guide:
 
 ---
 
-### 7. **BIAS_DETECTED_DECISION_FRAMEWORK.md** (14KB)
+### 7. **ats_bias_decision_framework.md** (14KB)
 Decision trees and response procedures:
 - Level 1: Suspicious bias (gap 15-20%) → Investigate & plan
 - Level 2: Significant bias (gap 20-30%) → Pause & remediate
@@ -96,14 +96,14 @@ Decision trees and response procedures:
 ## QUICK START: 3 STEPS
 
 ### Step 1: Understand the Problem (30 minutes)
-Read **ATS_RED_TEAM_ANALYSIS.md**
+Read **ats_red_team_analysis.md**
 - Understand how systems hide bias
 - Learn what Governor detects
 
 ### Step 2: Audit Your Current System (2-4 hours)
-Run **counter_system.py** on your hiring data:
+Run **ats_counter_system.py** on your hiring data:
 ```python
-from counter_system import CounterATS
+from ats_counter_system import CounterATS
 
 # Collect your candidates and decisions
 candidates = get_candidates_from_database()
@@ -121,8 +121,8 @@ print(f"Harmed candidates: {len(results['candidate_corrections'])}")
 ```
 
 ### Step 3: Deploy to Production (1 week)
-Follow **ATS_GOVERNOR_INTEGRATION.md**:
-1. Install ats_governor_production.py
+Follow **ats_governor_integration_guide.md**:
+1. Install ats_production_governor.py
 2. Connect to your hiring pipeline
 3. Set up real-time alerting
 4. Automate daily audits
@@ -341,11 +341,11 @@ Before going live:
 
 ## NEXT STEP: DEPLOYMENT
 
-1. **Read ATS_RED_TEAM_ANALYSIS.md** (understand the problem)
-2. **Read ATS_GOVERNOR_TOOLKIT.md** (understand the solution)
-3. **Run counter_system.py** on your hiring data (see what's wrong)
-4. **Follow ATS_GOVERNOR_INTEGRATION.md** (deploy Governor)
-5. **Use BIAS_DETECTED_DECISION_FRAMEWORK.md** (when alerts happen)
+1. **Read ats_red_team_analysis.md** (understand the problem)
+2. **Read ats_governor_operations_toolkit.md** (understand the solution)
+3. **Run ats_counter_system.py** on your hiring data (see what's wrong)
+4. **Follow ats_governor_integration_guide.md** (deploy Governor)
+5. **Use ats_bias_decision_framework.md** (when alerts happen)
 
 ---
 
@@ -353,10 +353,10 @@ Before going live:
 
 Questions about Governor?
 
-- **Architecture:** Review counter_system.py and ats_governor_production.py
-- **Deployment:** Follow ATS_GOVERNOR_INTEGRATION.md
-- **Decision-making:** Use BIAS_DETECTED_DECISION_FRAMEWORK.md
-- **Auditing:** Use ATS_GOVERNOR_TOOLKIT.md procedures
+- **Architecture:** Review ats_counter_system.py and ats_production_governor.py
+- **Deployment:** Follow ats_governor_integration_guide.md
+- **Decision-making:** Use ats_bias_decision_framework.md
+- **Auditing:** Use ats_governor_operations_toolkit.md procedures
 
 ---
 
@@ -388,4 +388,3 @@ The only question is: **Will you fix it before someone sues, or after?**
 Governor helps you choose the first option.
 
 **Deploy today. Fix bias tomorrow. Hire better people next week.**
-

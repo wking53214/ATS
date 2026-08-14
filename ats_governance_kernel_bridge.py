@@ -1,5 +1,5 @@
 """
-ats_kernel_bridge.py
+ats_governance_kernel_bridge.py
 
 Integration bridge between ATS Governor and GOV4 Governance Kernel.
 
@@ -28,7 +28,7 @@ This module does four things:
 
 DEPENDENCY CHAIN
 ----------------
-  ats_kernel_bridge.py
+  ats_governance_kernel_bridge.py
     ├── gov4_kernel.py      (governance kernel SSOT v4.0.0)
     ├── ats_governor_fixed.py (ATS system with scoring + bias detection)
     ├── ats_statistics.py    (statistical bias detector + TF-IDF scorer)

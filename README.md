@@ -4,30 +4,30 @@
 
 ### 📋 Core Documentation (5 files, ~80KB)
 
-1. **ATS_GOVERNOR_COMPLETE_PACKAGE.md** ⭐ START HERE
+1. **ats_governor_package.md** ⭐ START HERE
    - Overview of entire system
    - Quick start guide (3 steps)
    - Key metrics and outcomes
    - Next steps
 
-2. **ATS_RED_TEAM_ANALYSIS.md**
+2. **ats_red_team_analysis.md**
    - How adversarial systems hide bias
    - Counter-attack strategies
    - Comparative analysis
 
-3. **ATS_GOVERNOR_TOOLKIT.md**
+3. **ats_governor_operations_toolkit.md**
    - Step-by-step audit procedures
    - Statistical analysis methods
    - Verification checklists
    - Quick-start scripts
 
-4. **ATS_GOVERNOR_INTEGRATION.md**
+4. **ats_governor_integration_guide.md**
    - Production deployment guide
    - Real-time monitoring setup
    - Daily/weekly/monthly procedures
    - Case study execution
 
-5. **BIAS_DETECTED_DECISION_FRAMEWORK.md**
+5. **ats_bias_decision_framework.md**
    - 3-level response hierarchy
    - Escalation procedures
    - Candidate remediation process
@@ -40,12 +40,12 @@
    - Shows how systems hide bias
    - Useful for understanding attack vectors
 
-2. **counter_system.py** (21KB)
+2. **ats_counter_system.py** (21KB)
    - Production-ready counter-ATS
    - Detects all bias hiding techniques
    - Generates legal evidence
 
-3. **ats_governor_production.py** (22KB)
+3. **ats_production_governor.py** (22KB)
    - Operationalized Governor for continuous monitoring
    - Real-time streaming detection
    - Legal evidence packaging
@@ -56,19 +56,19 @@
 ## QUICK START
 
 ### 5-Minute Overview
-Read: **ATS_GOVERNOR_COMPLETE_PACKAGE.md** (pages 1-5)
+Read: **ats_governor_package.md** (pages 1-5)
 
 ### 30-Minute Deep Dive
-Read: **ATS_RED_TEAM_ANALYSIS.md** + **ATS_GOVERNOR_TOOLKIT.md** (sections 1-3)
+Read: **ats_red_team_analysis.md** + **ats_governor_operations_toolkit.md** (sections 1-3)
 
 ### 2-Hour Implementation Plan
-Read: **ATS_GOVERNOR_INTEGRATION.md** (all sections)
+Read: **ats_governor_integration_guide.md** (all sections)
 
 ### Deployment (1 week)
-Follow: **ATS_GOVERNOR_INTEGRATION.md** (deployment checklist)
+Follow: **ats_governor_integration_guide.md** (deployment checklist)
 
 ### Ongoing Operations
-Use: **BIAS_DETECTED_DECISION_FRAMEWORK.md** (when alerts happen)
+Use: **ats_bias_decision_framework.md** (when alerts happen)
 
 ---
 
@@ -212,25 +212,25 @@ Candidate 002:
 ## NEXT STEPS
 
 ### For Compliance Officers
-1. Read: ATS_GOVERNOR_COMPLETE_PACKAGE.md
+1. Read: ats_governor_package.md
 2. Brief: Legal team + board
-3. Deploy: Follow ATS_GOVERNOR_INTEGRATION.md
+3. Deploy: Follow ats_governor_integration_guide.md
 4. Monitor: Daily audits, escalate on alerts
 
 ### For Legal Teams
-1. Read: ATS_RED_TEAM_ANALYSIS.md (understand evidence)
-2. Review: BIAS_DETECTED_DECISION_FRAMEWORK.md (response procedures)
+1. Read: ats_red_team_analysis.md (understand evidence)
+2. Review: ats_bias_decision_framework.md (response procedures)
 3. Prepare: Incident response plan + remediation budget
 4. Support: Candidate remediation process
 
 ### For Engineers
-1. Review: counter_system.py (audit logic)
-2. Implement: ats_governor_production.py (integration)
+1. Review: ats_counter_system.py (audit logic)
+2. Implement: ats_production_governor.py (integration)
 3. Test: Run audit on historical data
-4. Deploy: Follow ATS_GOVERNOR_INTEGRATION.md procedures
+4. Deploy: Follow ats_governor_integration_guide.md procedures
 
 ### For Executives
-1. Read: ATS_GOVERNOR_COMPLETE_PACKAGE.md (overview)
+1. Read: ats_governor_package.md (overview)
 2. Approve: Budget for deployment + safeguards
 3. Authorize: Hiring pause procedures
 4. Monitor: Monthly board-level reporting
@@ -240,16 +240,16 @@ Candidate 002:
 ## SUPPORT & QUESTIONS
 
 **Architecture questions?**
-→ Review counter_system.py and ats_governor_production.py code
+→ Review ats_counter_system.py and ats_production_governor.py code
 
 **Deployment questions?**
-→ Follow ATS_GOVERNOR_INTEGRATION.md step-by-step
+→ Follow ats_governor_integration_guide.md step-by-step
 
 **Decision-making questions?**
-→ Use BIAS_DETECTED_DECISION_FRAMEWORK.md
+→ Use ats_bias_decision_framework.md
 
 **Audit procedures?**
-→ Use ATS_GOVERNOR_TOOLKIT.md
+→ Use ats_governor_operations_toolkit.md
 
 ---
 

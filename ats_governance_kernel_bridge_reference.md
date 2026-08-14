@@ -1,5 +1,5 @@
 """
-ats_kernel_bridge.py
+ats_governance_kernel_bridge.py
 
 Integration bridge between ATS Governor and GOV4 Governance Kernel.
 
@@ -28,14 +28,12 @@ This module does four things:
 
 DEPENDENCY CHAIN
 ----------------
-  ats_kernel_bridge.py
+  ats_governance_kernel_bridge.py
     ├── gov4_kernel.py      (governance kernel SSOT v4.0.0)
     ├── ats_governor_fixed.py (ATS system with scoring + bias detection)
     ├── ats_statistics.py    (statistical bias detector + TF-IDF scorer)
     └── ats_embeddings.py    (embedding scorer, optional)
 """
-
-from __future__ import annotations
 
 import copy
 import json
@@ -65,7 +63,6 @@ from gov4_kernel import (
     critical_requires_escalation,
 )
 
-
 # ============================================================
 # 1. ADAPTER LAYER: ATS Domain → Kernel NormalizedEvents
 # ============================================================
@@ -91,22 +88,21 @@ class CandidateSignals:
     matched_terms: List[str]
     missing_terms: List[str]
 
-
 class ATSKernelAdapter:
     """
     Maps ATS candidate signals into the kernel's event model.
 
-    Every hiring decision becomes a NormalizedEvent with:
+Every hiring decision becomes a NormalizedEvent with:
       - entity_id: the candidate_id (one ledger stream per candidate)
       - event_type: "hiring_decision"
       - delta: the full scoring signals + computed verdict
       - provenance: who ran the evaluation, under what policy, why
     """
 
-    POLICY_ID = "ATS_GOVERNOR_V2"
+POLICY_ID = "ATS_GOVERNOR_V2"
     ACTOR_ID = "ats_scoring_pipeline"
 
-    def to_event_delta(self, signals: CandidateSignals, verdict: Verdict) -> Dict[str, Any]:
+def to_event_delta(self, signals: CandidateSignals, verdict: Verdict) -> Dict[str, Any]:
         """Convert scoring signals + verdict into the event delta payload."""
         return {
             "job_id": signals.job_id,
@@ -126,7 +122,7 @@ class ATSKernelAdapter:
             "evaluated_at": datetime.now(timezone.utc).isoformat(),
         }
 
-    def build_provenance(self, signals: CandidateSignals, verdict: Verdict) -> Provenance:
+def build_provenance(self, signals: CandidateSignals, verdict: Verdict) -> Provenance:
         """Build provenance record for the decision."""
         return Provenance(
             actor_id=self.ACTOR_ID,
@@ -137,7 +133,7 @@ class ATSKernelAdapter:
             ),
         )
 
-    def commit(
+def commit(
         self,
         store: EventStore,
         signals: CandidateSignals,
@@ -155,7 +151,6 @@ class ATSKernelAdapter:
             delta=delta,
             provenance=prov,
         )
-
 
 # ============================================================
 # 2. FORENSIC POLICIES: Scoring Anomalies → Verdicts
@@ -175,15 +170,14 @@ def _make_stuffing_policy() -> Policy:
             return False
         return sig.get("keyword_coverage", 0) >= 0.6 and sig.get("keyword_density", 0) > 0.5
 
-    def action(state: Dict[str, Any]) -> Dict[str, Any]:
+def action(state: Dict[str, Any]) -> Dict[str, Any]:
         out = dict(state)
         out["verdict"] = Verdict.ISOLATE.name
         out["system_status"] = "CRITICAL"
         out["flag_reason"] = "keyword_stuffing_detected"
         return out
 
-    return Policy("stuffing_detector", predicate, action)
-
+return Policy("stuffing_detector", predicate, action)
 
 def _make_low_confidence_policy() -> Policy:
     """
@@ -198,15 +192,14 @@ def _make_low_confidence_policy() -> Policy:
             return False
         return sig.get("confidence") == "low"
 
-    def action(state: Dict[str, Any]) -> Dict[str, Any]:
+def action(state: Dict[str, Any]) -> Dict[str, Any]:
         out = dict(state)
         if out.get("verdict") != Verdict.ISOLATE.name:  # don't downgrade ISOLATE
             out["verdict"] = Verdict.THROTTLE.name
             out["flag_reason"] = "low_confidence_near_boundary"
         return out
 
-    return Policy("low_confidence_router", predicate, action)
-
+return Policy("low_confidence_router", predicate, action)
 
 def _make_synthetic_alignment_policy() -> Policy:
     """
@@ -227,15 +220,14 @@ def _make_synthetic_alignment_policy() -> Policy:
             and sig.get("resume_word_count", 999) < 80
         )
 
-    def action(state: Dict[str, Any]) -> Dict[str, Any]:
+def action(state: Dict[str, Any]) -> Dict[str, Any]:
         out = dict(state)
         out["verdict"] = Verdict.ISOLATE.name
         out["system_status"] = "CRITICAL"
         out["flag_reason"] = "synthetic_alignment_signature"
         return out
 
-    return Policy("synthetic_alignment_detector", predicate, action)
-
+return Policy("synthetic_alignment_detector", predicate, action)
 
 def _make_geographic_anomaly_policy() -> Policy:
     """
@@ -254,15 +246,14 @@ def _make_geographic_anomaly_policy() -> Policy:
             and sig.get("keyword_coverage", 0) >= 1.0
         )
 
-    def action(state: Dict[str, Any]) -> Dict[str, Any]:
+def action(state: Dict[str, Any]) -> Dict[str, Any]:
         out = dict(state)
         if out.get("verdict") != Verdict.ISOLATE.name:
             out["verdict"] = Verdict.THROTTLE.name
             out["flag_reason"] = "geographic_anomaly_perfect_score"
         return out
 
-    return Policy("geographic_anomaly_detector", predicate, action)
-
+return Policy("geographic_anomaly_detector", predicate, action)
 
 def build_forensic_policy_vm() -> PolicyVM:
     """Build the full forensic policy VM with all ATS-specific policies."""
@@ -272,7 +263,6 @@ def build_forensic_policy_vm() -> PolicyVM:
         _make_synthetic_alignment_policy(),
         _make_geographic_anomaly_policy(),
     ])
-
 
 # ============================================================
 # 3. MANIFEST INVARIANTS: Structural Rules for Litigation
@@ -292,13 +282,12 @@ def isolate_requires_escalation(
     elif after.get("last_decision"):
         verdict = after["last_decision"].get("verdict")
 
-    if verdict == "ISOLATE" and not after.get("escalation_logged", False):
+if verdict == "ISOLATE" and not after.get("escalation_logged", False):
         return False, (
             f"Manifest breach: candidate {event.entity_id} flagged ISOLATE "
             f"but escalation not logged. Decision is not litigation-ready."
         )
     return True, "OK"
-
 
 def decision_must_have_provenance(
     before, event: NormalizedEvent, after
@@ -308,7 +297,6 @@ def decision_must_have_provenance(
         if not event.provenance.justification:
             return False, "Hiring decision missing provenance justification"
     return True, "OK"
-
 
 def build_ats_manifest() -> Manifest:
     """Build the ATS-specific manifest with all invariants."""
@@ -322,7 +310,6 @@ def build_ats_manifest() -> Manifest:
         },
     )
 
-
 # ============================================================
 # 4. INTEGRATED PIPELINE: ATS → Kernel → Ledger → Audit
 # ============================================================
@@ -332,7 +319,7 @@ class ATSGovernorKernel:
     The unified pipeline. Replaces direct gap logic with kernel-mediated
     decision forensics.
 
-    Flow:
+Flow:
       1. ATS scores the candidate (keyword + semantic + density)
       2. Signals are injected into the PolicyVM state
       3. PolicyVM evaluates all forensic policies → produces Verdict
@@ -343,10 +330,10 @@ class ATSGovernorKernel:
       7. WAL records the full audit record to disk
       8. Lyapunov classifier tracks system stability across decisions
 
-    All of this is reconstructable from the WAL.
+All of this is reconstructable from the WAL.
     """
 
-    def __init__(self, wal_path: str = "/tmp/ats_kernel_bridge.log"):
+def __init__(self, wal_path: str = "/tmp/ats_kernel_bridge.log"):
         self.store = EventStore()
         self.reducer = GovernanceCoreReducer()
         self.runtime = ExecutionRuntime(self.store, self.reducer)
@@ -358,7 +345,7 @@ class ATSGovernorKernel:
         self.wal = WAL(wal_path)
         self.decisions: List[Dict[str, Any]] = []
 
-    def evaluate_candidate(self, signals: CandidateSignals) -> Dict[str, Any]:
+def evaluate_candidate(self, signals: CandidateSignals) -> Dict[str, Any]:
         """
         Full pipeline: score → policy → ledger → audit → WAL.
         Returns the complete decision record.
@@ -376,19 +363,19 @@ class ATSGovernorKernel:
             "verdict": Verdict.ALLOW.name,
         }
 
-        # 2. Run forensic policies
+# 2. Run forensic policies
         vm_result, triggered_policies = self.policy_vm.step(vm_state)
         verdict = Verdict[vm_result.get("verdict", "ALLOW")]
         flag_reason = vm_result.get("flag_reason", "none")
 
-        # 3. Commit to ledger
+# 3. Commit to ledger
         event, block_hash = self.adapter.commit(self.store, signals, verdict)
 
-        # 4. Manifest audit: verify the transition
+# 4. Manifest audit: verify the transition
         current_state = dict(self.runtime.materialize_state(signals.candidate_id))
         transition_valid, audit_errors = self.auditor.verify_transition(current_state, event)
 
-        # 5. If manifest breach (ISOLATE without escalation), force escalation
+# 5. If manifest breach (ISOLATE without escalation), force escalation
         escalation_forced = False
         if not transition_valid:
             # Log the escalation event to satisfy the invariant
@@ -408,11 +395,11 @@ class ATSGovernorKernel:
             )
             escalation_forced = True
 
-            # Re-verify after escalation
+# Re-verify after escalation
             current_state = dict(self.runtime.materialize_state(signals.candidate_id))
             transition_valid, audit_errors = self.auditor.verify_transition(current_state, event)
 
-        # 6. Lyapunov stability tracking
+# 6. Lyapunov stability tracking
         # Map ATS metrics into the traffic payload for regime classification.
         # This lets the Lyapunov classifier detect when the hiring pipeline
         # itself is behaving anomalously (burst of ISOLATE verdicts, etc.)
@@ -425,7 +412,7 @@ class ATSGovernorKernel:
         )
         regime_status = self.chassis.step(tp)
 
-        # 7. WAL record
+# 7. WAL record
         record = {
             "timestamp": time.time(),
             "candidate_id": signals.candidate_id,
@@ -447,9 +434,9 @@ class ATSGovernorKernel:
         self.wal.append(record)
         self.decisions.append(record)
 
-        return record
+return record
 
-    def replay_audit_trail(self, candidate_id: str) -> List[Dict[str, Any]]:
+def replay_audit_trail(self, candidate_id: str) -> List[Dict[str, Any]]:
         """Reconstruct full decision history for a candidate from the ledger."""
         events = self.store.stream_for(candidate_id)
         trail = []
@@ -467,9 +454,8 @@ class ATSGovernorKernel:
             })
         return trail
 
-    def close(self):
+def close(self):
         self.wal.close()
-
 
 # ============================================================
 # 5. TEST HARNESS
@@ -507,25 +493,24 @@ def _make_signals(
         missing_terms=missing,
     ), label
 
-
 if __name__ == "__main__":
     import sys
 
-    wal_path = "/tmp/ats_kernel_bridge_test.log"
+wal_path = "/tmp/ats_kernel_bridge_test.log"
     # Clean previous test WAL
     if os.path.exists(wal_path):
         os.remove(wal_path)
 
-    kernel = ATSGovernorKernel(wal_path=wal_path)
+kernel = ATSGovernorKernel(wal_path=wal_path)
     job_id = "job-principal-ai-engineer"
     all_kw = ["Python", "AI", "governance", "forecasting", "SQL"]
 
-    # ---------------------------------------------------------------
+# ---------------------------------------------------------------
     # Build test candidates spanning all four policy triggers + clean
     # ---------------------------------------------------------------
     test_cases: List[Tuple[CandidateSignals, str]] = []
 
-    # 1-5: Genuine qualified candidates (should ALLOW)
+# 1-5: Genuine qualified candidates (should ALLOW)
     for i in range(5):
         s, l = _make_signals(
             f"genuine-{i}", job_id,
@@ -538,7 +523,7 @@ if __name__ == "__main__":
         )
         test_cases.append((s, l))
 
-    # 6-10: Genuine but borderline (should THROTTLE via low_confidence)
+# 6-10: Genuine but borderline (should THROTTLE via low_confidence)
     for i in range(5):
         s, l = _make_signals(
             f"borderline-{i}", job_id,
@@ -551,7 +536,7 @@ if __name__ == "__main__":
         )
         test_cases.append((s, l))
 
-    # 11-15: Naive keyword stuffing (should ISOLATE via stuffing_detector)
+# 11-15: Naive keyword stuffing (should ISOLATE via stuffing_detector)
     for i in range(5):
         s, l = _make_signals(
             f"stuffed-{i}", job_id,
@@ -563,7 +548,7 @@ if __name__ == "__main__":
         )
         test_cases.append((s, l))
 
-    # 16-20: Synthetic alignment (should ISOLATE via synthetic_alignment)
+# 16-20: Synthetic alignment (should ISOLATE via synthetic_alignment)
     for i in range(5):
         s, l = _make_signals(
             f"synthetic-{i}", job_id,
@@ -575,7 +560,7 @@ if __name__ == "__main__":
         )
         test_cases.append((s, l))
 
-    # 21-25: Geographic anomaly (should THROTTLE via geographic_anomaly)
+# 21-25: Geographic anomaly (should THROTTLE via geographic_anomaly)
     for i in range(5):
         s, l = _make_signals(
             f"geo-anomaly-{i}", job_id,
@@ -587,7 +572,7 @@ if __name__ == "__main__":
         )
         test_cases.append((s, l))
 
-    # 26-30: Off-topic (should ALLOW — no policy triggers, just rejected by score)
+# 26-30: Off-topic (should ALLOW — no policy triggers, just rejected by score)
     for i in range(5):
         s, l = _make_signals(
             f"offtopic-{i}", job_id,
@@ -599,23 +584,23 @@ if __name__ == "__main__":
         )
         test_cases.append((s, l))
 
-    # ---------------------------------------------------------------
+# ---------------------------------------------------------------
     # Run all candidates through the pipeline
     # ---------------------------------------------------------------
     print("=" * 78)
     print("ATS GOVERNOR + GOV4 KERNEL: END-TO-END FORENSIC TEST")
     print("=" * 78)
 
-    verdict_counts: Dict[str, int] = {}
+verdict_counts: Dict[str, int] = {}
     regime_log: List[str] = []
 
-    for signals, label in test_cases:
+for signals, label in test_cases:
         result = kernel.evaluate_candidate(signals)
         v = result["verdict"]
         verdict_counts[v] = verdict_counts.get(v, 0) + 1
         regime_log.append(result["regime"])
 
-        # Print decision line
+# Print decision line
         esc = " [ESCALATION FORCED]" if result["escalation_forced"] else ""
         policies = result["triggered_policies"]
         pol_str = f" policies={policies}" if policies else ""
@@ -628,7 +613,7 @@ if __name__ == "__main__":
         if not result["manifest_valid"] and not result["escalation_forced"]:
             print(f"    UNRESOLVED BREACH: {result['manifest_errors']}")
 
-    # ---------------------------------------------------------------
+# ---------------------------------------------------------------
     # Summary
     # ---------------------------------------------------------------
     print("\n" + "=" * 78)
@@ -637,7 +622,7 @@ if __name__ == "__main__":
     for v, count in sorted(verdict_counts.items()):
         print(f"  {v:10s}: {count}")
 
-    print("\n" + "=" * 78)
+print("\n" + "=" * 78)
     print("REGIME TRANSITIONS")
     print("=" * 78)
     prev = None
@@ -646,7 +631,7 @@ if __name__ == "__main__":
             print(f"  candidate #{i:2d}: regime shifted to {r}")
             prev = r
 
-    # ---------------------------------------------------------------
+# ---------------------------------------------------------------
     # Decision audit trail for one ISOLATE candidate
     # ---------------------------------------------------------------
     print("\n" + "=" * 78)
@@ -664,7 +649,7 @@ if __name__ == "__main__":
         print(f"    provenance: actor={entry['provenance']['actor']} "
               f"policy={entry['provenance']['policy']}")
 
-    # ---------------------------------------------------------------
+# ---------------------------------------------------------------
     # WAL replay fidelity
     # ---------------------------------------------------------------
     print("\n" + "=" * 78)
@@ -682,7 +667,7 @@ if __name__ == "__main__":
     )
     print(f"  WAL ↔ memory match:  {'PASS' if match else 'FAIL'}")
 
-    # Spot-check one WAL record
+# Spot-check one WAL record
     if records:
         sample = records[0]
         print(f"\n  Sample WAL record (first):")
@@ -692,7 +677,7 @@ if __name__ == "__main__":
         print(f"    block_hash: {sample['block_hash'][:24]}...")
         print(f"    manifest:   {'VALID' if sample['manifest_valid'] else 'BREACH'}")
 
-    print("\n" + "=" * 78)
+print("\n" + "=" * 78)
     print("LEDGER INTEGRITY")
     print("=" * 78)
     # Verify hash chain for one candidate
@@ -709,6 +694,6 @@ if __name__ == "__main__":
     print(f"  stuffed-0 hash chain: {'VALID' if chain_valid else 'BROKEN'}")
     print(f"  head hash: {head[:24]}...")
 
-    print("\n" + "=" * 78)
+print("\n" + "=" * 78)
     print("TEST COMPLETE")
     print("=" * 78)
