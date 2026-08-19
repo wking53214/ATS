@@ -297,3 +297,43 @@ This package is provided as-is for organizations committed to fair hiring practi
 Generated: 2026-06-07
 Version: 2.0
 Status: Production-Ready
+
+---
+
+## RECOVERED FILES (2026-06-19–21 session, added 2026-08-19)
+
+Four files from a later Claude conversation ("ATS", 2026-06-19 to
+2026-06-21) that had no loose copy anywhere on disk — recovered from
+the archived conversation transcript in
+[Claude_History](https://github.com/wking53214/Claude_History)'s export
+and placed here:
+
+- **`gov4_kernel.py`** — this resolves a gap flagged all the way back at
+  the start of this repo's cleanup: `ats_governance_kernel_bridge.py`
+  imports `EventStore`, `PolicyVM`, `WAL`, `GovernanceAuditor`, and 12
+  other names from a `gov4_kernel` module that "was not present in ATS."
+  Two other candidates were checked and ruled out earlier
+  (`quorum_state_governance_source.py`, twice). This file defines all 16
+  required names exactly once each — confirmed by import: `import
+  ats_governance_kernel_bridge` now succeeds.
+- **`ats_statistics.py`** (`class StatisticalBiasDetector`) — hypothesis-
+  testing bias detection (chi-squared/Fisher's exact, p-values, effect
+  sizes), replacing magic-number thresholds. Needs `scipy` (not
+  installed in this environment; import chain is otherwise correct).
+- **`ats_embeddings.py`** (`class EmbeddingScorer`) — pluggable
+  embedding-backed semantic scorer (sentence-transformers/OpenAI/Voyage/
+  custom callable), defaults to lexical TF-IDF without one injected.
+  Imports from `ats_statistics`, so needs the same `scipy` dependency.
+- **`ats_governor_fixed.py`** — a distinct, later governor
+  implementation (not a duplicate of `ats_production_governor.py`;
+  different class set, includes an `ATS` wrapper class) that wires in
+  both of the above. Reconstructed from the conversation's initial
+  `create_file` plus 9 of 10 subsequent `str_replace` edits applied in
+  order (the 1 that didn't apply cleanly targeted a code block already
+  removed by an earlier edit in the same batch — confirmed moot, not a
+  gap). Its relationship to `ats_production_governor.py` (successor?
+  parallel variant?) hasn't been resolved — both are kept as-is.
+
+A fifth file from the same session, `ats_kernel_bridge.py`, was **not**
+added — it's byte-identical to `ats_governance_kernel_bridge.py`
+already here (just the pre-normalization filename).
