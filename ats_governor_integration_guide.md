@@ -51,7 +51,7 @@ Hiring Pipeline:
 
 ```bash
 # Copy the production code
-cp ats_production_governor.py /opt/hiring_system/
+cp ats_governor_fixed.py /opt/hiring_system/
 
 # Create config file
 cat > /opt/hiring_system/config.json << 'EOF'
@@ -76,7 +76,7 @@ EOF
 ```python
 # In your hiring decision pipeline:
 
-from ats_production_governor import ATSGovernorProduction
+from ats_governor_fixed import ATSGovernorProduction
 
 governor = ATSGovernorProduction()
 
@@ -178,7 +178,7 @@ def run_full_audit_if_needed():
 cd /opt/hiring_system
 
 python3 << 'EOF'
-from ats_production_governor import ATSGovernorProduction
+from ats_governor_fixed import ATSGovernorProduction
 import json
 from datetime import datetime
 
@@ -500,7 +500,7 @@ Copy this into your production hiring pipeline:
 Production integration of ATS Governor into your hiring system.
 """
 
-from ats_production_governor import ATSGovernorProduction, SafeguardVerifier
+from ats_governor_fixed import ATSGovernorProduction, SafeguardVerifier
 import logging
 import json
 from datetime import datetime

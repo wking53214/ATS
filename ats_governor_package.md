@@ -31,7 +31,7 @@ Production-ready counter-ATS that defeats the worst system through:
 
 ---
 
-### 3. **ats_production_governor.py** (22KB)
+### 3. **ats_governor_fixed.py** (44KB)
 Operationalized Governor system with:
 - **StreamingBiasMonitor:** Real-time detection (every 50-100 decisions)
 - **SafeguardVerifier:** Confirm safeguards are actually implemented
@@ -122,7 +122,7 @@ print(f"Harmed candidates: {len(results['candidate_corrections'])}")
 
 ### Step 3: Deploy to Production (1 week)
 Follow **ats_governor_integration_guide.md**:
-1. Install ats_production_governor.py
+1. Install ats_governor_fixed.py
 2. Connect to your hiring pipeline
 3. Set up real-time alerting
 4. Automate daily audits
@@ -353,7 +353,7 @@ Before going live:
 
 Questions about Governor?
 
-- **Architecture:** Review ats_counter_system.py and ats_production_governor.py
+- **Architecture:** Review ats_counter_system.py and ats_governor_fixed.py
 - **Deployment:** Follow ats_governor_integration_guide.md
 - **Decision-making:** Use ats_bias_decision_framework.md
 - **Auditing:** Use ats_governor_operations_toolkit.md procedures

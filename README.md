@@ -45,8 +45,12 @@
    - Detects all bias hiding techniques
    - Generates legal evidence
 
-3. **ats_production_governor.py** (22KB)
-   - Operationalized Governor for continuous monitoring
+3. **ats_governor_fixed.py** (44KB)
+   - Operationalized Governor for continuous monitoring, superseding the
+     original ats_production_governor.py (removed — every class it defined
+     has a more advanced same-named version here, now wired to real
+     statistical (ats_statistics.py) and semantic (ats_embeddings.py)
+     bias detection instead of magic-number thresholds)
    - Real-time streaming detection
    - Legal evidence packaging
    - Safeguard verification
@@ -225,7 +229,7 @@ Candidate 002:
 
 ### For Engineers
 1. Review: ats_counter_system.py (audit logic)
-2. Implement: ats_production_governor.py (integration)
+2. Implement: ats_governor_fixed.py (integration)
 3. Test: Run audit on historical data
 4. Deploy: Follow ats_governor_integration_guide.md procedures
 
@@ -240,7 +244,7 @@ Candidate 002:
 ## SUPPORT & QUESTIONS
 
 **Architecture questions?**
-→ Review ats_counter_system.py and ats_production_governor.py code
+→ Review ats_counter_system.py and ats_governor_fixed.py code
 
 **Deployment questions?**
 → Follow ats_governor_integration_guide.md step-by-step
@@ -325,14 +329,17 @@ and placed here:
   custom callable), defaults to lexical TF-IDF without one injected.
   Imports from `ats_statistics`, so needs the same `scipy` dependency.
 - **`ats_governor_fixed.py`** — a distinct, later governor
-  implementation (not a duplicate of `ats_production_governor.py`;
-  different class set, includes an `ATS` wrapper class) that wires in
+  implementation (includes an `ATS` wrapper class) that wires in
   both of the above. Reconstructed from the conversation's initial
   `create_file` plus 9 of 10 subsequent `str_replace` edits applied in
   order (the 1 that didn't apply cleanly targeted a code block already
   removed by an earlier edit in the same batch — confirmed moot, not a
-  gap). Its relationship to `ats_production_governor.py` (successor?
-  parallel variant?) hasn't been resolved — both are kept as-is.
+  gap). Relationship to the two older files, resolved: it's the
+  successor to `ats_production_governor.py` (every class there has a
+  more advanced same-named version here; the old file has been
+  removed) but NOT a successor to `ats_counter_system.py`, which stays
+  — `SyntheticValidationBreaker` and `CounterATS` have no equivalent
+  here.
 
 A fifth file from the same session, `ats_kernel_bridge.py`, was **not**
 added — it's byte-identical to `ats_governance_kernel_bridge.py`
