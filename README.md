@@ -2,7 +2,7 @@
 
 ## Complete Package Contents
 
-### 📋 Documentation (8 files, ~184KB)
+### 📋 Documentation (8 files, ~163KB)
 
 1. **ats_governor_package.md** ⭐ START HERE
    - Overview of entire system
@@ -51,13 +51,16 @@
      (`[NO EVIDENCE]`). The most reliable single source for "does X
      actually do what the other docs say it does."
 
-### 💻 Code (7 files, ~176KB)
+### 💻 Code (7 files, ~163KB)
 
 All seven import cleanly (`pip install -r requirements.txt` first —
 `ats_statistics.py`/`ats_embeddings.py` need `numpy`/`scipy`/
-`scikit-learn`); five run a real demo end to end when executed directly.
+`scikit-learn`); six run a real demo end to end when executed directly —
+only `gov4_kernel.py` has no `__main__` output of its own (it's a pure
+dependency module; its behavior is exercised by
+`ats_governance_kernel_bridge.py`'s demo instead).
 
-1. **ats_counter_system.py** (24KB)
+1. **ats_counter_system.py** (21KB)
    - Production-ready counter-ATS: audits a batch of hiring decisions
      plus their audit report for bias and report falsification
    - Detects geographic penalty, employment-volatility penalty, and
@@ -80,19 +83,21 @@ All seven import cleanly (`pip install -r requirements.txt` first —
    - Legal evidence packaging, safeguard verification
    - Run directly for a demo audit (`python3 ats_governor_fixed.py`)
 
-3. **ats_statistics.py** (20KB) — `class StatisticalBiasDetector`
+3. **ats_statistics.py** (18KB) — `class StatisticalBiasDetector`
    - Hypothesis-testing bias detection (chi-squared/Fisher's exact,
      p-values, effect sizes), replacing magic-number gap thresholds
    - Needs `scipy`
+   - Run directly for a demo (`python3 ats_statistics.py`)
 
-4. **ats_embeddings.py** (20KB) — `class EmbeddingScorer`
+4. **ats_embeddings.py** (16KB) — `class EmbeddingScorer`
    - Pluggable embedding-backed semantic scorer. Defaults to lexical
      TF-IDF (`scikit-learn`) with no backend injected; optional
      backends (sentence-transformers/OpenAI/Voyage/custom callable) are
      lazy-imported and only needed if you use them — see
      `requirements.txt`
+   - Run directly for a demo (`python3 ats_embeddings.py`)
 
-5. **ats_governance_kernel_bridge.py** (28KB)
+5. **ats_governance_kernel_bridge.py** (26KB)
    - Integration bridge between ATS scoring and the GOV4 governance
      kernel: maps hiring decisions into tamper-evident ledger entries
      with cryptographic provenance
@@ -106,7 +111,7 @@ All seven import cleanly (`pip install -r requirements.txt` first —
      and 12 other names) — recovered 2026-08-19 from an archived Claude
      conversation; this repo had never had a copy of it before
 
-7. **ats_gsa_core.py** (24KB) — `class ATSGovernanceCore`
+7. **ats_gsa_core.py** (22KB) — `class ATSGovernanceCore`
    - JD-driven candidate evaluation with fairness-aware capability
      scoring, resume substance/anti-fluff checks, and tamper-evident
      hash-chained audit logging
