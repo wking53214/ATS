@@ -1,134 +1,21 @@
 # ATS RED TEAM ANALYSIS
-## Adversarial System vs Counter-System Tactics
+## How ats_counter_system.py Detects Hiring Bias
 
 ---
 
-## PART I: THE WORST SYSTEM ARCHITECTURE
-
-### Overview
-The WorstATS is a hiring system designed to systematically exclude candidates based on protected characteristics (geography, name/ethnicity, employment stability) while appearing to be a rigorous, validated, meritocratic system.
-
-### Core Attack Vectors
-
-#### 1. **BIAS MASKING VIA JARGON**
-**Tactic:** Obscure discriminatory intent behind technical language.
-
-| Actual Bias | Public-Facing Name | Hidden Logic |
-|---|---|---|
-| Geographic discrimination | "Timezone synchronization demand" | -40% score if >100 miles away |
-| Ethnic discrimination (via name) | "Cultural alignment assessment" | Penalize non-mainstream names based on vowel ratios |
-| Penalize job-changers | "Volatility tolerance assessment" | -30% if turnover > 1.5 jobs/year |
-
-**Why it works:** HR teams don't scrutinize technical metrics deeply. "Cognitive vector alignment" sounds legitimate and data-driven. Actual computation is hidden in `_estimate_demographic_from_name()`.
-
-**Vulnerability:** The jargon is inconsistent with actual logic. If you reverse-engineer the code, the obfuscation breaks immediately.
-
----
-
-#### 2. **SYNTHETIC VALIDATION LOOP**
-**Tactic:** Generate fake test cases designed to validate the system's biases.
-
-```python
-def generate_synthetic_aligned_candidate():
-    return {
-        "name": "John Smith",           # Mainstream name (no penalty)
-        "location_distance_miles": 5,   # Local (no penalty)
-        "employment_history": ["A", "B"]  # Stable (no penalty)
-    }
-
-def generate_synthetic_misaligned_candidate():
-    return {
-        "name": "Aisha Okonkwo",        # Non-mainstream (triggers penalty)
-        "location_distance_miles": 300, # Remote (triggers penalty)
-        "employment_history": ["A", "B", "C", "D", "E"]  # High turnover (triggers penalty)
-    }
-```
-
-**Result:** System reports 95%+ accuracy. In reality, it's testing against candidates it designed to match its own biases.
-
-**Why it works:** Auditors see validation accuracy numbers and assume they're meaningful. The validation suite is internal, so no one questions whether the test cases are representative.
-
-**Vulnerability:** Real-world rejection rates will dramatically exceed synthetic validation success rates. The gap itself is the smoking gun.
-
----
-
-#### 3. **DETERMINISTIC TIEBREAKER ESCALATION**
-**Tactic:** When a candidate's score is ambiguous (indicating the bias wasn't conclusive), invoke a "tiebreaker" that deterministically escalates the bias.
-
-```python
-def apply_final_override(candidate_a, candidate_b, score_a, score_b):
-    if abs(score_a - score_b) > 0.1:
-        return clear winner
-    
-    # When unclear, invoke tiebreaker
-    if candidate_a.location_distance < 50:  # "Safer" profile
-        return "A"
-    else:
-        return "B"
-```
-
-**Why it works:** Tiebreakers are considered objective disambiguation tools. Actually, they're the system's last chance to enforce its hidden preferences.
-
-**Vulnerability:** The tiebreaker logic itself is traceable. If you can show that "unclear cases" always resolve in one direction, that's proof of bias.
-
----
-
-#### 4. **AUDIT REPORT FALSIFICATION**
-**Tactic:** Generate official audit reports that misrepresent system accuracy.
-
-```python
-def generate_audit_summary(decisions):
-    validation_results = validator.run_validation_cycle()  # Synthetic!
-    return {
-        "system_validation_accuracy": 0.99,     # Fake
-        "bias_detection_geographic": 0.973,     # Fake
-        "bias_detection_demographic": 0.912,    # Fake
-        "conclusion": "System operating within acceptable parameters"
-    }
-```
-
-**The key lie:** These metrics are generated from the same synthetic validation suite, not from real-world performance.
-
-**Why it works:** Auditors compare reported metrics to... nothing. There's no ground truth to check against. The report appears professional and specific.
-
-**Vulnerability:** If you compare the reported metrics to what you actually observe in real decisions, contradictions appear.
-
----
-
-#### 5. **REFRAMING REJECTIONS IN TECHNICAL LANGUAGE**
-**Tactic:** When rejecting a candidate, explain it in jargon that obscures the bias.
-
-```python
-# Candidate was rejected because:
-# 1. Location 200+ miles away → Geographic penalty
-# 2. Name has high vowel ratio → Demographic proxy
-
-# Stated reason:
-"Geographic synchronization constraints limit effectiveness"
-"Cultural alignment assessment indicates potential integration challenges"
-```
-
-**Why it works:** The rejected candidate doesn't see the code. They see a professional-sounding explanation that doesn't sound like discrimination.
-
-**Vulnerability:** These explanations don't correlate to actual job requirements. You can show that geographic location has no relationship to the role's technical needs.
-
----
-
-### The Worst System's Blind Spot
-**The system relies on NO ONE reading the code.** If any interested party decompiles or analyzes the decision function, the jargon façade collapses immediately. All the "sophisticated" obfuscation reveals itself as straightforward discrimination.
-
----
-
-## PART II: THE COUNTER-ATS DEFENSE STRATEGY
+## PART I: DETECTION TACTICS
 
 ### Core Principle
-**Invert the adversary's own logic against it.** Don't try to prevent bad systems—reverse-engineer them, expose their mechanics, and make them prosecutable.
+Don't rely on trust — reverse-engineer a hiring system's actual behavior
+from its inputs and outputs, expose the mechanics, and make findings
+prosecutable.
 
 ---
 
-### Defense Tactic 1: DECISION FUNCTION INVERSION
+### Tactic 1: DECISION FUNCTION INVERSION
 
-**Goal:** Given only the inputs (candidate data) and outputs (hiring decisions), reconstruct what the system actually computes.
+**Goal:** Given only the inputs (candidate data) and outputs (hiring
+decisions), reconstruct what the system actually computes.
 
 **Method:** Statistical correlation analysis.
 
@@ -148,17 +35,28 @@ gap = 70 percentage points
 # If not, it's evidence of hidden weighting on geography.
 ```
 
-**Why it works:** The adversarial system's logic is *deterministic*. Given enough candidates, statistical correlations reveal the hidden weights.
+**Why it works:** If a system's logic is deterministic, statistical
+correlations reveal hidden weights given enough decisions.
 
-**Strength:** Doesn't require code access. Works purely from observable behavior.
+**Strength:** Doesn't require code access — works purely from
+observable behavior.
 
-**Prosecution value:** A 70-point rejection rate gap based on geography is evidence of intentional bias, even if the system designer claims otherwise.
+**Prosecution value:** A 70-point rejection rate gap based on geography
+is evidence of intentional bias, even if the system designer claims
+otherwise.
+
+**Implemented as:** `DecisionFunctionInverter` in `ats_counter_system.py`
+(geographic-penalty, employment-volatility, and name-based demographic-
+proxy checks); `DecisionFunctionAnalyzer` in `ats_governor_fixed.py`
+(geographic only — see `ats_seam_inventory.md` C1/S4/S5 for what didn't
+carry forward there).
 
 ---
 
-### Defense Tactic 2: VALIDATION LOOP BREAKING
+### Tactic 2: VALIDATION LOOP BREAKING
 
-**Goal:** Detect when validation metrics are fake (generated from synthetic test cases that match system biases).
+**Goal:** Detect when validation metrics are fake (generated from
+synthetic test cases that don't represent real-world candidates).
 
 **Method:** Compare validation accuracy to real-world outcomes.
 
@@ -175,13 +73,18 @@ Inference: Validation suite doesn't match real-world candidate distribution.
 This indicates synthetic test cases.
 ```
 
-**Why it works:** A 30+ point gap between reported accuracy and observed outcomes is statistically impossible if the validation is legitimate.
+**Why it works:** A 30+ point gap between reported accuracy and observed
+outcomes is statistically implausible if the validation is legitimate.
 
-**Prosecution value:** Proves the system was self-validating; the vendor knowingly tested it against hand-curated data.
+**Prosecution value:** Proves the system was self-validating against
+hand-curated data rather than real-world performance.
+
+**Implemented as:** `SyntheticValidationBreaker.analyze_validation_circularity`
+in `ats_counter_system.py`.
 
 ---
 
-### Defense Tactic 3: AUDIT REPORT CONTRADICTION DETECTION
+### Tactic 3: AUDIT REPORT CONTRADICTION DETECTION
 
 **Goal:** Find explicit lies in official audit reports.
 
@@ -195,96 +98,84 @@ Computable Reality:
   - Local candidates rejected: 15%
   - Difference: 70 points
 
-Question: How can a system with 70-point rejection gap by geography
+Question: How can a system with a 70-point rejection gap by geography
 report 97.3% geographic diversity in its bias detection?
 
 Answer: The audit report is fabricated.
 ```
 
-**Why it works:** Mathematical statements can be verified. You don't need intent—just contradiction.
+**Why it works:** Mathematical statements can be verified. You don't
+need intent — just contradiction.
 
-**Prosecution value:** Documented falsification of audit reports is fraud.
+**Prosecution value:** Documented falsification of audit reports is
+fraud.
+
+**Implemented as:** `AuditReportValidator.check_for_contradiction` in
+both `ats_counter_system.py` and `ats_governor_fixed.py`.
 
 ---
 
-### Defense Tactic 4: CANDIDATE HARM QUANTIFICATION
+### Tactic 4: CANDIDATE HARM QUANTIFICATION
 
-**Goal:** For each detected bias, identify which candidates were harmed and by how much.
+**Goal:** For each detected bias, identify which candidates were harmed
+and by how much.
 
-**Method:** Reconstruct the counterfactual score distribution without the bias.
+**Method:** Reconstruct the counterfactual score distribution without
+the bias.
 
 ```python
-Candidate 002 (Aisha Okonkwo):
+Candidate 002:
 - Observed score: 0.43 (REJECTED)
 - Geographic penalty applied: 0.40
 - Demographic proxy penalty applied: 0.30
 - Estimated true score (without bias): 0.43 + 0.40 + 0.30 = 1.13 → capped at 1.0
 
 Action: RECONSIDER FOR APPROVAL with corrected score
-
-This directly contradicts the original rejection and is prosecutable.
 ```
 
-**Why it works:** It's not abstract bias—it's specific harm to identified individuals.
+**Why it works:** It's not abstract bias — it's specific harm to
+identified individuals.
 
-**Prosecution value:** Class action lawsuit basis. Demonstrates concrete damages.
+**Prosecution value:** Class action lawsuit basis. Demonstrates concrete
+damages.
+
+**Implemented as:** `BiasNeutralizationEngine.recommend_candidate_rescores`
+in both `ats_counter_system.py` and `ats_governor_fixed.py`.
 
 ---
 
-### Defense Tactic 5: STRUCTURAL SAFEGUARDS
+### Tactic 5: STRUCTURAL SAFEGUARDS
 
-**Goal:** Make future bias mathematically impossible, not just policy-discouraged.
+**Goal:** Make bias mathematically impossible, not just policy-discouraged.
 
 **Hard enforcement mechanisms:**
 
 1. **Geographic Blind Scoring**
    - Location data never reaches the scoring function
-   - Verified by code inspection: `if location_data in scoring_function: throw ERROR`
-   - Audit: Confirm location field is None before processing
+   - Audit: confirm location field is None before processing
 
 2. **Name Anonymization**
    - Names converted to random IDs at ingress
    - Scoring function never sees actual names
-   - Verification: Grep for string patterns matching name format in scoring logic
 
 3. **Independent Validation**
-   - Validation cases generated by third party, sealed
-   - System builder cannot modify validation logic
-   - Audit: Code review confirms validation suite is read-only
+   - Validation cases generated by a third party, sealed
+   - System builder cannot modify validation logic — see
+     `ats_seam_inventory.md` C1/S7: this specific check
+     (`verify_independent_validation`) exists in `ats_counter_system.py`
+     but did not carry forward into `ats_governor_fixed.py`
 
 4. **Continuous Bias Monitoring**
    - Every 100 decisions, compute rejection rate by candidate attributes
-   - If any attribute shows p < 0.05 correlation with rejection, automatic alert
-   - No human judgment—pure statistics triggers escalation
+   - If any attribute shows p < 0.05 correlation with rejection,
+     automatic alert
 
-**Why it works:** These aren't policy—they're architecture. You can't bypass them without breaking the code.
-
----
-
-### The Counter-ATS's Strength
-**It doesn't prevent bias through trust.** It prevents bias through *mathematics and code inspection*. Every claim is verifiable. Every correlation is measurable. Every decision is auditable.
+**Implemented as:** `BiasNeutralizationEngine.propose_system_safeguards`
+in `ats_counter_system.py`.
 
 ---
 
-## PART III: COMPARATIVE ANALYSIS
-
-### Attack Surface Comparison
-
-| Vulnerability | Worst System | Counter-ATS | Winner |
-|---|---|---|---|
-| Code inspection | Collapses immediately | Transparent by design | Counter |
-| Statistical analysis of decisions | Reveals all hidden weights | No hidden weights to find | Counter |
-| Validation loop integrity | Fake validation | Independent third-party validation | Counter |
-| Audit report verification | Contradictions everywhere | Metrics match reality | Counter |
-| Tiebreaker logic | Deterministic bias escalation | No ambiguous tiebreakers | Counter |
-| Candidate harm proof | Deniable | Quantified and specific | Counter |
-
-### The Worst System's Only Defense
-**Confidentiality.** If no one is allowed to inspect the code or audit the metrics, the system can operate indefinitely. But confidentiality in hiring is increasingly indefensible, especially post-EEOC scrutiny.
-
----
-
-## PART IV: KEY INSIGHTS FOR ATS GOVERNOR
+## PART II: KEY INSIGHTS FOR ATS GOVERNOR
 
 ### What makes a hiring system trustworthy?
 
@@ -294,7 +185,8 @@ This directly contradicts the original rejection and is prosecutable.
    - Invite inspection, don't prevent it
 
 2. **Validation integrity**
-   - Validation cases should be representative of the real-world candidate pool
+   - Validation cases should be representative of the real-world
+     candidate pool
    - Validation should be conducted by a third party
    - Validation accuracy should match real-world performance
 
@@ -315,7 +207,7 @@ This directly contradicts the original rejection and is prosecutable.
 
 ### Red-Team Testing Framework
 
-For any hiring system claiming to be bias-free:
+For auditing any hiring system claiming to be bias-free:
 
 1. **Reverse-engineer the decision function**
    - Collect 1000+ decisions with full candidate data
@@ -346,16 +238,18 @@ For any hiring system claiming to be bias-free:
 
 ## CONCLUSION
 
-**The Worst System is beatable because it's *trying too hard to hide*.** Every lie creates an inconsistency. Every jargon term masks a simple computation. Every synthetic validation creates a statistical gap.
+A system that hides bias behind jargon and synthetic validation is
+beatable precisely because it's trying too hard to hide — every fake
+metric creates a detectable inconsistency, every synthetic validation
+loop creates a statistical gap between reported and real-world
+performance.
 
-**The Counter-ATS is strong because it doesn't rely on trust.** It verifies, measures, and makes everything provable.
-
-**For ATS Governor:** Build the tools that let auditors answer these questions automatically:
+**Build the tools that let auditors answer these questions automatically:**
 - What attributes correlate with rejection?
 - Does validation match real-world performance?
 - Do audit metrics match reality?
 - Which candidates were harmed by detected biases?
 - What safeguards prevent future biases?
 
-Make those questions answerable in seconds. Make the answers legally binding. The worst systems will become undeniable.
-
+Make those questions answerable in seconds. Make the answers legally
+binding.

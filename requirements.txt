@@ -1,0 +1,13 @@
+# Core - required to import/run ats_statistics.py and ats_embeddings.py
+numpy
+scipy
+scikit-learn
+
+# Optional - only needed if you inject the corresponding EmbeddingScorer
+# backend in ats_embeddings.py. The default backend is TF-IDF (scikit-learn
+# only, above) and needs none of these. Each is a lazy import, so nothing
+# below is required just to import ats_embeddings.py.
+#
+# sentence-transformers   # SentenceTransformerBackend
+# openai                  # OpenAIEmbeddingBackend
+# voyageai                # VoyageEmbeddingBackend

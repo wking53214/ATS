@@ -7,31 +7,22 @@
 
 This package contains everything needed to detect, quantify, and remediate hiring system bias:
 
-### 1. **worst_system.py** (14KB)
-Adversarial ATS reference implementation showing how systems hide bias through:
-- Jargon masking ("cognitive vector alignment")
-- Synthetic validation loops (99% accuracy claimed on hand-curated test cases)
-- Deterministic tiebreakers (escalate bias when unclear)
-- Audit report falsification (metrics don't match reality)
-- Name-based demographic discrimination (via vowel ratio)
-
-**Purpose:** Understand the attack vectors so you can detect them.
-
----
-
-### 2. **ats_counter_system.py** (21KB)
-Production-ready counter-ATS that defeats the worst system through:
+### 1. **ats_counter_system.py** (24KB)
+Production-ready counter-ATS. Audits a batch of hiring decisions plus
+their audit report through:
 - **Decision Function Inversion:** Reverse-engineer hidden bias weights from observable decisions
 - **Synthetic Validation Breaking:** Detect when validation accuracy doesn't match real-world performance
 - **Audit Report Contradiction:** Find explicit lies in audit metrics
 - **Bias Quantification:** Identify harmed candidates and quantify corrections needed
 - **Structural Safeguard Design:** Propose code-level fixes
 
-**Purpose:** Deploy this to audit your actual hiring systems.
+**Purpose:** Deploy this to audit your actual hiring systems. Run it
+directly (`python3 ats_counter_system.py`) for a demo audit against
+sample biased decisions.
 
 ---
 
-### 3. **ats_governor_fixed.py** (44KB)
+### 2. **ats_governor_fixed.py** (44KB)
 Operationalized Governor system with:
 - **StreamingBiasMonitor:** Real-time detection (every 50-100 decisions)
 - **SafeguardVerifier:** Confirm safeguards are actually implemented
@@ -42,18 +33,19 @@ Operationalized Governor system with:
 
 ---
 
-### 4. **ats_red_team_analysis.md** (14KB)
+### 3. **ats_red_team_analysis.md** (8KB)
 Detailed breakdown of:
-- How the worst system attacks (5 core tactics)
-- Why it's vulnerable (creates measurable contradictions)
-- How counter-ATS defeats each tactic
+- Five detection tactics (decision function inversion, validation loop
+  breaking, audit report contradiction, harm quantification, structural
+  safeguards) and which module implements each
 - Key insights for Governor design
+- A red-team testing framework for auditing any hiring system
 
-**Purpose:** Strategic understanding of bias hiding vs bias detection.
+**Purpose:** Strategic understanding of bias detection.
 
 ---
 
-### 5. **ats_governor_operations_toolkit.md** (19KB)
+### 4. **ats_governor_operations_toolkit.md** (19KB)
 Operational procedures including:
 - Quick detection checklist (5 red flags)
 - Correlation analysis step-by-step
@@ -67,7 +59,7 @@ Operational procedures including:
 
 ---
 
-### 6. **ats_governor_integration_guide.md** (18KB)
+### 5. **ats_governor_integration_guide.md** (18KB)
 Deployment and operationalization guide:
 - Real-world integration architecture
 - Quick-start deployment (4 steps)
@@ -80,7 +72,7 @@ Deployment and operationalization guide:
 
 ---
 
-### 7. **ats_bias_decision_framework.md** (14KB)
+### 6. **ats_bias_decision_framework.md** (14KB)
 Decision trees and response procedures:
 - Level 1: Suspicious bias (gap 15-20%) → Investigate & plan
 - Level 2: Significant bias (gap 20-30%) → Pause & remediate

@@ -2,7 +2,7 @@
 
 ## Complete Package Contents
 
-### 📋 Core Documentation (5 files, ~80KB)
+### 📋 Documentation (8 files, ~184KB)
 
 1. **ats_governor_package.md** ⭐ START HERE
    - Overview of entire system
@@ -33,27 +33,84 @@
    - Candidate remediation process
    - Damage calculation
 
-### 💻 Code (3 files, ~57KB)
+6. **ats_threat_model.md**
+   - Attack patterns against the Governor itself
+   - Documented record schemas (CandidateRecord, AuditReportRecord,
+     GovernorFinding)
 
-1. **worst_system.py** (14KB)
-   - Reference implementation of adversarial ATS
-   - Shows how systems hide bias
-   - Useful for understanding attack vectors
+7. **ats_governance_kernel_bridge_reference.md**
+   - Human-readable walkthrough of `ats_governance_kernel_bridge.py`'s
+     four responsibilities (adapter layer, forensic policies, manifest
+     invariants, kernel wiring)
 
-2. **ats_counter_system.py** (21KB)
-   - Production-ready counter-ATS
-   - Detects all bias hiding techniques
-   - Generates legal evidence
+8. **ats_seam_inventory.md**
+   - Line-by-line static audit of every component and every seam
+     (data/control crossing) in this repo — what's confirmed by
+     reading the code (`[OBSERVED]`) vs. only claimed in docs
+     (`[DOCUMENTED]`) vs. asserted with no supporting evidence found
+     (`[NO EVIDENCE]`). The most reliable single source for "does X
+     actually do what the other docs say it does."
 
-3. **ats_governor_fixed.py** (44KB)
-   - Operationalized Governor for continuous monitoring, superseding the
-     original ats_production_governor.py (removed — every class it defined
-     has a more advanced same-named version here, now wired to real
-     statistical (ats_statistics.py) and semantic (ats_embeddings.py)
-     bias detection instead of magic-number thresholds)
-   - Real-time streaming detection
-   - Legal evidence packaging
-   - Safeguard verification
+### 💻 Code (7 files, ~176KB)
+
+All seven import cleanly (`pip install -r requirements.txt` first —
+`ats_statistics.py`/`ats_embeddings.py` need `numpy`/`scipy`/
+`scikit-learn`); five run a real demo end to end when executed directly.
+
+1. **ats_counter_system.py** (24KB)
+   - Production-ready counter-ATS: audits a batch of hiring decisions
+     plus their audit report for bias and report falsification
+   - Detects geographic penalty, employment-volatility penalty, and
+     name-based demographic-proxy bias; catches synthetic/circular
+     validation and falsified audit metrics
+   - Generates legal evidence and recommended safeguards
+   - Run directly for a demo audit (`python3 ats_counter_system.py`)
+
+2. **ats_governor_fixed.py** (44KB)
+   - Operationalized Governor for continuous monitoring — the successor
+     to the original `ats_production_governor.py` (removed 2026-08-19;
+     every class it defined has a more advanced same-named version
+     here). Two of its capabilities did **not** carry forward and are
+     confirmed absent, not just unimplemented-by-oversight: name-proxy
+     (vowel-ratio) bias detection, and
+     `SafeguardVerifier.verify_independent_validation`. See
+     `ats_seam_inventory.md` (C1, S4, S5, S7) for the full accounting.
+   - Real-time streaming detection (geographic bias only — see above)
+   - Full-batch hypothesis-tested bias detection via `ats_statistics.py`
+   - Legal evidence packaging, safeguard verification
+   - Run directly for a demo audit (`python3 ats_governor_fixed.py`)
+
+3. **ats_statistics.py** (20KB) — `class StatisticalBiasDetector`
+   - Hypothesis-testing bias detection (chi-squared/Fisher's exact,
+     p-values, effect sizes), replacing magic-number gap thresholds
+   - Needs `scipy`
+
+4. **ats_embeddings.py** (20KB) — `class EmbeddingScorer`
+   - Pluggable embedding-backed semantic scorer. Defaults to lexical
+     TF-IDF (`scikit-learn`) with no backend injected; optional
+     backends (sentence-transformers/OpenAI/Voyage/custom callable) are
+     lazy-imported and only needed if you use them — see
+     `requirements.txt`
+
+5. **ats_governance_kernel_bridge.py** (28KB)
+   - Integration bridge between ATS scoring and the GOV4 governance
+     kernel: maps hiring decisions into tamper-evident ledger entries
+     with cryptographic provenance
+   - Needs `gov4_kernel.py` (below) — run directly for a demo
+     (`python3 ats_governance_kernel_bridge.py`), verifies its own
+     hash-chain ledger integrity as part of the demo
+
+6. **gov4_kernel.py** (16KB)
+   - The GOV4 governance kernel `ats_governance_kernel_bridge.py`
+     depends on (`EventStore`, `PolicyVM`, `WAL`, `GovernanceAuditor`,
+     and 12 other names) — recovered 2026-08-19 from an archived Claude
+     conversation; this repo had never had a copy of it before
+
+7. **ats_gsa_core.py** (24KB) — `class ATSGovernanceCore`
+   - JD-driven candidate evaluation with fairness-aware capability
+     scoring, resume substance/anti-fluff checks, and tamper-evident
+     hash-chained audit logging
+   - Run directly for a demo (`python3 ats_gsa_core.py`)
 
 ---
 
@@ -78,12 +135,11 @@ Use: **ats_bias_decision_framework.md** (when alerts happen)
 
 ## WHAT GOVERNOR DETECTS
 
-✓ **Geographic bias** — Rejection rates by location
-✓ **Demographic proxies** — Name-based discrimination
-✓ **Volatility penalties** — Job-changer discrimination
-✓ **Synthetic validation** — Fake audit metrics
-✓ **Audit fraud** — Contradictions in official reports
-✓ **Tiebreaker escalation** — Deterministic bias in close calls
+✓ **Geographic bias** — Rejection rates by location (`ats_counter_system.py`, `ats_governor_fixed.py`)
+✓ **Demographic proxies** — Name-based discrimination (`ats_counter_system.py` only — removed from `ats_governor_fixed.py`, see C1/S5 in `ats_seam_inventory.md`)
+✓ **Volatility penalties** — Job-changer discrimination (`ats_counter_system.py` only — removed from `ats_governor_fixed.py`, see C1/S4)
+✓ **Synthetic validation** — Fake audit metrics (`ats_counter_system.py`)
+✓ **Audit fraud** — Contradictions in official reports (`ats_counter_system.py`, `ats_governor_fixed.py`)
 
 ---
 
@@ -201,6 +257,9 @@ Candidate 002:
 
 **Minimum:**
 - Python 3.8+
+- `pip install -r requirements.txt` (numpy/scipy/scikit-learn — needed
+  by `ats_statistics.py`/`ats_embeddings.py`; everything else here is
+  standard library)
 - Access to candidate data
 - Access to hiring decisions
 - Email for alerts
@@ -304,43 +363,22 @@ Status: Production-Ready
 
 ---
 
-## RECOVERED FILES (2026-06-19–21 session, added 2026-08-19)
+## PROVENANCE NOTES
 
-Four files from a later Claude conversation ("ATS", 2026-06-19 to
-2026-06-21) that had no loose copy anywhere on disk — recovered from
-the archived conversation transcript in
-[Claude_History](https://github.com/wking53214/Claude_History)'s export
-and placed here:
-
-- **`gov4_kernel.py`** — this resolves a gap flagged all the way back at
-  the start of this repo's cleanup: `ats_governance_kernel_bridge.py`
-  imports `EventStore`, `PolicyVM`, `WAL`, `GovernanceAuditor`, and 12
-  other names from a `gov4_kernel` module that "was not present in ATS."
-  Two other candidates were checked and ruled out earlier
-  (`quorum_state_governance_source.py`, twice). This file defines all 16
-  required names exactly once each — confirmed by import: `import
-  ats_governance_kernel_bridge` now succeeds.
-- **`ats_statistics.py`** (`class StatisticalBiasDetector`) — hypothesis-
-  testing bias detection (chi-squared/Fisher's exact, p-values, effect
-  sizes), replacing magic-number thresholds. Needs `scipy` (not
-  installed in this environment; import chain is otherwise correct).
-- **`ats_embeddings.py`** (`class EmbeddingScorer`) — pluggable
-  embedding-backed semantic scorer (sentence-transformers/OpenAI/Voyage/
-  custom callable), defaults to lexical TF-IDF without one injected.
-  Imports from `ats_statistics`, so needs the same `scipy` dependency.
-- **`ats_governor_fixed.py`** — a distinct, later governor
-  implementation (includes an `ATS` wrapper class) that wires in
-  both of the above. Reconstructed from the conversation's initial
-  `create_file` plus 9 of 10 subsequent `str_replace` edits applied in
-  order (the 1 that didn't apply cleanly targeted a code block already
-  removed by an earlier edit in the same batch — confirmed moot, not a
-  gap). Relationship to the two older files, resolved: it's the
-  successor to `ats_production_governor.py` (every class there has a
-  more advanced same-named version here; the old file has been
-  removed) but NOT a successor to `ats_counter_system.py`, which stays
-  — `SyntheticValidationBreaker` and `CounterATS` have no equivalent
-  here.
-
-A fifth file from the same session, `ats_kernel_bridge.py`, was **not**
-added — it's byte-identical to `ats_governance_kernel_bridge.py`
-already here (just the pre-normalization filename).
+- **2026-08-19**: `gov4_kernel.py`, `ats_statistics.py`, `ats_embeddings.py`,
+  and `ats_governor_fixed.py` recovered from an archived Claude conversation
+  ("ATS", 2026-06-19–21) in [Claude_History](https://github.com/wking53214/Claude_History)'s
+  export — none had a loose copy anywhere on disk before this. A fifth
+  file from that session, `ats_kernel_bridge.py`, was not added — it's
+  byte-identical to `ats_governance_kernel_bridge.py` already here
+  (just the pre-normalization filename).
+- **2026-08-19**: `ats_production_governor.py` removed (superseded by
+  `ats_governor_fixed.py` — see `ats_seam_inventory.md` C1 for the full
+  capability-by-capability accounting, including two gaps that didn't
+  carry forward).
+- **2026-08-19**: `worst_system.py` and all references to it removed.
+  It was an intentionally-adversarial reference system (built to lose
+  to `ats_counter_system.py`, not a real deployment target) that was
+  never actually committed to this repo — only its import survived, in
+  `ats_counter_system.py`'s demo block, which is now self-contained
+  (uses inline sample data instead).
