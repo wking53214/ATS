@@ -1,5 +1,5 @@
 """
-Merged Synapsis GSA hardening build notes
+ATS Governance Core hardening build notes
 
 What this file keeps from the baseline:
 - JD-driven requirement extraction.
@@ -359,7 +359,7 @@ class TrajectoryManager:
         return f"PATH_SET_{learning_modality.upper()}"
 
 
-class SynapsisGSA:
+class ATSGovernanceCore:
     """Master orchestrator housing the 10 integrated system modules."""
     MODULES = ("AuditLogger", "SkillOntology", "JDRequirementExtractor", "ResumeSubstanceValidator", "MasterGovernanceControl", "RealityAnchorGate", "DomainTranspiler", "TandemAlphaBetaBridge", "GammaRedTeam", "TrajectoryManager")
 
@@ -378,7 +378,7 @@ class SynapsisGSA:
 
         self.nexus.register_industry("WFM_Architecture", ["Systemic_Logic", "Volatility_Tolerance", "Data_Stewardship"])
         self.nexus.register_industry("Logistics", ["Dynamic_Routing", "Volatility_Tolerance", "Efficiency_Mapping"])
-        self.audit.record("SynapsisGSA", "MISSION_LOCKED", MANTRA)
+        self.audit.record("ATSGovernanceCore", "MISSION_LOCKED", MANTRA)
 
     def _transparency_directive(self) -> Dict[str, Any]:
         return {
@@ -390,7 +390,7 @@ class SynapsisGSA:
 
     def process_candidate_ingress(self, candidate_data: Dict, jd_text: str) -> Dict[str, Any]:
         cid = candidate_data.get("id")
-        self.audit.record("SynapsisGSA", "INGRESS_INITIATED", {"id": cid})
+        self.audit.record("ATSGovernanceCore", "INGRESS_INITIATED", {"id": cid})
 
         requirements, jd_surface = self.jd_extractor.extract_requirements(jd_text)
         resume_text = candidate_data.get("resume_text", "")
@@ -425,7 +425,7 @@ class SynapsisGSA:
             result["status"] = "REJECTED"
             result["reason"] = "TANDEM_REJECTION: no evidence of the required capabilities in any known terminology (capability score at floor)"
 
-        self.audit.record("SynapsisGSA", "INGRESS_RESOLVED", {"id": cid, "status": result["status"], "decision": decision})
+        self.audit.record("ATSGovernanceCore", "INGRESS_RESOLVED", {"id": cid, "status": result["status"], "decision": decision})
         result["transparency_directive"] = self._transparency_directive()
         return result
 
@@ -438,7 +438,7 @@ class SynapsisGSA:
 
 
 def run_red_blue_tests():
-    engine = SynapsisGSA()
+    engine = ATSGovernanceCore()
     jd = "We need proven workforce forecasting and call routing experience for our contact center operations team."
 
     zero = {"id": "C_ZERO", "jd_text": jd, "resume_text": "Pastry chef with 9 years running a bakery kitchen. Scaled weekly production from 200 to 1,400 loaves and trained 12 apprentices across 3 locations. Introduced batch scheduling that cut energy spend by 11 percent.", "industries": []}
@@ -459,7 +459,7 @@ def run_red_blue_tests():
     engine.audit.entries[2]["action"] = "TAMPERED_ACTION"
     print("AUDIT_VALID_AFTER_EDIT:", engine.audit.verify_chain())
 
-    engine2 = SynapsisGSA()
+    engine2 = ATSGovernanceCore()
     _ = engine2.process_candidate_ingress(full, jd)
     _ = engine2.process_candidate_ingress(partial, jd)
     del engine2.audit.entries[1]
