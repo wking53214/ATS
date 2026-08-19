@@ -379,10 +379,8 @@ class CounterATS:
         }
 
 
-# Test the counter-system against the worst system
+# Demo: audit a batch of biased hiring decisions and their (falsified) audit report
 if __name__ == "__main__":
-    from worst_system import WorstATS
-    
     # Create a batch of diverse candidates
     test_candidates = [
         {
@@ -427,16 +425,29 @@ if __name__ == "__main__":
         }
     ]
     
-    # Run candidates through the WORST system
-    worst = WorstATS()
-    worst_results = worst.process_batch(test_candidates)
-    
-    # Now audit it with the COUNTER system
+    # Sample biased decisions: remote candidates (>100mi) rejected, local approved -
+    # the geographic-penalty pattern DecisionFunctionInverter is built to catch.
+    biased_decisions = [
+        {"id": "001", "decision": "APPROVED"},  # 10mi
+        {"id": "002", "decision": "REJECTED"},  # 500mi
+        {"id": "003", "decision": "REJECTED"},  # 200mi
+        {"id": "004", "decision": "APPROVED"},  # 5mi
+        {"id": "005", "decision": "REJECTED"},  # 300mi
+    ]
+
+    # A falsified audit report claiming near-perfect fairness, contradicted by
+    # the actual 40% approval rate above.
+    falsified_audit_report = {
+        "approval_rate": 0.90,
+        "system_validation_accuracy": 0.99,
+        "bias_detection_tests": {"geographic_diversity": 0.98}
+    }
+
     counter = CounterATS()
     audit = counter.audit_adversarial_system(
         test_candidates,
-        worst_results["individual_decisions"],
-        worst_results["audit_report"]
+        biased_decisions,
+        falsified_audit_report
     )
     
     print("=" * 80)

@@ -38,11 +38,11 @@ C15 — ats_hidden_bias_counter_analysis.pdf; PDF artifact, identified as an eig
 
 C16 — documented hiring-pipeline input interface; the documentation names candidate data, hiring decisions, audit reports, and a pipeline/scoring/decision flow, but no local service implementation was found. [DOCUMENTED]
 
-C17 — gov4_kernel dependency interface; C3 imports EventStore, ExecutionRuntime, GovernanceAuditor, GovernanceChassis, GovernanceCoreReducer, Manifest, NormalizedEvent, Policy, PolicyVM, Provenance, Regime, TrafficPayload, Verdict, WAL, canonical, and critical_requires_escalation from this module. The module was not present in ATS. [OBSERVED]
+C17 — gov4_kernel dependency interface; RESOLVED. C3 imports EventStore, ExecutionRuntime, GovernanceAuditor, GovernanceChassis, GovernanceCoreReducer, Manifest, NormalizedEvent, Policy, PolicyVM, Provenance, Regime, TrafficPayload, Verdict, WAL, canonical, and critical_requires_escalation from this module; the module was not present in ATS at the time this was originally written. [OBSERVED, historical] gov4_kernel.py was subsequently recovered from an archived source conversation and added to the repo — confirmed present, importable, and runnable via its own demo block. [OBSERVED]
 
-C18 — worst_system dependency interface; C2's module entry point imports WorstATS from this module. The module was not present in ATS. [OBSERVED]
+C18 — worst_system dependency interface; RESOLVED 2026-08-19. C2's module entry point used to import WorstATS from this module, which was never present in ATS — confirmed to be an intentionally-adversarial reference system the author was drafting, never actually committed anywhere. The demo block in ats_counter_system.py was rewritten to use inline sample biased-decision data instead of instantiating WorstATS, so this dependency no longer exists in the source. [OBSERVED]
 
-C19 — secondary bridge dependency set; C3's module documentation names ats_governor_fixed.py, ats_statistics.py, and ats_embeddings.py. These files were not present in ATS. [OBSERVED]
+C19 — secondary bridge dependency set; RESOLVED. C3's module documentation names ats_governor_fixed.py, ats_statistics.py, and ats_embeddings.py; these files were not present in ATS at the time this was originally written. [OBSERVED, historical] All three were subsequently recovered/added to the repo — confirmed present and importable (ats_statistics.py and ats_embeddings.py require scipy and scikit-learn, now documented in requirements.txt). [OBSERVED]
 
 C20 — bridge WAL persistence path /tmp/ats_kernel_bridge.log; C3 constructs a WAL with this default path. [OBSERVED]
 
@@ -363,7 +363,7 @@ ENFORCEMENT: Conditional branch on valid_transition and explicit EventStore.appe
 LOCATION: ats_governance_kernel_bridge.py, ATSKernelGovernor.evaluate_candidate. [OBSERVED]
 ORIGIN: The local manifest invariant explicitly requires escalation for ISOLATE transitions. [OBSERVED]
 DEPENDS ON: S18, S21, S40 [OBSERVED]
-FAILURE MODE: If append or re-verification fails, evaluate_candidate cannot complete; the escalation event itself is not available without C17. [OBSERVED]
+FAILURE MODE: If append or re-verification fails, evaluate_candidate cannot complete. This previously could not be observed because C17 (gov4_kernel) was absent; now that it has been recovered, this path runs and produces escalation_logged events as designed — confirmed by execution. [OBSERVED]
 CONFIDENCE: high — the conditional branch and append payload are directly readable. [OBSERVED]
 
 SEAM ID: S23
@@ -419,7 +419,7 @@ ENFORCEMENT: if __name__ == "__main__" control flow and explicit assertions/chec
 LOCATION: ats_governance_kernel_bridge.py, module entry point and _make_signals. [OBSERVED]
 ORIGIN: The bridge source contains the harness; no separate origin requirement is identified. [NO EVIDENCE]
 DEPENDS ON: S17, S18, S24, S25, S40 [OBSERVED]
-FAILURE MODE: The entry point fails at import when C17 is absent, before its cases can run. [OBSERVED]
+FAILURE MODE: The entry point used to fail at import when C17 was absent, before its cases could run. [OBSERVED, historical] Now that C17 (gov4_kernel) has been recovered, the harness runs its full thirty-case suite, WAL replay, and ledger-chain checks successfully — confirmed by execution. [OBSERVED]
 CONFIDENCE: high — the entry point and import failure are directly observed. [OBSERVED]
 
 SEAM ID: S27
@@ -604,33 +604,33 @@ DEPENDS ON: S8, S37 [OBSERVED]
 FAILURE MODE: A missing optional report skips that validation stage; malformed required inputs interrupt the run. [OBSERVED]
 CONFIDENCE: high — signature and body are directly readable. [OBSERVED]
 
-SEAM ID: S40
+SEAM ID: S40 [STATUS: RESOLVED — see note]
 NAME: Bridge module loading to missing governance dependency
-TYPE: CONTROL; secondary TRUST [OBSERVED]
-SIDE A: C3 [OBSERVED]
-SIDE B: C17 and C19 [OBSERVED]
-WHAT CROSSES: Python import resolution requests gov4_kernel and the dependency modules named in C3's documentation. [OBSERVED]
+TYPE: CONTROL; secondary TRUST [OBSERVED, historical]
+SIDE A: C3 [OBSERVED, historical]
+SIDE B: C17 and C19 [OBSERVED, historical]
+WHAT CROSSES: Python import resolution requests gov4_kernel and the dependency modules named in C3's documentation. [OBSERVED, historical]
 CONTRACT: C3 requires the imported names at module load time before ATSKernelAdapter or ATSGovernorKernel can be constructed. [OBSERVED]
 ENFORCEMENT: Top-level import statements. [OBSERVED]
-LOCATION: ats_governance_kernel_bridge.py, imports near the module header. [OBSERVED]
+LOCATION: ats_governance_kernel_bridge.py, imports near the module header. gov4_kernel.py, ats_governor_fixed.py, ats_statistics.py, and ats_embeddings.py were subsequently recovered and added to the repo, resolving both C17 and C19. [OBSERVED]
 ORIGIN: C3's module docstring explicitly lists the governance-kernel dependency chain. [DOCUMENTED]
 DEPENDS ON: None confirmed. [NO EVIDENCE]
-FAILURE MODE: Importing C3 in ATS raises ModuleNotFoundError for gov4_kernel because C17 is absent; the bridge cannot start. [OBSERVED]
-CONFIDENCE: high — the import statement, absent file, and exception were directly observed. [OBSERVED]
+FAILURE MODE: Importing C3 in ATS used to raise ModuleNotFoundError for gov4_kernel because C17 was absent. [OBSERVED, historical] `python3 ats_governance_kernel_bridge.py` now imports and runs its full entry-point harness successfully — WAL replay, ledger hash-chain integrity, and manifest checks all pass. [OBSERVED]
+CONFIDENCE: high — the successful import and full harness run were directly observed. [OBSERVED]
 
-SEAM ID: S41
+SEAM ID: S41 [STATUS: RESOLVED — see note]
 NAME: Counter entry point to WorstATS fixture
-TYPE: CONTROL; secondary IDENTITY [OBSERVED]
-SIDE A: C2 / module entry point [OBSERVED]
-SIDE B: C18 / worst_system.WorstATS [OBSERVED]
-WHAT CROSSES: Module execution requests the WorstATS class for the counter-system demonstration. [OBSERVED]
-CONTRACT: The import occurs in the if __name__ == "__main__" block and is required by that demonstration path. [OBSERVED]
-ENFORCEMENT: Top-level module import inside the entry-point block. [OBSERVED]
-LOCATION: ats_counter_system.py, module entry point near the end of the file. [OBSERVED]
-ORIGIN: The source comment identifies the import as testing the counter-system against the worst system. [DOCUMENTED]
+TYPE: CONTROL; secondary IDENTITY [OBSERVED, historical]
+SIDE A: C2 / module entry point [OBSERVED, historical]
+SIDE B: C18 / worst_system.WorstATS [OBSERVED, historical]
+WHAT CROSSES: Module execution used to request the WorstATS class for the counter-system demonstration. [OBSERVED, historical]
+CONTRACT: The import occurred in the if __name__ == "__main__" block and was required by that demonstration path. [OBSERVED, historical]
+ENFORCEMENT: Top-level module import inside the entry-point block. [OBSERVED, historical]
+LOCATION: ats_counter_system.py, module entry point — rewritten 2026-08-19 to build biased_decisions and falsified_audit_report inline instead of importing a WorstATS fixture. worst_system.py was confirmed to be an abandoned, never-committed reference implementation, not a missing dependency worth backfilling. [OBSERVED]
+ORIGIN: The source comment identified the import as testing the counter-system against the worst system. [DOCUMENTED, historical]
 DEPENDS ON: None confirmed. [NO EVIDENCE]
-FAILURE MODE: Running ats_counter_system.py as a script raises ModuleNotFoundError because worst_system.py is absent. [OBSERVED]
-CONFIDENCE: high — the import and missing file were directly observed. [OBSERVED]
+FAILURE MODE: Running ats_counter_system.py as a script now succeeds end to end — verified by execution, no ModuleNotFoundError. [OBSERVED]
+CONFIDENCE: high — the rewritten entry point and its successful run were directly observed. [OBSERVED]
 
 SEAM ID: S42
 NAME: Production module entry point
@@ -669,14 +669,14 @@ Components with no confirmed runtime seam:
 - C7, C8, C9, C10, C11, and C12 have documented relationships represented in S37 and S38, but no separate executable boundary from each document into a runtime component was confirmed. [OBSERVED]
 - C13 has a documented schema seam represented in S37; no schema loader was found. [OBSERVED]
 - C14 and C15 could not be connected to runtime components because their text was not readable in the available environment. [OBSERVED]
-- C19 has documented names but no local import or executable implementation was found. [OBSERVED]
+- C19 originally had documented names but no local import or executable implementation; this was resolved when ats_governor_fixed.py, ats_statistics.py, and ats_embeddings.py were recovered and added to the repo. [OBSERVED, historical]
 - C20 is a persistence target rather than a standalone source module; its runtime seam is represented in S24 and S25. [OBSERVED]
 - C22, C23, and C24 are schema/contract components and are represented through S17, S18, S27, S28, and S37. [OBSERVED]
 
 Parts not accessible or not readable:
 
 - The textual contents of C14 and C15 could not be extracted because no usable PDF text extractor or installed Python PDF library was available. [OBSERVED]
-- The implementation of C17, C18, and C19 was not present in ATS. [OBSERVED]
+- The implementation of C17, C18, and C19 was not present in ATS at the time of this inventory; all three are now resolved (C17/C19 recovered and added to the repo, C18's worst_system.py confirmed to be an abandoned draft that was never a real dependency — see the C17/C18/C19 entries above for detail). [OBSERVED, historical]
 - The implementations behind the documented C21 operational sinks were not present in ATS. [OBSERVED]
 - No ATS test files were present at the root during inspection. [OBSERVED]
 
