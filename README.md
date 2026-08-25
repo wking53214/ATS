@@ -1,389 +1,874 @@
-# ATS GOVERNOR v2.0 - HIRING BIAS DETECTION SYSTEM
-
-## Complete Package Contents
-
-### 📋 Documentation (8 files, ~163KB)
-
-1. **ats_governor_package.md** ⭐ START HERE
-   - Overview of entire system
-   - Quick start guide (3 steps)
-   - Key metrics and outcomes
-   - Next steps
-
-2. **ats_red_team_analysis.md**
-   - How adversarial systems hide bias
-   - Counter-attack strategies
-   - Comparative analysis
-
-3. **ats_governor_operations_toolkit.md**
-   - Step-by-step audit procedures
-   - Statistical analysis methods
-   - Verification checklists
-   - Quick-start scripts
-
-4. **ats_governor_integration_guide.md**
-   - Production deployment guide
-   - Real-time monitoring setup
-   - Daily/weekly/monthly procedures
-   - Case study execution
-
-5. **ats_bias_decision_framework.md**
-   - 3-level response hierarchy
-   - Escalation procedures
-   - Candidate remediation process
-   - Damage calculation
-
-6. **ats_threat_model.md**
-   - Attack patterns against the Governor itself
-   - Documented record schemas (CandidateRecord, AuditReportRecord,
-     GovernorFinding)
-
-7. **ats_governance_kernel_bridge_reference.md**
-   - Human-readable walkthrough of `ats_governance_kernel_bridge.py`'s
-     four responsibilities (adapter layer, forensic policies, manifest
-     invariants, kernel wiring)
-
-8. **ats_seam_inventory.md**
-   - Line-by-line static audit of every component and every seam
-     (data/control crossing) in this repo — what's confirmed by
-     reading the code (`[OBSERVED]`) vs. only claimed in docs
-     (`[DOCUMENTED]`) vs. asserted with no supporting evidence found
-     (`[NO EVIDENCE]`). The most reliable single source for "does X
-     actually do what the other docs say it does."
-
-### 💻 Code (7 files, ~163KB)
-
-All seven import cleanly (`pip install -r requirements.txt` first —
-`ats_statistics.py`/`ats_embeddings.py` need `numpy`/`scipy`/
-`scikit-learn`); six run a real demo end to end when executed directly —
-only `gov4_kernel.py` has no `__main__` output of its own (it's a pure
-dependency module; its behavior is exercised by
-`ats_governance_kernel_bridge.py`'s demo instead).
-
-1. **ats_counter_system.py** (21KB)
-   - Production-ready counter-ATS: audits a batch of hiring decisions
-     plus their audit report for bias and report falsification
-   - Detects geographic penalty, employment-volatility penalty, and
-     name-based demographic-proxy bias; catches synthetic/circular
-     validation and falsified audit metrics
-   - Generates legal evidence and recommended safeguards
-   - Run directly for a demo audit (`python3 ats_counter_system.py`)
-
-2. **ats_governor_fixed.py** (44KB)
-   - Operationalized Governor for continuous monitoring — the successor
-     to the original `ats_production_governor.py` (removed 2026-08-19;
-     every class it defined has a more advanced same-named version
-     here). Two of its capabilities did **not** carry forward and are
-     confirmed absent, not just unimplemented-by-oversight: name-proxy
-     (vowel-ratio) bias detection, and
-     `SafeguardVerifier.verify_independent_validation`. See
-     `ats_seam_inventory.md` (C1, S4, S5, S7) for the full accounting.
-   - Real-time streaming detection (geographic bias only — see above)
-   - Full-batch hypothesis-tested bias detection via `ats_statistics.py`
-   - Legal evidence packaging, safeguard verification
-   - Run directly for a demo audit (`python3 ats_governor_fixed.py`)
-
-3. **ats_statistics.py** (18KB) — `class StatisticalBiasDetector`
-   - Hypothesis-testing bias detection (chi-squared/Fisher's exact,
-     p-values, effect sizes), replacing magic-number gap thresholds
-   - Needs `scipy`
-   - Run directly for a demo (`python3 ats_statistics.py`)
-
-4. **ats_embeddings.py** (16KB) — `class EmbeddingScorer`
-   - Pluggable embedding-backed semantic scorer. Defaults to lexical
-     TF-IDF (`scikit-learn`) with no backend injected; optional
-     backends (sentence-transformers/OpenAI/Voyage/custom callable) are
-     lazy-imported and only needed if you use them — see
-     `requirements.txt`
-   - Run directly for a demo (`python3 ats_embeddings.py`)
-
-5. **ats_governance_kernel_bridge.py** (26KB)
-   - Integration bridge between ATS scoring and the GOV4 governance
-     kernel: maps hiring decisions into tamper-evident ledger entries
-     with cryptographic provenance
-   - Needs `gov4_kernel.py` (below) — run directly for a demo
-     (`python3 ats_governance_kernel_bridge.py`), verifies its own
-     hash-chain ledger integrity as part of the demo
-
-6. **gov4_kernel.py** (16KB)
-   - The GOV4 governance kernel `ats_governance_kernel_bridge.py`
-     depends on (`EventStore`, `PolicyVM`, `WAL`, `GovernanceAuditor`,
-     and 12 other names) — recovered 2026-08-19 from an archived Claude
-     conversation; this repo had never had a copy of it before
-
-7. **ats_gsa_core.py** (22KB) — `class ATSGovernanceCore`
-   - JD-driven candidate evaluation with fairness-aware capability
-     scoring, resume substance/anti-fluff checks, and tamper-evident
-     hash-chained audit logging
-   - Run directly for a demo (`python3 ats_gsa_core.py`)
-
----
-
-## QUICK START
-
-### 5-Minute Overview
-Read: **ats_governor_package.md** (pages 1-5)
-
-### 30-Minute Deep Dive
-Read: **ats_red_team_analysis.md** + **ats_governor_operations_toolkit.md** (sections 1-3)
-
-### 2-Hour Implementation Plan
-Read: **ats_governor_integration_guide.md** (all sections)
-
-### Deployment (1 week)
-Follow: **ats_governor_integration_guide.md** (deployment checklist)
-
-### Ongoing Operations
-Use: **ats_bias_decision_framework.md** (when alerts happen)
-
----
-
-## WHAT GOVERNOR DETECTS
-
-✓ **Geographic bias** — Rejection rates by location (`ats_counter_system.py`, `ats_governor_fixed.py`)
-✓ **Demographic proxies** — Name-based discrimination (`ats_counter_system.py` only — removed from `ats_governor_fixed.py`, see C1/S5 in `ats_seam_inventory.md`)
-✓ **Volatility penalties** — Job-changer discrimination (`ats_counter_system.py` only — removed from `ats_governor_fixed.py`, see C1/S4)
-✓ **Synthetic validation** — Fake audit metrics (`ats_counter_system.py`)
-✓ **Audit fraud** — Contradictions in official reports (`ats_counter_system.py`, `ats_governor_fixed.py`)
-
----
-
-## WHAT GOVERNOR PRODUCES
-
-✓ **Real-time alerts** — When bias emerges (every 50-100 decisions)
-✓ **Harm quantification** — Which candidates were falsely rejected
-✓ **Legal evidence** — EEOC-compliant litigation packages
-✓ **Safeguard verification** — Confirms bias prevention actually works
-✓ **Remediation plans** — How to fix detected biases
-
----
-
-## DEPLOYMENT ARCHITECTURE
-
-```
-┌─────────────────────────────────────────────────────────┐
-│              Your Hiring Pipeline                       │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  Candidate Data → [Scoring] → Decision → [Governor]    │
-│                                             │           │
-│                                   ┌─────────▼────────┐  │
-│                                   │ Stream Monitor   │  │
-│                                   │ (Real-time)      │  │
-│                                   └────────┬─────────┘  │
-│                                            │            │
-│                                    ┌───────▼────────┐   │
-│                                    │ Bias Alert?    │   │
-│                                    │ Gap > 15%?     │   │
-│                                    └───────┬────────┘   │
-│                                            │            │
-│                        ┌───────────────────┤            │
-│                        │                   │            │
-│                   [YES]│               [NO]│            │
-│                        │                   │            │
-│           ┌────────────▼─────┐    ┌────────▼──────┐    │
-│           │ Alert & Pause    │    │ Continue      │    │
-│           │ Full Audit       │    │ Operations    │    │
-│           │ Legal Evidence   │    │               │    │
-│           └──────────────────┘    └───────────────┘    │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
----
-
-## OUTCOMES BY LEVEL
-
-| Level | Gap | Action | Timeline |
-|-------|-----|--------|----------|
-| SUSPICIOUS | 15-20% | Investigate & plan | 1-2 weeks |
-| SIGNIFICANT | 20-30% | Pause & remediate | 3-7 days |
-| CRITICAL | >30% | Pause all, escalate | Immediate |
-
----
-
-## EXAMPLE OUTPUTS
-
-### Real-Time Alert
-```
-ALERT: Geographic bias detected
-  Gap: 100% (remote 100% rejected, local 0% rejected)
-  Affected: Candidates 002, 003, 005
-  Audit fraud: Reported 90% approval, actual 40%
-  Recommendation: IMMEDIATE_PAUSE_AND_INVESTIGATE
-```
-
-### Litigation Report (JSON)
-```json
-{
-  "statistical_disparate_impact": {
-    "rejection_rate_gap": "100.0%",
-    "affected_candidates": 3,
-    "legal_standard_met": true,
-    "prosecutability": "STRONG"
-  },
-  "audit_fraud": {
-    "contradictions": 1,
-    "severity": "CRITICAL"
-  },
-  "individual_harms": {
-    "harmed_candidates": 3,
-    "average_correction": 0.95
-  },
-  "legal_conclusions": {
-    "case_strength": "STRONG"
-  }
-}
-```
-
-### Candidate Remediation
-```
-Candidate 002:
-  Original decision: REJECTED (score 0.43)
-  Bias detected: geographic_penalty (-0.40)
-  Corrected score: 0.83
-  Corrected decision: APPROVED
-  Offer: Position + $80K back-wages
-```
-
----
-
-## KEY STATISTICS
-
-- **Detection speed:** Every 50-100 decisions (real-time)
-- **Legal standard (EEOC):** Gap > 25% = prima facie discrimination
-- **Governor sensitivity:** Detects gaps as small as 15% with 85%+ confidence
-- **False positive rate:** <5% (statistical methods are robust)
-- **Average case strength (when bias found):** STRONG (litigation-ready)
-
----
-
-## DEPLOYMENT REQUIREMENTS
-
-**Minimum:**
-- Python 3.8+
-- `pip install -r requirements.txt` (numpy/scipy/scikit-learn — needed
-  by `ats_statistics.py`/`ats_embeddings.py`; everything else here is
-  standard library)
-- Access to candidate data
-- Access to hiring decisions
-- Email for alerts
-
-**Production:**
-- Streaming queue (Kafka/RabbitMQ)
-- Alerting system (Slack/PagerDuty)
-- Database for audit archival
-- Legal team coordination
-
----
-
-## NEXT STEPS
-
-### For Compliance Officers
-1. Read: ats_governor_package.md
-2. Brief: Legal team + board
-3. Deploy: Follow ats_governor_integration_guide.md
-4. Monitor: Daily audits, escalate on alerts
-
-### For Legal Teams
-1. Read: ats_red_team_analysis.md (understand evidence)
-2. Review: ats_bias_decision_framework.md (response procedures)
-3. Prepare: Incident response plan + remediation budget
-4. Support: Candidate remediation process
-
-### For Engineers
-1. Review: ats_counter_system.py (audit logic)
-2. Implement: ats_governor_fixed.py (integration)
-3. Test: Run audit on historical data
-4. Deploy: Follow ats_governor_integration_guide.md procedures
-
-### For Executives
-1. Read: ats_governor_package.md (overview)
-2. Approve: Budget for deployment + safeguards
-3. Authorize: Hiring pause procedures
-4. Monitor: Monthly board-level reporting
-
----
-
-## SUPPORT & QUESTIONS
-
-**Architecture questions?**
-→ Review ats_counter_system.py and ats_governor_fixed.py code
-
-**Deployment questions?**
-→ Follow ats_governor_integration_guide.md step-by-step
-
-**Decision-making questions?**
-→ Use ats_bias_decision_framework.md
-
-**Audit procedures?**
-→ Use ats_governor_operations_toolkit.md
-
----
-
-## COMPETITIVE ADVANTAGE
-
-Companies that deploy Governor first:
-- Fix bias before EEOC complaints
-- Avoid litigation and punitive damages
-- Attract diverse talent (known for fair hiring)
-- Attract socially conscious investors
-- Improve hiring quality (merit-based, not biased)
-- Lead industry on AI hiring safety
-
----
-
-## LICENSE & USAGE
-
-This package is provided as-is for organizations committed to fair hiring practices.
-
-**Terms:**
-- Use for internal auditing and compliance
-- Deploy to detect and remediate bias
-- Consult external counsel on legal strategy
-- Document all audit results
-- Share findings transparently
-
----
-
-## ONE FINAL WORD
-
-**Hiring bias is:**
-- Statistically detectable ✓
-- Legally prosecutable ✓
-- Preventable ✓
-- Fixable ✓
-
-**The only question is:** Will you fix it before someone sues, or after?
-
-**Governor helps you choose the first option.**
-
-**Start today. Fix bias tomorrow. Hire better people next week.**
-
----
-
-Generated: 2026-06-07
-Version: 2.0
-Status: Production-Ready
-
----
-
-## PROVENANCE NOTES
-
-- **2026-08-19**: `gov4_kernel.py`, `ats_statistics.py`, `ats_embeddings.py`,
-  and `ats_governor_fixed.py` recovered from an archived Claude conversation
-  ("ATS", 2026-06-19–21) in [Claude_History](https://github.com/wking53214/Claude_History)'s
-  export — none had a loose copy anywhere on disk before this. A fifth
-  file from that session, `ats_kernel_bridge.py`, was not added — it's
-  byte-identical to `ats_governance_kernel_bridge.py` already here
-  (just the pre-normalization filename).
-- **2026-08-19**: `ats_production_governor.py` removed (superseded by
-  `ats_governor_fixed.py` — see `ats_seam_inventory.md` C1 for the full
-  capability-by-capability accounting, including two gaps that didn't
-  carry forward).
-- **2026-08-19**: `worst_system.py` and all references to it removed.
-  It was an intentionally-adversarial reference system (built to lose
-  to `ats_counter_system.py`, not a real deployment target) that was
-  never actually committed to this repo — only its import survived, in
-  `ats_counter_system.py`'s demo block, which is now self-contained
-  (uses inline sample data instead).
+ATS
+
+Governed Decision Architecture
+
+A Domain-Independent Governance Architecture Demonstrated Through Applicant Tracking
+
+ATS is a concrete implementation of a broader architectural concept: governed decision-making.
+
+The repository currently demonstrates that architecture through an Applicant Tracking System (ATS) used to evaluate hiring decisions for potential bias, anomalies, policy violations, governance failures, and audit inconsistencies.
+
+The applicant-tracking system is therefore the representative application.
+
+It is not the fundamental architectural boundary.
+
+The deeper construct is a governance architecture designed to sit around a consequential decision system and independently evaluate:
+
+* the signals supporting a decision;
+* the interpretation of those signals;
+* the policies governing the decision;
+* the resulting governance state;
+* the invariants that must hold after that state is produced;
+* the provenance and integrity of the resulting record;
+* and whether the governance process itself performed correctly.
+
+The fundamental architectural proposition is:
+
+A consequential decision should not be governed solely by the system that produces the decision. Governance should exist as an independently evaluable control structure around the decision, its supporting evidence, its state transitions, and its historical record.
+
+⸻
+
+The Fundamental Architecture
+
+At its most basic level, the architecture is:
+
+DECISION PRODUCER
+       │
+       ▼
+DECISION SIGNALS
+       │
+       ▼
+INDEPENDENT EVALUATION
+       │
+       ▼
+POLICY INTERPRETATION
+       │
+       ▼
+GOVERNANCE VERDICT
+       │
+       ▼
+INVARIANT VERIFICATION
+       │
+       ▼
+PROVENANCE + INTEGRITY
+       │
+       ▼
+AUDITABLE RECORD
+       │
+       ▼
+RECONSTRUCTION
+
+This creates a separation between:
+
+MAKING A DECISION
+
+and:
+
+GOVERNING THE DECISION.
+
+That separation is the central architectural idea represented by this repository.
+
+⸻
+
+Governance Is Not the Decision
+
+A system may produce a decision:
+
+ACCEPT
+REJECT
+RANK
+SELECT
+ESCALATE
+
+The governance architecture does not necessarily replace that decision.
+
+Instead, it asks:
+
+What evidence produced this decision?
+What conditions surrounded it?
+What policies apply?
+What governance state should result?
+What must happen because of that governance state?
+Did those requirements actually occur?
+Can the entire decision be reconstructed later?
+
+This creates a distinction between:
+
+DECISION
+
+and:
+
+GOVERNED DECISION.
+
+⸻
+
+Decision Production Versus Decision Governance
+
+The architecture deliberately separates the producer from the governance layer.
+
+┌──────────────────────┐
+│   DECISION PRODUCER  │
+│                      │
+│ AI / software /     │
+│ algorithm / human   │
+└──────────┬───────────┘
+           │
+           │ decision
+           ▼
+┌──────────────────────┐
+│ GOVERNANCE ARCHITECTURE│
+└──────────────────────┘
+
+The producer remains capable of producing a decision.
+
+The governance layer independently evaluates whether the decision and its surrounding state satisfy the applicable requirements.
+
+This separation reduces the conceptual problem of asking a system to be the sole authority over its own behavior.
+
+⸻
+
+The Governance Stack
+
+The architecture can be understood as several distinct layers.
+
+Layer 1 — Decision
+
+Something makes a consequential decision.
+
+In the representative implementation:
+
+candidate → hiring decision
+
+But the underlying pattern is domain-independent.
+
+A decision could instead concern:
+
+* lending;
+* insurance;
+* medical triage;
+* security;
+* fraud detection;
+* autonomous systems;
+* resource allocation;
+* eligibility;
+* procurement;
+* or another consequential process.
+
+The domain changes.
+
+The governance architecture can remain conceptually similar.
+
+⸻
+
+Layer 2 — Signals
+
+A decision rarely exists in isolation.
+
+It is supported by signals.
+
+The architecture therefore preserves the decision’s supporting information rather than reducing everything to a final score.
+
+In the ATS implementation, examples include:
+
+* keyword coverage;
+* semantic similarity;
+* keyword density;
+* confidence;
+* algorithm version;
+* rationale;
+* matched terms;
+* missing terms;
+* and other decision attributes.
+
+The deeper architectural principle is:
+
+Governance requires something more than the final decision. It requires access to the information from which the decision can be evaluated.
+
+⸻
+
+Layer 3 — Independent Evaluation
+
+The governance layer evaluates the decision and its signals.
+
+This may include:
+
+* statistical analysis;
+* semantic analysis;
+* anomaly detection;
+* structural analysis;
+* policy evaluation;
+* consistency checks;
+* and forensic analysis.
+
+The important distinction is that these evaluations are not necessarily the same mechanism that produced the original decision.
+
+Conceptually:
+
+DECISION
+   │
+   ▼
+EVALUATE
+   │
+   ├── statistics
+   ├── semantics
+   ├── anomalies
+   ├── consistency
+   └── policy conditions
+
+This creates an independent observational layer.
+
+⸻
+
+Layer 4 — Policy Interpretation
+
+Evidence does not automatically determine governance behavior.
+
+A policy determines what a particular combination of conditions means operationally.
+
+Conceptually:
+
+SIGNALS
+   │
+   ▼
+CONDITIONS
+   │
+   ▼
+POLICY
+   │
+   ▼
+GOVERNANCE STATE
+
+The architecture therefore separates:
+
+OBSERVATION
+
+from:
+
+INTERPRETATION.
+
+This is important because changing a policy should not require pretending that the underlying observation never existed.
+
+⸻
+
+Layer 5 — Governance State
+
+The governance architecture can produce an explicit state or verdict.
+
+The current implementation demonstrates states such as:
+
+ALLOW
+THROTTLE
+ISOLATE
+HALT
+
+These states represent governance responses rather than merely classifications.
+
+For example:
+
+NORMAL
+   ↓
+ALLOW
+UNCERTAIN
+   ↓
+THROTTLE
+   ↓
+additional review
+ANOMALOUS
+   ↓
+ISOLATE
+   ↓
+investigation
+CRITICAL
+   ↓
+HALT
+
+The important concept is that governance can alter what happens next without necessarily altering what originally happened.
+
+⸻
+
+Layer 6 — Governance Invariants
+
+This is where the architecture becomes more than a decision-monitoring system.
+
+A governance verdict can create obligations.
+
+For example:
+
+VERDICT = ISOLATE
+
+may create an invariant:
+
+ESCALATION MUST BE RECORDED.
+
+The system must therefore evaluate not only:
+
+"Was ISOLATE the correct verdict?"
+
+but also:
+
+"Did the system fulfill the obligation created by ISOLATE?"
+
+This produces a second-order governance layer.
+
+⸻
+
+Second-Order Governance
+
+The architecture can therefore govern the governance mechanism itself.
+
+The distinction is:
+
+First-order governance
+
+Was the decision governed correctly?
+
+Second-order governance
+
+Did the governance system itself execute its required governance behavior?
+
+Conceptually:
+
+DECISION
+   │
+   ▼
+GOVERNANCE
+   │
+   ▼
+VERDICT
+   │
+   ▼
+GOVERNANCE OBLIGATION
+   │
+   ▼
+VERIFY OBLIGATION
+   │
+   ├── SATISFIED
+   │
+   └── BREACHED
+
+This is one of the deeper concepts represented in the repository.
+
+A governance system is not assumed to be correct merely because it produced a governance verdict.
+
+Its own behavior becomes observable and auditable.
+
+⸻
+
+Governance Failure Is Its Own Failure Class
+
+The architecture therefore distinguishes:
+
+DECISION FAILURE
+
+from:
+
+GOVERNANCE FAILURE.
+
+For example:
+
+Candidate decision
+      │
+      ▼
+Governance evaluation
+      │
+      ▼
+   ISOLATE
+      │
+      ▼
+Escalation required
+      │
+      ▼
+Escalation missing
+      │
+      ▼
+GOVERNANCE FAILURE
+
+The original hiring decision and the governance failure are different events.
+
+The architecture preserves that distinction.
+
+⸻
+
+Layer 7 — Provenance
+
+Governance requires historical context.
+
+The system therefore preserves information concerning:
+
+WHO
+WHAT
+WHY
+WHEN
+WHICH POLICY
+WHICH ALGORITHM
+WHICH VERSION
+WHICH GOVERNANCE STATE
+
+The objective is to prevent a consequential decision from becoming an unexplained historical artifact.
+
+A future investigator should be able to ask:
+
+What happened?
+
+and then continue:
+
+Why?
+
+Based on what?
+
+Under which policy?
+
+Using which algorithm?
+
+What governance state resulted?
+
+What was required afterward?
+
+Did that requirement occur?
+
+⸻
+
+Layer 8 — Integrity
+
+The historical governance record must itself be trustworthy.
+
+The architecture therefore incorporates tamper-evident recording.
+
+Conceptually:
+
+DECISION
+   │
+   ▼
+NORMALIZED EVENT
+   │
+   ▼
+PROVENANCE
+   │
+   ▼
+INTEGRITY
+   │
+   ▼
+EVENT LEDGER
+
+The goal is not simply to record history.
+
+It is to make subsequent alteration detectable.
+
+⸻
+
+Layer 9 — Reconstruction
+
+The final architectural capability is reconstruction.
+
+A governed decision should be reconstructable from its recorded evidence.
+
+Conceptually:
+
+LEDGER
+   │
+   ▼
+GOVERNANCE EVENT
+   │
+   ├── decision
+   ├── signals
+   ├── policy
+   ├── verdict
+   ├── provenance
+   ├── algorithm
+   └── rationale
+   │
+   ▼
+DECISION RECONSTRUCTION
+
+This changes the role of governance from:
+
+"monitor what happens"
+
+to:
+
+"preserve enough information to understand what happened."
+
+⸻
+
+The Complete Governance Loop
+
+The complete architecture can therefore be represented as:
+
+┌───────────────────────┐
+│    DECISION PRODUCER  │
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│    DECISION SIGNALS   │
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│ INDEPENDENT EVALUATION│
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│    POLICY ENGINE      │
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│   GOVERNANCE VERDICT  │
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│ INVARIANT VERIFICATION│
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│ PROVENANCE + INTEGRITY│
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│    AUDITABLE LEDGER   │
+└───────────┬───────────┘
+            │
+            ▼
+┌───────────────────────┐
+│     RECONSTRUCTION    │
+└───────────────────────┘
+
+This is the foundational architecture.
+
+The ATS is one implementation of it.
+
+⸻
+
+Applicant Tracking System: The Demonstration
+
+The repository currently applies this architecture to hiring.
+
+The application can evaluate:
+
+RESUME
+   │
+   ▼
+CANDIDATE SIGNALS
+   │
+   ▼
+ATS SCORING
+   │
+   ▼
+GOVERNANCE ANALYSIS
+   │
+   ▼
+POLICY
+   │
+   ▼
+VERDICT
+   │
+   ▼
+AUDIT / LEDGER
+
+The hiring domain makes the architecture tangible because hiring decisions are consequential and involve multiple interacting decision signals.
+
+The application therefore serves as a practical demonstration environment for the broader architecture.
+
+⸻
+
+Bias Is One Governance Problem, Not the Governance Architecture
+
+The ATS application demonstrates bias detection.
+
+That does not define the entire architecture.
+
+Bias is one class of governance concern.
+
+Other possible governance concerns include:
+
+* anomalous behavior;
+* proxy variables;
+* inconsistent treatment;
+* policy violations;
+* unexplained decisions;
+* unauthorized actions;
+* audit manipulation;
+* provenance failures;
+* integrity failures;
+* governance-state failures;
+* and failures to satisfy governance obligations.
+
+The architecture is therefore broader than:
+
+BIAS DETECTOR.
+
+It is a:
+
+GOVERNED DECISION ARCHITECTURE.
+
+⸻
+
+The Counter-System Concept
+
+The repository also demonstrates the idea of examining the decision system from outside itself.
+
+The counter-ATS layer can evaluate batches of decisions and associated audit information.
+
+This creates a useful architectural relationship:
+
+DECISION SYSTEM
+      │
+      ▼
+GOVERNANCE SYSTEM
+      │
+      ▼
+COUNTER / AUDITOR
+      │
+      ▼
+GOVERNANCE EVIDENCE
+
+This introduces an adversarial or independent perspective.
+
+The system being governed does not automatically become the sole judge of whether its own governance claims are true.
+
+⸻
+
+Governance of the Auditor
+
+The architecture can be extended one step further.
+
+If the auditor produces a report:
+
+AUDITOR
+   │
+   ▼
+AUDIT REPORT
+
+the report itself can become an object of evaluation.
+
+Conceptually:
+
+DECISION
+   ↓
+GOVERNANCE
+   ↓
+AUDIT
+   ↓
+AUDIT VALIDATION
+
+This prevents the architecture from assuming that an artifact is trustworthy merely because it carries the label:
+
+"AUDIT."
+
+An audit record is itself a governed artifact.
+
+⸻
+
+Domain Independence
+
+The fundamental architecture is not inherently an ATS architecture.
+
+The current implementation happens to use hiring.
+
+The same architecture could potentially surround other consequential decision domains.
+
+For example:
+
+┌───────────────┐
+│    HIRING     │
+└───────┬───────┘
+        │
+┌───────▼───────┐
+│   GOVERNANCE  │
+│   ARCHITECTURE│
+└───────┬───────┘
+        │
+┌───────┼────────┐
+│       │        │
+
+LENDING  HEALTH   AUTONOMY
+
+The domain-specific signals and policies would change.
+
+The fundamental control pattern could remain.
+
+⸻
+
+Why the Architecture Matters
+
+A conventional decision system often resembles:
+
+INPUT
+  ↓
+MODEL
+  ↓
+OUTPUT
+
+A governed decision system adds another dimension:
+
+INPUT
+  ↓
+MODEL
+  ↓
+OUTPUT
+  ↓
+GOVERNANCE
+  ↓
+AUDIT
+  ↓
+RECONSTRUCTION
+
+The governance architecture therefore exists around the decision lifecycle, rather than merely inside the decision algorithm.
+
+⸻
+
+Governance as a Control Plane
+
+One useful way to understand the architecture is as a governance control plane.
+
+The decision-producing system is the operational plane.
+
+OPERATIONAL PLANE
+      │
+      ▼
+   DECISION
+
+The governance architecture observes and controls the consequences of that decision:
+
+GOVERNANCE PLANE
+      │
+      ├── observe
+      ├── evaluate
+      ├── interpret
+      ├── constrain
+      ├── escalate
+      ├── record
+      └── reconstruct
+
+This separation allows governance to remain conceptually independent from the particular system producing the decision.
+
+⸻
+
+The Deeper Principle
+
+The deepest architectural proposition represented by this repository is not:
+
+“Hiring algorithms should be checked for bias.”
+
+It is:
+
+Consequential decisions should exist inside an explicit governance lifecycle in which their evidence, interpretation, state transitions, obligations, provenance, integrity, and historical reconstruction are independently controllable and auditable.
+
+The ATS application is the demonstration.
+
+The governed decision architecture is the underlying construct.
+
+⸻
+
+Current Implementation
+
+The repository contains representative implementations of:
+
+ats_governor_fixed.py
+    Governance monitoring and decision evaluation
+ats_statistics.py
+    Statistical evaluation
+ats_embeddings.py
+    Semantic evaluation
+ats_counter_system.py
+    Counter-system auditing and falsification detection
+ats_governance_kernel_bridge.py
+    Integration between the ATS application and
+    the governance kernel
+gov4_kernel.py
+    Governance kernel
+ats_gsa_core.py
+    Applicant-tracking decision implementation
+    and tamper-evident audit logging
+
+These components demonstrate the architecture through a concrete hiring application.
+
+⸻
+
+What This Repository Claims
+
+This repository does not claim to provide a universally unbiased hiring algorithm.
+
+It does not claim that statistical testing alone establishes discrimination.
+
+It does not claim that a governance verdict is inherently correct.
+
+It does not claim that a ledger makes a decision legitimate.
+
+Instead, it demonstrates a structural proposition:
+
+Governance can be separated from decision production and organized as an explicit, testable, auditable control architecture around consequential decisions.
+
+The implementation provides a concrete environment in which that proposition can be examined.
+
+⸻
+
+What the ATS Application Demonstrates
+
+The ATS application demonstrates:
+
+* decision-signal preservation;
+* statistical evaluation;
+* semantic evaluation;
+* anomaly detection;
+* policy-based governance;
+* governance-state transitions;
+* invariant enforcement;
+* provenance preservation;
+* tamper-evident recording;
+* audit validation;
+* counter-system analysis;
+* and decision reconstruction.
+
+These are representative applications of the underlying architecture.
+
+⸻
+
+Research Significance
+
+The repository provides a concrete foundation for investigating a broader question:
+
+Can governance be treated as an architectural control system rather than merely as a collection of policies, documentation, or post-hoc compliance checks?
+
+The architecture represented here suggests that governance can be decomposed into explicit technical functions:
+
+OBSERVE
+  ↓
+EVALUATE
+  ↓
+INTERPRET
+  ↓
+CONSTRAIN
+  ↓
+VERIFY
+  ↓
+RECORD
+  ↓
+RECONSTRUCT
+
+And critically:
+
+GOVERNANCE
+     ↓
+GOVERNANCE VERIFICATION
+     ↓
+GOVERNANCE FAILURE
+
+That final loop is what makes the architecture capable of second-order governance.
+
+⸻
+
+Central Proposition
+
+A consequential decision should not be considered fully governed merely because a policy exists or a decision is audited. Governance should be an executable architecture capable of independently evaluating the decision, enforcing the consequences of governance states, verifying that governance obligations were satisfied, preserving provenance and integrity, and reconstructing the resulting history.
+
+ATS is the representative implementation used to demonstrate this architecture through applicant tracking and hiring decisions.
+
+The underlying construct is broader:
+
+GOVERNED DECISION ARCHITECTURE
