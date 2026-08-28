@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated at runtime by ats_governor_fixed.py / ats_gsa_core.py demos
+audit.log
+
+# Byte-identical duplicates of the tracked, normalized-name PDFs
+# (ats_application_tracking_system_auditor.pdf, ats_hidden_bias_counter_analysis.pdf)
+ATS/
