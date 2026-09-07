@@ -218,6 +218,10 @@ class EventStore:
     def __init__(self, hash_strategy: Optional[HashStrategy] = None):
         self._entity_streams: Dict[str, List[NormalizedEvent]] = {}
         self._entity_heads: Dict[str, str] = {}
+        # Every link, not just the head. Keeping only the head proves that a
+        # stream changed but never which event changed, and verify_chain needs
+        # to name the divergence point for the answer to be actionable.
+        self._entity_hashes: Dict[str, List[str]] = {}
         self._hash_strategy = hash_strategy or SHA256Hash()
 
     def append(self, entity_id: str, event_type: str, delta: Dict[str, Any],
@@ -238,6 +242,7 @@ class EventStore:
         current_hash = self._hash_strategy.compute(previous_hash, event)
 
         stream.append(event)
+        self._entity_hashes.setdefault(entity_id, []).append(current_hash)
         self._entity_heads[entity_id] = current_hash
         return event, current_hash
 
@@ -251,6 +256,45 @@ class EventStore:
     def head_hash(self, entity_id: str) -> str:
         return self._entity_heads.get(entity_id, "GENESIS")
 
+    def verify_chain(self, entity_id: str) -> Tuple[bool, Optional[int]]:
+        """Recompute the chain from GENESIS and compare it to the head.
+
+        This section is headed "TAMPER-EVIDENT EVENT STORE" and the chaining
+        that earns the name was already here, but the store exposed no way to
+        check it. The only verification in the repository was ten lines inside
+        the demo block at the bottom of ats_governance_kernel_bridge.py,
+        hardcoded to a single candidate id and reachable by no caller. A
+        control that exists only in a demo is not available to the system it
+        is supposed to protect.
+
+        It also could only answer yes or no. This walks the recorded links, so
+        it can say which event diverged.
+
+        Returns (True, None) if the stream reproduces the head, else
+        (False, sequence_no) naming the earliest event that does not match.
+        The sequence number is the point of divergence: everything at or after
+        it is suspect, everything before it is confirmed intact.
+        """
+        expected_head = self._entity_heads.get(entity_id)
+        if expected_head is None:
+            # No stream. Consistent only if nothing claims to be here.
+            return (entity_id not in self._entity_streams), None
+
+        running = "GENESIS"
+        recorded = self._entity_hashes.get(entity_id, [])
+        for index, event in enumerate(self._entity_streams.get(entity_id, [])):
+            running = self._hash_strategy.compute(running, event)
+            # Compare each link against the one written at append time. Only
+            # the head was kept before, which is enough to prove a stream was
+            # altered but not to say where -- and "something in this ledger
+            # changed" is not an answer anyone can act on.
+            if index < len(recorded) and running != recorded[index]:
+                return False, event.sequence_no
+
+        # Every link matched what was recorded, so the head must agree too;
+        # if it does not, the head itself was altered rather than an event.
+        return running == expected_head, None
+
 
 # ============================================================
 # STATE REDUCERS & POLICY VM
@@ -260,8 +304,46 @@ class Reducer(Protocol):
         ...
 
 
+class UnknownEventType(ValueError):
+    """A reducer was handed an event type it has no rule for.
+
+    Carries the identifying fields so an operator can find the exact event in
+    the stream rather than only learning that some event, somewhere, was not
+    understood.
+    """
+
+    def __init__(self, event: NormalizedEvent) -> None:
+        self.event_type = event.event_type
+        self.event_id = event.event_id
+        self.entity_id = event.entity_id
+        self.sequence_no = event.sequence_no
+        super().__init__(
+            f"unknown event type {event.event_type!r} "
+            f"(entity={event.entity_id}, seq={event.sequence_no}, "
+            f"event_id={event.event_id})"
+        )
+
+
 class GovernanceCoreReducer:
+    # The event types this reducer has rules for. A class attribute rather
+    # than a chain of literals so it can be read -- by the check below, and by
+    # a test asserting it matches what callers actually emit.
+    HANDLED_EVENT_TYPES = frozenset({
+        "telemetry_update", "escalation", "status_change",
+        "hiring_decision", "escalation_logged",
+    })
+
     def apply(self, context: Dict[str, Any], event: NormalizedEvent) -> Dict[str, Any]:
+        # Both generations of this reducer's ancestor raised here. This one
+        # fell off the end and returned the state unchanged, which is not a
+        # smaller failure than raising -- it is a larger one. An unrecognised
+        # event produces after == before, every before/after invariant holds
+        # trivially, and the transition is reported as governed and clean. A
+        # one-character typo in an event type turned a decision that violates
+        # the manifest into one that passes it.
+        if event.event_type not in self.HANDLED_EVENT_TYPES:
+            raise UnknownEventType(event)
+
         next_state = copy.deepcopy(context)
         if event.event_type == "telemetry_update":
             next_state["metrics"] = event.delta
@@ -336,7 +418,19 @@ class GovernanceAuditor:
 
     def verify_transition(self, before: Dict[str, Any], event: NormalizedEvent
                           ) -> Tuple[bool, List[str]]:
-        after = self._reducer.apply(before, event)
+        # Caught by its specific type, never broadly. A generic `except
+        # Exception` here would let an unrelated bug inside an invariant
+        # surface as an orderly governance refusal -- a broken call wearing a
+        # principled refusal's clothes, which is strictly harder to diagnose
+        # than a crash. Only "I do not know this event type" is converted, and
+        # it is converted into a refusal rather than propagated so the caller's
+        # remediation path (auto-escalation on breach) runs instead of the
+        # whole evaluation aborting.
+        try:
+            after = self._reducer.apply(before, event)
+        except UnknownEventType as exc:
+            return False, [f"unknown_event_type: {exc}"]
+
         before_view = MappingProxyType(before)
         after_view = MappingProxyType(after)
         errors = []
