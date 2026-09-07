@@ -37,14 +37,11 @@ DEPENDENCY CHAIN
 
 from __future__ import annotations
 
-import copy
-import json
 import os
 import time
-import uuid
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from gov4_kernel import (
     EventStore,
@@ -57,11 +54,9 @@ from gov4_kernel import (
     Policy,
     PolicyVM,
     Provenance,
-    Regime,
     TrafficPayload,
     Verdict,
     WAL,
-    canonical,
     critical_requires_escalation,
 )
 
@@ -509,7 +504,6 @@ def _make_signals(
 
 
 if __name__ == "__main__":
-    import sys
 
     wal_path = "/tmp/ats_kernel_bridge_test.log"
     # Clean previous test WAL
@@ -527,7 +521,7 @@ if __name__ == "__main__":
 
     # 1-5: Genuine qualified candidates (should ALLOW)
     for i in range(5):
-        s, l = _make_signals(
+        s, label = _make_signals(
             f"genuine-{i}", job_id,
             keyword_score=40, coverage=0.8, similarity=0.35,
             density=0.15, decision="APPROVED", confidence="high",
@@ -536,11 +530,11 @@ if __name__ == "__main__":
             missing=["SQL"],
             label=f"Genuine qualified candidate #{i}",
         )
-        test_cases.append((s, l))
+        test_cases.append((s, label))
 
     # 6-10: Genuine but borderline (should THROTTLE via low_confidence)
     for i in range(5):
-        s, l = _make_signals(
+        s, label = _make_signals(
             f"borderline-{i}", job_id,
             keyword_score=20, coverage=0.4, similarity=0.18,
             density=0.10, decision="APPROVED", confidence="low",
@@ -549,11 +543,11 @@ if __name__ == "__main__":
             missing=["governance", "forecasting", "SQL"],
             label=f"Borderline candidate #{i} (near threshold)",
         )
-        test_cases.append((s, l))
+        test_cases.append((s, label))
 
     # 11-15: Naive keyword stuffing (should ISOLATE via stuffing_detector)
     for i in range(5):
-        s, l = _make_signals(
+        s, label = _make_signals(
             f"stuffed-{i}", job_id,
             keyword_score=50, coverage=1.0, similarity=0.60,
             density=0.85, decision="FLAG_REVIEW", confidence="high",
@@ -561,11 +555,11 @@ if __name__ == "__main__":
             matched=all_kw, missing=[],
             label=f"Keyword-stuffed resume #{i}",
         )
-        test_cases.append((s, l))
+        test_cases.append((s, label))
 
     # 16-20: Synthetic alignment (should ISOLATE via synthetic_alignment)
     for i in range(5):
-        s, l = _make_signals(
+        s, label = _make_signals(
             f"synthetic-{i}", job_id,
             keyword_score=50, coverage=1.0, similarity=0.55,
             density=0.30, decision="APPROVED", confidence="high",
@@ -573,11 +567,11 @@ if __name__ == "__main__":
             matched=all_kw, missing=[],
             label=f"Synthetic-aligned AI resume #{i}",
         )
-        test_cases.append((s, l))
+        test_cases.append((s, label))
 
     # 21-25: Geographic anomaly (should THROTTLE via geographic_anomaly)
     for i in range(5):
-        s, l = _make_signals(
+        s, label = _make_signals(
             f"geo-anomaly-{i}", job_id,
             keyword_score=50, coverage=1.0, similarity=0.40,
             density=0.12, decision="APPROVED", confidence="high",
@@ -585,11 +579,11 @@ if __name__ == "__main__":
             matched=all_kw, missing=[],
             label=f"Perfect-score remote candidate #{i} (500mi)",
         )
-        test_cases.append((s, l))
+        test_cases.append((s, label))
 
     # 26-30: Off-topic (should ALLOW — no policy triggers, just rejected by score)
     for i in range(5):
-        s, l = _make_signals(
+        s, label = _make_signals(
             f"offtopic-{i}", job_id,
             keyword_score=0, coverage=0.0, similarity=0.01,
             density=0.0, decision="REJECTED", confidence="high",
@@ -597,7 +591,7 @@ if __name__ == "__main__":
             matched=[], missing=all_kw,
             label=f"Off-topic resume #{i} (pastry chef)",
         )
-        test_cases.append((s, l))
+        test_cases.append((s, label))
 
     # ---------------------------------------------------------------
     # Run all candidates through the pipeline
@@ -685,7 +679,7 @@ if __name__ == "__main__":
     # Spot-check one WAL record
     if records:
         sample = records[0]
-        print(f"\n  Sample WAL record (first):")
+        print("\n  Sample WAL record (first):")
         print(f"    candidate:  {sample['candidate_id']}")
         print(f"    verdict:    {sample['verdict']}")
         print(f"    regime:     {sample['regime']}")
