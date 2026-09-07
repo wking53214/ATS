@@ -31,7 +31,9 @@ from typing import List, Dict, Any, Callable, Optional, Tuple
 from enum import Enum
 import math
 
-from scipy.stats import chi2_contingency, fisher_exact, norm
+from scipy.stats import chi2_contingency, fisher_exact
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 class Significance(Enum):
@@ -264,8 +266,6 @@ class StatisticalBiasDetector:
 # Improved scorer: TF-IDF cosine similarity, not substring matching.
 # ---------------------------------------------------------------------------
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 
 @dataclass
@@ -347,7 +347,8 @@ if __name__ == "__main__":
     print("=" * 70)
 
     det = StatisticalBiasDetector(alpha=0.05, min_cohort_n=30)
-    remote = lambda c: c.get("location_distance_miles", 0) > 100
+    def remote(c):
+        return c.get("location_distance_miles", 0) > 100
 
     # Case 1: large sample, real disparity.
     candidates, decisions = [], []
@@ -362,7 +363,7 @@ if __name__ == "__main__":
         decisions.append({"decision": dec})
 
     r1 = det.test_cohort(candidates, decisions, remote, "geo", "remote", "local")
-    print(f"\n[Case 1: 300 candidates, real ~35pp gap]")
+    print("\n[Case 1: 300 candidates, real ~35pp gap]")
     print(f"  test={r1.test_used}  p={r1.p_value:.2e}  phi={r1.effect_size:.3f} ({r1.effect_magnitude})")
     print(f"  odds_ratio={r1.odds_ratio:.2f}  -> {r1.significance.value}")
     for n in r1.notes:
@@ -371,7 +372,7 @@ if __name__ == "__main__":
     # Case 2: tiny sample, same apparent gap -> must NOT claim significance.
     small_c, small_d = candidates[:12], decisions[:12]
     r2 = det.test_cohort(small_c, small_d, remote, "geo_small", "remote", "local")
-    print(f"\n[Case 2: 12 candidates, same pattern]")
+    print("\n[Case 2: 12 candidates, same pattern]")
     print(f"  significance={r2.significance.value}")
     for n in r2.notes:
         print(f"  - {n}")
@@ -384,11 +385,11 @@ if __name__ == "__main__":
         dec = "REJECTED" if i % 3 == 0 else "APPROVED"  # independent of cohort
         d3.append({"decision": dec})
     r3 = det.test_cohort(c3, d3, remote, "geo_null", "remote", "local")
-    print(f"\n[Case 3: 300 candidates, no real gap]")
+    print("\n[Case 3: 300 candidates, no real gap]")
     print(f"  test={r3.test_used}  p={r3.p_value:.3f}  phi={r3.effect_size:.3f}  -> {r3.significance.value}")
 
     # Case 4: multiple-comparison correction across several cohorts.
-    print(f"\n[Case 4: BH correction across 5 cohorts]")
+    print("\n[Case 4: BH correction across 5 cohorts]")
     multi = [r1, r3]
     # fabricate three borderline cohorts
     for k, frac in enumerate([0.04, 0.045, 0.049]):
@@ -427,5 +428,5 @@ if __name__ == "__main__":
     print(f"    matched={s_real.matched_terms}")
     print(f"  Keyword-stuffed resume:  similarity={s_stuff.similarity}  score={s_stuff.score_0_100}/100")
     print(f"    matched={s_stuff.matched_terms}")
-    print(f"\n  Note: stuffing unrelated keywords scores near zero on cosine similarity,")
-    print(f"  even though the old substring scorer would have scored it on raw hits.")
+    print("\n  Note: stuffing unrelated keywords scores near zero on cosine similarity,")
+    print("  even though the old substring scorer would have scored it on raw hits.")

@@ -373,7 +373,8 @@ class DecisionFunctionAnalyzer:
 
         signatures: List[BiasSignature] = []
         detector = StatisticalBiasDetector(alpha=0.05, min_cohort_n=30)
-        remote_pred = lambda c: c.get("location_distance_miles", 0) > 100
+        def remote_pred(c):
+            return c.get("location_distance_miles", 0) > 100
 
         result = detector.test_cohort(
             self.candidate_database, self.decision_database, remote_pred,

@@ -40,11 +40,10 @@ with access; their output QUALITY has not been exercised here, only their wiring
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Dict, Any, Callable, Optional, Sequence
 import hashlib
 import re
-import math
 
 import numpy as np
 

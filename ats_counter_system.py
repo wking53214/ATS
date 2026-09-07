@@ -7,8 +7,7 @@ Detects and defangs adversarial hiring systems by:
 - Making bias visible and prosecutable
 """
 
-import collections
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict
 import statistics
 from dataclasses import dataclass
 
@@ -487,7 +486,7 @@ if __name__ == "__main__":
             print(f"    {safeguard['description']}")
             print(f"    Enforcement: {safeguard['enforcement']}")
     
-    print(f"\nSUMMARY:")
+    print("\nSUMMARY:")
     print(f"  Candidates Affected: {audit['summary']['total_candidates_affected']}")
     print(f"  Biases Detected: {audit['summary']['biases_detected_count']}")
     print(f"  False Rejections: {audit['summary']['false_rejections_likely']}")
