@@ -695,18 +695,14 @@ if __name__ == "__main__":
     print("\n" + "=" * 78)
     print("LEDGER INTEGRITY")
     print("=" * 78)
-    # Verify hash chain for one candidate
-    events = kernel.store.stream_for("stuffed-0")
-    from gov4_kernel import SHA256Hash
-    hasher = SHA256Hash()
-    prev_hash = "GENESIS"
-    chain_valid = True
-    for e in events:
-        expected = hasher.compute(prev_hash, e)
-        prev_hash = expected  # chain forward
+    # Was ten lines of hand-rolled chain walk here, hardcoded to one candidate
+    # and callable by nothing. It now uses EventStore.verify_chain, so the
+    # check the demo performs is the same one a caller can perform.
+    chain_valid, diverged_at = kernel.store.verify_chain("stuffed-0")
     head = kernel.store.head_hash("stuffed-0")
-    chain_valid = (head == prev_hash)
     print(f"  stuffed-0 hash chain: {'VALID' if chain_valid else 'BROKEN'}")
+    if not chain_valid:
+        print(f"  first divergent event: sequence_no={diverged_at}")
     print(f"  head hash: {head[:24]}...")
 
     print("\n" + "=" * 78)
