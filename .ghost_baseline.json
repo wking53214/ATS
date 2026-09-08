@@ -14,7 +14,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.024923+00:00",
-    "id": "ghost-2125209f8ab8",
+    "id": "ghost-91a6595eaf2d",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -35,7 +35,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.025021+00:00",
-    "id": "ghost-d0f52ea1aa7e",
+    "id": "ghost-20de3ee66659",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -56,7 +56,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.025052+00:00",
-    "id": "ghost-1278a8deecdd",
+    "id": "ghost-fcd859d6ea88",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -77,7 +77,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.025063+00:00",
-    "id": "ghost-804e21e04d20",
+    "id": "ghost-abd6dd4738ea",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -98,7 +98,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.025075+00:00",
-    "id": "ghost-f9b40cbfe334",
+    "id": "ghost-54daa8c85a0c",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -119,7 +119,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.025100+00:00",
-    "id": "ghost-e9b556422462",
+    "id": "ghost-83f61593fd87",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -140,7 +140,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.030629+00:00",
-    "id": "ghost-219ae90c4703",
+    "id": "ghost-421548f8dac8",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -161,7 +161,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.040839+00:00",
-    "id": "ghost-21db26977673",
+    "id": "ghost-b4a3ad4c6fe6",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -182,7 +182,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.050485+00:00",
-    "id": "ghost-8e2fa8f6f061",
+    "id": "ghost-6b32dd704ebd",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -203,7 +203,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.067681+00:00",
-    "id": "ghost-76c086786702",
+    "id": "ghost-e39235c0b02e",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -227,7 +227,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.147044+00:00",
-    "id": "ghost-93686edbcbda",
+    "id": "ghost-1f5220084dd7",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -251,7 +251,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.147086+00:00",
-    "id": "ghost-cdfdd52edb53",
+    "id": "ghost-f66a9c63d50c",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -278,7 +278,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.147101+00:00",
-    "id": "ghost-7d0ee0195b61",
+    "id": "ghost-a19fabe2baa8",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -302,7 +302,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.147111+00:00",
-    "id": "ghost-3fc439c76ca0",
+    "id": "ghost-50819b541fb5",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -326,7 +326,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.147121+00:00",
-    "id": "ghost-2a33f98823a5",
+    "id": "ghost-f53f34da6871",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -350,7 +350,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.149148+00:00",
-    "id": "ghost-10fd9e63d4bc",
+    "id": "ghost-0da157bd89c0",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -376,7 +376,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.149164+00:00",
-    "id": "ghost-517549cdd850",
+    "id": "ghost-7d853db63b8d",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -399,7 +399,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.155103+00:00",
-    "id": "ghost-ebf824870438",
+    "id": "ghost-400761edb7fb",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -422,7 +422,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.168178+00:00",
-    "id": "ghost-c45769735ac5",
+    "id": "ghost-95e00c82c319",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -445,7 +445,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.170131+00:00",
-    "id": "ghost-c1194187a917",
+    "id": "ghost-c9abe9111225",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -468,7 +468,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.170157+00:00",
-    "id": "ghost-1b842dde9a93",
+    "id": "ghost-908e63b8b0e7",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -491,7 +491,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.183839+00:00",
-    "id": "ghost-b1bcc82e2c4a",
+    "id": "ghost-aa0026b19890",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -516,7 +516,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.184253+00:00",
-    "id": "ghost-eeaca18fc8cb",
+    "id": "ghost-35c8352ffd7f",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -539,7 +539,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.186328+00:00",
-    "id": "ghost-d529f569f407",
+    "id": "ghost-3515cf01ff49",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -563,7 +563,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.192531+00:00",
-    "id": "ghost-6f361369cd1d",
+    "id": "ghost-a990472f63b0",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
@@ -586,7 +586,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.195874+00:00",
-    "id": "ghost-3e80f9cd0e74",
+    "id": "ghost-6c390505bb2b",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -609,7 +609,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.196193+00:00",
-    "id": "ghost-b1e43af65220",
+    "id": "ghost-d998cb9672d1",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -632,7 +632,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.214416+00:00",
-    "id": "ghost-fd227d269c18",
+    "id": "ghost-c9ad6147aa27",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -655,7 +655,7 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.214443+00:00",
-    "id": "ghost-d2fa603c0e1d",
+    "id": "ghost-52b214c35851",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
@@ -681,10 +681,370 @@
       "snippet": null
     },
     "first_seen": "2026-09-03T03:41:22.236902+00:00",
-    "id": "ghost-bd26661a8487",
+    "id": "ghost-7e0207896d81",
     "layer": "mechanical",
     "severity": "major",
     "status": "suppressed",
     "summary": "'update' repeats the same single statement 5 times (lines 382-382, 383-383, 384-384, 385-385, 386-386): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 63,
+      "line_start": 63,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:87-87",
+        "/home/wking53214/ATS/ats_counter_system.py:111-111"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.261766+00:00",
+    "id": "ghost-2635bd65c5b3",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 63-63, 87-87, 111-111): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 68,
+      "line_start": 64,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:88-92",
+        "/home/wking53214/ATS/ats_counter_system.py:112-116"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.261910+00:00",
+    "id": "ghost-90712adf995b",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'detect_correlated_rejection_patterns' repeats the same 4-statement block 3 times (lines 64-68, 88-92, 112-116): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 64,
+      "line_start": 64,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:65-65",
+        "/home/wking53214/ATS/ats_counter_system.py:88-88",
+        "/home/wking53214/ATS/ats_counter_system.py:89-89",
+        "/home/wking53214/ATS/ats_counter_system.py:112-112",
+        "/home/wking53214/ATS/ats_counter_system.py:113-113"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.261989+00:00",
+    "id": "ghost-b3af4d069768",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 6 times (lines 64-64, 65-65, 88-88, 89-89, 112-112, 113-113): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 68,
+      "line_start": 68,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:92-92",
+        "/home/wking53214/ATS/ats_counter_system.py:116-116"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.262087+00:00",
+    "id": "ghost-33bbf21878e9",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 68-68, 92-92, 116-116): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 271,
+      "line_start": 271,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:280-280",
+        "/home/wking53214/ATS/ats_counter_system.py:289-289"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.264258+00:00",
+    "id": "ghost-c22210343f67",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'propose_system_safeguards' repeats the same single statement 3 times (lines 271-271, 280-280, 289-289): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 298,
+      "line_start": 298,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:306-306",
+        "/home/wking53214/ATS/ats_counter_system.py:272-272",
+        "/home/wking53214/ATS/ats_counter_system.py:281-281",
+        "/home/wking53214/ATS/ats_counter_system.py:290-290"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.264340+00:00",
+    "id": "ghost-6437d709253f",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'propose_system_safeguards' repeats the same single statement 5 times (lines 298-298, 306-306, 272-272, 281-281, 290-290): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_embeddings.py",
+      "line_end": 165,
+      "line_start": 165,
+      "related_files": [
+        "/home/wking53214/ATS/ats_embeddings.py:166-166"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.269331+00:00",
+    "id": "ghost-99e41f90deb4",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'_cosine' repeats the same single statement 2 times (lines 165-165, 166-166): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_governance_kernel_bridge.py",
+      "line_end": 347,
+      "line_start": 347,
+      "related_files": [
+        "/home/wking53214/ATS/ats_governance_kernel_bridge.py:351-351"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.282736+00:00",
+    "id": "ghost-32f5217a8adf",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'__init__' repeats the same single statement 2 times (lines 347-347, 351-351): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_governance_kernel_bridge.py",
+      "line_end": 383,
+      "line_start": 383,
+      "related_files": [
+        "/home/wking53214/ATS/ats_governance_kernel_bridge.py:407-407"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.284067+00:00",
+    "id": "ghost-e4537c0b8835",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'evaluate_candidate' repeats the same single statement 2 times (lines 383-383, 407-407): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_governance_kernel_bridge.py",
+      "line_end": 384,
+      "line_start": 384,
+      "related_files": [
+        "/home/wking53214/ATS/ats_governance_kernel_bridge.py:408-408"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.284158+00:00",
+    "id": "ghost-c4b84ebcb544",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'evaluate_candidate' repeats the same single statement 2 times (lines 384-384, 408-408): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_governor_fixed.py",
+      "line_end": 725,
+      "line_start": 725,
+      "related_files": [
+        "/home/wking53214/ATS/ats_governor_fixed.py:726-726",
+        "/home/wking53214/ATS/ats_governor_fixed.py:727-727"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.303970+00:00",
+    "id": "ghost-2b19f4c01b9c",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'__init__' repeats the same single statement 3 times (lines 725-725, 726-726, 727-727): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_governor_fixed.py",
+      "line_end": 942,
+      "line_start": 942,
+      "related_files": [
+        "/home/wking53214/ATS/ats_governor_fixed.py:943-943"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.307674+00:00",
+    "id": "ghost-48218e4ad35d",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'load_json' repeats the same single statement 2 times (lines 942-942, 943-943): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_governor_fixed.py",
+      "line_end": 954,
+      "line_start": 954,
+      "related_files": [
+        "/home/wking53214/ATS/ats_governor_fixed.py:955-955"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.308109+00:00",
+    "id": "ghost-dc12ca87a0e8",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'run_system_wide_audit' repeats the same single statement 2 times (lines 954-954, 955-955): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/gov4_kernel.py",
+      "line_end": 215,
+      "line_start": 215,
+      "related_files": [
+        "/home/wking53214/ATS/gov4_kernel.py:220-220"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.343634+00:00",
+    "id": "ghost-d91db06c130f",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'__init__' repeats the same single statement 2 times (lines 215-215, 220-220): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/gov4_kernel.py",
+      "line_end": 472,
+      "line_start": 472,
+      "related_files": [
+        "/home/wking53214/ATS/gov4_kernel.py:473-473",
+        "/home/wking53214/ATS/gov4_kernel.py:474-474",
+        "/home/wking53214/ATS/gov4_kernel.py:475-475",
+        "/home/wking53214/ATS/gov4_kernel.py:476-476"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:43:38.346937+00:00",
+    "id": "ghost-f9b92e56357a",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'update' repeats the same single statement 5 times (lines 472-472, 473-473, 474-474, 475-475, 476-476): same shape, names/literals differ"
   }
 ]
