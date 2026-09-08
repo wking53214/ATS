@@ -171,8 +171,10 @@ class SyntheticValidationBreaker:
             for name in names
         ]
         
+        # stdev needs at least two samples; below that there is no variance
+        # to judge, so the pool is reported as acceptable with a zero metric.
+        vowel_std = statistics.stdev(vowel_ratios) if len(vowel_ratios) > 1 else 0.0
         if len(vowel_ratios) > 2:
-            vowel_std = statistics.stdev(vowel_ratios)
             if vowel_std < 0.1:  # Very low variance = homogeneity
                 return {
                     "verdict": "APPROVED_POOL_SUSPICIOUSLY_HOMOGENEOUS",
@@ -182,7 +184,7 @@ class SyntheticValidationBreaker:
                     "implication": "Approved candidates may be synthetic or hand-curated to appear diverse while being identical"
                 }
         
-        return {"verdict": "APPROVED_POOL_VARIANCE_ACCEPTABLE", "metric_value": vowel_std if vowel_ratios else 0}
+        return {"verdict": "APPROVED_POOL_VARIANCE_ACCEPTABLE", "metric_value": vowel_std}
 
 
 class AuditReportValidator:
@@ -201,6 +203,16 @@ class AuditReportValidator:
         
         # Check 1: Reported approval rate vs actual
         reported_approval = audit_report.get("approval_rate", 0)
+        if not actual_decisions:
+            # Nothing observed: no rate can be computed, so no contradiction
+            # can be asserted. Say so rather than dividing by zero.
+            return [{
+                "type": "NO_DECISIONS_TO_COMPARE",
+                "reported": reported_approval,
+                "actual": None,
+                "severity": "INFO",
+                "implication": "Audit report could not be checked against observed decisions"
+            }]
         actual_approval = sum(1 for d in actual_decisions if d["decision"] == "APPROVED") / len(actual_decisions)
         
         if abs(reported_approval - actual_approval) > 0.02:  # More than 2% discrepancy
