@@ -1046,5 +1046,78 @@
     "severity": "major",
     "status": "suppressed",
     "summary": "'update' repeats the same single statement 5 times (lines 472-472, 473-473, 474-474, 475-475, 476-476): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 283,
+      "line_start": 283,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:292-292",
+        "/home/wking53214/ATS/ats_counter_system.py:301-301"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:47:02.448304+00:00",
+    "id": "ghost-4a5481b25033",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'propose_system_safeguards' repeats the same single statement 3 times (lines 283-283, 292-292, 301-301): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/ats_counter_system.py",
+      "line_end": 310,
+      "line_start": 310,
+      "related_files": [
+        "/home/wking53214/ATS/ats_counter_system.py:318-318",
+        "/home/wking53214/ATS/ats_counter_system.py:284-284",
+        "/home/wking53214/ATS/ats_counter_system.py:293-293",
+        "/home/wking53214/ATS/ats_counter_system.py:302-302"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:47:02.448387+00:00",
+    "id": "ghost-7bfc3029cff0",
+    "layer": "mechanical",
+    "severity": "major",
+    "status": "suppressed",
+    "summary": "'propose_system_safeguards' repeats the same single statement 5 times (lines 310-310, 318-318, 284-284, 293-293, 302-302): same shape, names/literals differ"
+  },
+  {
+    "category": "duplication",
+    "confidence": null,
+    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
+    "detector": "intra_function_duplicate_block",
+    "disposition": null,
+    "disposition_note": "",
+    "evidence": {
+      "file": "/home/wking53214/ATS/test_ats_counter_system.py",
+      "line_end": 83,
+      "line_start": 83,
+      "related_files": [
+        "/home/wking53214/ATS/test_ats_counter_system.py:85-85"
+      ],
+      "snippet": null
+    },
+    "first_seen": "2026-09-08T03:47:02.543123+00:00",
+    "id": "ghost-857e0aab8590",
+    "layer": "mechanical",
+    "severity": "minor",
+    "status": "suppressed",
+    "summary": "'test_gap_at_threshold_is_not_flagged' repeats the same single statement 2 times (lines 83-83, 85-85): same shape, names/literals differ"
   }
 ]
