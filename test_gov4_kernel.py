@@ -14,6 +14,8 @@ from having done it.
 import pytest
 
 from gov4_kernel import (
+    ESCALATION_THRESHOLD,
+    VERDICT_SEVERITY,
     EventStore,
     GovernanceAuditor,
     GovernanceCoreReducer,
@@ -21,7 +23,10 @@ from gov4_kernel import (
     NormalizedEvent,
     Provenance,
     UnknownEventType,
+    Verdict,
     critical_requires_escalation,
+    parse_verdict,
+    verdict_severity,
 )
 
 PROV = Provenance(actor_id="recruiter-7", policy_id="P-1", justification="screening")
@@ -185,3 +190,66 @@ def test_streams_are_independent():
 
     assert store.verify_chain("cand-1")[0] is False
     assert store.verify_chain("cand-2")[0] is True
+
+
+# ---------------------------------------------------------------------------
+# 3. A verdict more severe than ISOLATE must not be treated as less
+#
+# The same silence as section 1, one branch further down. The reducer asked
+# "is this decision severe?" by writing `== "ISOLATE"`, which is correct only
+# while ISOLATE is the most severe verdict that exists. HALT has been declared
+# above it since the enum was written, and nothing produced one -- so nothing
+# noticed that a HALT set no CRITICAL status, required no escalation, and
+# passed the audit as a governed, clean transition.
+# ---------------------------------------------------------------------------
+
+def test_every_verdict_is_ranked():
+    """The table going stale is the bug coming back: an unranked member
+    would fall through to a default and mis-order silently."""
+    assert set(VERDICT_SEVERITY) == set(Verdict)
+
+
+def test_halt_outranks_isolate():
+    assert verdict_severity(Verdict.HALT) > verdict_severity(Verdict.ISOLATE)
+    assert verdict_severity(Verdict.ISOLATE) > verdict_severity(Verdict.THROTTLE)
+    assert verdict_severity(Verdict.THROTTLE) > verdict_severity(Verdict.ALLOW)
+
+
+def test_halt_reaches_critical_status():
+    """The defect itself. Before ranking, this state was {} -- no status."""
+    after = GovernanceCoreReducer().apply(
+        {}, event("hiring_decision", {"verdict": "HALT"}))
+    assert after["system_status"] == "CRITICAL"
+
+
+def test_halt_without_escalation_is_refused(auditor):
+    """The consequence that mattered: the strongest stop this vocabulary has
+    produced a transition the auditor called clean, with nobody notified."""
+    ok, errors = auditor.verify_transition(
+        {}, event("hiring_decision", {"verdict": "HALT"}))
+    assert ok is False
+    assert any("CRITICAL status without escalation log" in e for e in errors)
+
+
+def test_allow_and_throttle_do_not_escalate():
+    """The other half of the claim: ranking did not make everything severe."""
+    reducer = GovernanceCoreReducer()
+    for name in ("ALLOW", "THROTTLE"):
+        after = reducer.apply({}, event("hiring_decision", {"verdict": name}))
+        assert after.get("system_status") is None, name
+
+
+def test_an_unreadable_verdict_fails_closed():
+    """A name this kernel cannot read is escalated, not waved through. The
+    direction is the whole point: a corrupted, forged or simply newer record
+    must not be the quietest path to ALLOW."""
+    reducer = GovernanceCoreReducer()
+    for delta in ({"verdict": "DEFINITELY_FINE"}, {"verdict": None}, {}):
+        after = reducer.apply({}, event("hiring_decision", delta))
+        assert after["system_status"] == "CRITICAL", delta
+
+
+def test_parse_verdict_reads_names_and_fails_closed():
+    assert parse_verdict("THROTTLE") is Verdict.THROTTLE
+    assert verdict_severity(parse_verdict("not_a_verdict")) >= ESCALATION_THRESHOLD
+    assert verdict_severity(parse_verdict(None)) >= ESCALATION_THRESHOLD

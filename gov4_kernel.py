@@ -71,6 +71,18 @@ class Regime(Enum):
 
 
 class Verdict(Enum):
+    """What a policy decided, ranked by VERDICT_SEVERITY below.
+
+    HALT is produced by no policy in this repository. It arrives by being
+    read back out of a stored record -- see parse_verdict -- which is not
+    the same as being unreachable, and is worse: it enters from data into
+    code that never intends it. Every comparison against a verdict is
+    therefore made by rank rather than by name, so a member nothing here
+    emits is still ordered correctly when one shows up. Do not delete it
+    on the grounds that nothing assigns it; that would turn reading an
+    existing record into a KeyError.
+    """
+
     ALLOW = auto()
     THROTTLE = auto()
     ISOLATE = auto()
@@ -85,6 +97,72 @@ REGIME_SEVERITY = {
     Regime.ANOMALOUS: 5,
     Regime.PANIC: 6,
 }
+
+#: Verdict severity, ascending. Regimes have had an ordering since the
+#: beginning; verdicts did not, so every place that needed one wrote
+#: `== Verdict.ISOLATE` and silently meant "severe". That is correct only
+#: while ISOLATE is the most severe verdict that exists, and HALT has been
+#: declared above it the whole time. Each of those comparisons answered
+#: "is this severe?" with "no" for the single most severe verdict in the
+#: vocabulary.
+VERDICT_SEVERITY = {
+    Verdict.ALLOW: 1,
+    Verdict.THROTTLE: 2,
+    Verdict.ISOLATE: 3,
+    Verdict.HALT: 4,
+}
+
+#: Adding a Verdict member without ranking it would reintroduce exactly the
+#: bug this table exists to close, so the omission is refused at import
+#: rather than discovered when the new verdict fails to escalate.
+_UNRANKED = set(Verdict) - set(VERDICT_SEVERITY)
+if _UNRANKED:
+    raise RuntimeError(
+        f"VERDICT_SEVERITY does not rank {sorted(v.name for v in _UNRANKED)}; "
+        f"rank every Verdict member or severity comparisons silently mis-order"
+    )
+
+#: The severity at or above which a decision is a governance event rather
+#: than a routing hint: it sets CRITICAL status and therefore requires an
+#: escalation log.
+ESCALATION_THRESHOLD = VERDICT_SEVERITY[Verdict.ISOLATE]
+
+#: What an unreadable verdict is worth. See verdict_severity.
+_MAX_VERDICT_SEVERITY = max(VERDICT_SEVERITY.values())
+
+
+def verdict_severity(verdict: "Verdict | str | None") -> int:
+    """Rank a verdict given as a member or as a stored name.
+
+    FAILS CLOSED, DELIBERATELY. A name this kernel does not recognise, and
+    a decision that recorded no verdict at all, both rank at maximum
+    severity rather than minimum. The alternative -- treating what we
+    cannot read as ALLOW -- means a corrupted, forged or simply newer
+    record is waved through, and it is waved through most quietly exactly
+    when something is wrong with it.
+
+    An unreadable verdict is therefore escalated to a human, which is the
+    same answer this kernel gives everywhere else it cannot assess
+    something. The caller is expected to say so in the record: see the
+    bridge's `unrecognised_verdict` flag reason.
+    """
+    if isinstance(verdict, Verdict):
+        return VERDICT_SEVERITY[verdict]
+    if isinstance(verdict, str):
+        member = Verdict.__members__.get(verdict)
+        if member is not None:
+            return VERDICT_SEVERITY[member]
+    return _MAX_VERDICT_SEVERITY
+
+
+def parse_verdict(name: "str | None") -> Verdict:
+    """A stored verdict name as a member, failing closed on anything this
+    kernel cannot read -- see verdict_severity for why that direction."""
+    if isinstance(name, str):
+        member = Verdict.__members__.get(name)
+        if member is not None:
+            return member
+    return max(VERDICT_SEVERITY, key=VERDICT_SEVERITY.get)
 
 
 @dataclass(frozen=True)
@@ -349,7 +427,15 @@ class GovernanceCoreReducer:
             next_state["system_status"] = event.delta.get("status")
         elif event.event_type == "hiring_decision":
             next_state["last_decision"] = event.delta
-            if event.delta.get("verdict") == "ISOLATE":
+            # Ranked, not compared by name. `== "ISOLATE"` read as "is this
+            # severe?" and answered no for HALT, the one verdict above it:
+            # a HALT decision set no CRITICAL status, so
+            # critical_requires_escalation never fired, no escalation was
+            # required, and the strongest stop this vocabulary has produced
+            # a transition the auditor reported as governed and clean. The
+            # same silence the unknown-event-type check above exists to
+            # stop, one branch further down.
+            if verdict_severity(event.delta.get("verdict")) >= ESCALATION_THRESHOLD:
                 next_state["system_status"] = "CRITICAL"
         elif event.event_type == "escalation_logged":
             next_state["escalation_logged"] = True
