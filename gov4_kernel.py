@@ -82,14 +82,19 @@ class Regime(Enum):
 class Verdict(Enum):
     """What a policy decided, ranked by VERDICT_SEVERITY below.
 
-    HALT is produced by no policy in this repository. It arrives by being
-    read back out of a stored record -- see parse_verdict -- which is not
-    the same as being unreachable, and is worse: it enters from data into
-    code that never intends it. Every comparison against a verdict is
-    therefore made by rank rather than by name, so a member nothing here
-    emits is still ordered correctly when one shows up. Do not delete it
-    on the grounds that nothing assigns it; that would turn reading an
-    existing record into a KeyError.
+    HALT arrives from a stored record, read back by parse_verdict. No
+    policy in this repository produces one, which is not the same as the
+    state being unreachable and is worse: it enters from data into code
+    that never intends it. Every comparison against a verdict is therefore
+    made by rank rather than by name, so a member nothing here emits is
+    still ordered correctly when one shows up. Do not delete it on the
+    grounds that nothing assigns it; that would turn reading an existing
+    record into a KeyError.
+
+    (The first line above is checked, not believed: ghost_buster verifies
+    the claim against parse_verdict and reports it if that path is ever
+    removed. It has to name the member and say where it arrives from on
+    ONE line, because that is what the check reads.)
     """
 
     ALLOW = auto()
