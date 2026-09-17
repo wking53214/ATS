@@ -17,9 +17,52 @@ class BiasSignature:
     """Fingerprint of a systematic bias in hiring decisions."""
     bias_type: str  # "geographic", "demographic_proxy", "volatility_penalty"
     affected_candidates: List[str]
-    correlation_strength: float
+    correlation_strength: float   # phi, a real effect size
     hidden_factor: str
     evidence_confidence: float
+    #: Benjamini-Hochberg adjusted p-value for the test that produced this
+    #: signature. Defaulted so a signature built by hand still constructs.
+    p_value: float = 1.0
+
+
+#: Significance level, declared in advance rather than discovered in the
+#: data. Matches ats_governor_fixed, which runs the same test on one cohort.
+ALPHA = 0.05
+
+#: Minimum candidates required in EACH cohort before any test runs. Below
+#: this the answer is INSUFFICIENT_DATA, never NOT_SIGNIFICANT and never a
+#: finding: an absent test and a passed test must not read the same.
+MIN_COHORT_N = 30
+
+
+def _is_remote(c: Dict) -> bool:
+    return c.get("location_distance_miles", 0) > 100
+
+
+def _is_volatile(c: Dict) -> bool:
+    """More than 1.5 jobs per professional year."""
+    return len(c.get("employment_history", [])) / max(c.get("years_professional", 1), 1) > 1.5
+
+
+def _is_vowel_heavy(c: Dict) -> bool:
+    """A crude proxy for name origin. It is the proxy this module has always
+    used and changing it is a separate question from testing it properly;
+    what changed here is that a disparity on it now has to survive a
+    hypothesis test before anyone is told about it."""
+    name = c.get("name", "")
+    return sum(1 for ch in name.lower() if ch in "aeiou") / max(len(name), 1) > 0.4
+
+
+#: (bias_type, hidden_factor, predicate, cohort A label, cohort B label).
+#: A table rather than three near-identical blocks: the blocks drifted --
+#: one used a 0.3 gap threshold and the others 0.2, with no stated reason --
+#: which is what a repeated block does over time.
+COHORT_TESTS = (
+    ("geographic_penalty", "location_distance_miles", _is_remote, "remote", "local"),
+    ("volatility_penalty", "turnover_rate", _is_volatile, "volatile", "stable"),
+    ("demographic_proxy_via_name", "name_analysis", _is_vowel_heavy,
+     "vowel_heavy", "vowel_light"),
+)
 
 
 class DecisionFunctionInverter:
@@ -41,88 +84,83 @@ class DecisionFunctionInverter:
 
     def detect_correlated_rejection_patterns(self) -> List[BiasSignature]:
         """
-        Find attributes that correlate with rejection independently of stated reasons.
-        
-        Example:
-        - Candidates with location_distance > 100 are rejected at 85% rate
-        - Candidates with location_distance < 100 are rejected at 15% rate
-        - This 70 point gap is suspiciously high and suggests hidden weighting
+        Find attributes that correlate with rejection independently of stated
+        reasons, by hypothesis test rather than by eyeballing a rate gap.
+
+        WHAT THIS USED TO DO, AND WHY IT WAS DANGEROUS
+
+        Three near-identical blocks each compared two rejection rates and
+        emitted a BiasSignature when the gap cleared a hard-coded number --
+        0.3 for one cohort, 0.2 for the other two, none of them explained.
+        There was no minimum sample size: the guard was `if group_a and
+        group_b`, so ONE rejected remote candidate is a 100% rejection rate,
+        clears the 0.3 gap, and produces a "geographic_penalty" finding from
+        n=1. Confidence was then manufactured from the gap itself
+        (`min(0.95, gap * 1.5)`), so the smallest possible sample produced
+        the highest possible confidence.
+
+        In a system whose output is meant to be prosecutable, that
+        manufactures accusations of discriminatory hiring out of noise.
+
+        ats_governor_fixed.detect_correlated_rejection_patterns was migrated
+        off exactly this, to StatisticalBiasDetector, and said so in its
+        docstring ("Replaces the previous magic-number gap thresholds"). This
+        copy never was. It now runs the same way, with two differences that
+        follow from it testing three cohorts instead of one:
+
+          * Benjamini-Hochberg correction across the three tests. Three
+            simultaneous tests at alpha=0.05 give roughly a 1-in-7 chance of
+            at least one false positive uncorrected, and a bias auditor that
+            cries wolf on one cohort in seven is not usable evidence.
+            ats_statistics.test_many has existed for this and nothing called
+            it.
+          * Every result is kept on `last_test_results`, not only the
+            significant ones, so INSUFFICIENT_DATA and NOT_SIGNIFICANT are
+            visible to an audit rather than being silently indistinguishable
+            from "not tested".
+
+        A signature is emitted only for a SIGNIFICANT result and carries the
+        real p-value and effect size (phi). Below MIN_COHORT_N per cohort the
+        answer is INSUFFICIENT_DATA -- never NOT_SIGNIFICANT, and never a
+        finding.
         """
-        bias_signatures = []
-        
-        # Check for geographic bias
-        remote_candidates = [
-            (c, d) for c, d in zip(self.candidate_database, self.decision_database)
-            if c.get("location_distance_miles", 0) > 100
-        ]
-        local_candidates = [
-            (c, d) for c, d in zip(self.candidate_database, self.decision_database)
-            if c.get("location_distance_miles", 0) <= 100
-        ]
-        
-        if remote_candidates and local_candidates:
-            remote_reject_rate = sum(1 for c, d in remote_candidates if d["decision"] == "REJECTED") / len(remote_candidates)
-            local_reject_rate = sum(1 for c, d in local_candidates if d["decision"] == "REJECTED") / len(local_candidates)
-            
-            gap = abs(remote_reject_rate - local_reject_rate)
-            if gap > 0.3:  # 30+ point difference is suspicious
-                bias_signatures.append(BiasSignature(
-                    bias_type="geographic_penalty",
-                    affected_candidates=[c.get("id") for c, d in remote_candidates if d["decision"] == "REJECTED"],
-                    correlation_strength=gap,
-                    hidden_factor="location_distance_miles",
-                    evidence_confidence=min(0.95, gap * 1.5)  # Higher gap = higher confidence
-                ))
-        
-        # Check for employment history bias
-        stable_candidates = [
-            (c, d) for c, d in zip(self.candidate_database, self.decision_database)
-            if len(c.get("employment_history", [])) / max(c.get("years_professional", 1), 1) <= 1.5
-        ]
-        volatile_candidates = [
-            (c, d) for c, d in zip(self.candidate_database, self.decision_database)
-            if len(c.get("employment_history", [])) / max(c.get("years_professional", 1), 1) > 1.5
-        ]
-        
-        if stable_candidates and volatile_candidates:
-            stable_reject_rate = sum(1 for c, d in stable_candidates if d["decision"] == "REJECTED") / len(stable_candidates)
-            volatile_reject_rate = sum(1 for c, d in volatile_candidates if d["decision"] == "REJECTED") / len(volatile_candidates)
-            
-            gap = abs(volatile_reject_rate - stable_reject_rate)
-            if gap > 0.2:
-                bias_signatures.append(BiasSignature(
-                    bias_type="volatility_penalty",
-                    affected_candidates=[c.get("id") for c, d in volatile_candidates if d["decision"] == "REJECTED"],
-                    correlation_strength=gap,
-                    hidden_factor="turnover_rate",
-                    evidence_confidence=min(0.90, gap * 1.8)
-                ))
-        
-        # Check for demographic proxy bias (name-based)
-        vowel_high = [
-            (c, d) for c, d in zip(self.candidate_database, self.decision_database)
-            if sum(1 for ch in c.get("name", "").lower() if ch in 'aeiou') / max(len(c.get("name", "")), 1) > 0.4
-        ]
-        vowel_low = [
-            (c, d) for c, d in zip(self.candidate_database, self.decision_database)
-            if sum(1 for ch in c.get("name", "").lower() if ch in 'aeiou') / max(len(c.get("name", "")), 1) <= 0.4
-        ]
-        
-        if vowel_high and vowel_low:
-            vowel_high_reject = sum(1 for c, d in vowel_high if d["decision"] == "REJECTED") / len(vowel_high)
-            vowel_low_reject = sum(1 for c, d in vowel_low if d["decision"] == "REJECTED") / len(vowel_low)
-            
-            gap = abs(vowel_high_reject - vowel_low_reject)
-            if gap > 0.2:
-                bias_signatures.append(BiasSignature(
-                    bias_type="demographic_proxy_via_name",
-                    affected_candidates=[c.get("id") for c, d in vowel_high if d["decision"] == "REJECTED"],
-                    correlation_strength=gap,
-                    hidden_factor="name_analysis",
-                    evidence_confidence=min(0.85, gap * 1.5)
-                ))
-        
-        return bias_signatures
+        # Imported here, not at module scope: ats_statistics pulls in
+        # numpy/scipy/scikit-learn and this module is otherwise standard
+        # library only. Same reason the governor's copy imports it lazily.
+        from ats_statistics import StatisticalBiasDetector, Significance
+
+        detector = StatisticalBiasDetector(alpha=ALPHA, min_cohort_n=MIN_COHORT_N)
+        results = []
+        for bias_type, hidden_factor, predicate, a_label, b_label in COHORT_TESTS:
+            results.append(detector.test_cohort(
+                self.candidate_database, self.decision_database, predicate,
+                cohort_label=bias_type, cohort_a_label=a_label, cohort_b_label=b_label,
+            ))
+        # Re-evaluates significance against the adjusted p-values, in place.
+        detector.test_many(results)
+        # Exposed for the audit trail: what was tested, not just what fired.
+        self.last_test_results = results
+
+        signatures: List[BiasSignature] = []
+        for (bias_type, hidden_factor, predicate, _a, _b), result in zip(COHORT_TESTS, results):
+            if result.significance is not Significance.SIGNIFICANT:
+                continue
+            affected = [
+                (c.get("id") if "id" in c else c.get("candidate_id"))
+                for c, d in zip(self.candidate_database, self.decision_database)
+                if predicate(c) and d.get("decision") == "REJECTED"
+            ]
+            signatures.append(BiasSignature(
+                bias_type=bias_type,
+                affected_candidates=affected,
+                correlation_strength=(result.effect_size or 0.0),   # phi
+                hidden_factor=hidden_factor,
+                evidence_confidence=(result.effect_size or 0.0),
+                p_value=(result.p_value_adjusted
+                         if result.p_value_adjusted is not None
+                         else (result.p_value if result.p_value is not None else 1.0)),
+            ))
+        return signatures
 
 
 class SyntheticValidationBreaker:
