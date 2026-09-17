@@ -9,6 +9,7 @@ import json
 import os
 import hmac
 import hashlib
+from ats_oscillation_detector import OscillationDetector
 
 # =============================================================================
 # 1. CORE DATA STRUCTURES, ENUMS & LOGIFIERS
@@ -41,13 +42,18 @@ class AuditEvent:
 
 
 class CryptoAuditTrail:
-    """Cryptographically secured audit trail with hash chain and HMAC signatures."""
+    """Cryptographically secured audit trail with hash chain and HMAC signatures.
+
+    Includes non-authoritative oscillation detection to identify repeated events.
+    Oscillation is a diagnostic signal only; it does not modify decisions or policy.
+    """
     def __init__(self, signing_key: Optional[str] = None, log_file: str = "audit.log"):
         self.events: List[Dict[str, Any]] = []
         self.signing_key = signing_key or os.environ.get("AUDIT_KEY", "default_key_change_me")
         self.log_file = log_file
         self.current_hash = hashlib.sha256(b"GENESIS").hexdigest()
         self.sequence_number = 0
+        self.oscillation_detector = OscillationDetector(max_history=64)
         self._ensure_log_exists()
 
     def _ensure_log_exists(self):
@@ -57,19 +63,31 @@ class CryptoAuditTrail:
 
     def log(self, event_type: str, details: str, severity: str = "INFO") -> str:
         """
-        Log event with hash chain and HMAC signature.
+        Log event with hash chain, HMAC signature, and oscillation detection.
+
+        Oscillation detection is non-authoritative: it identifies repeated
+        normalized events but does not modify governance, decisions, or policy.
+
         Returns: event hash for verification.
         """
         self.sequence_number += 1
+
+        # Check for oscillation (repeated normalized event)
+        oscillation_detected = self.oscillation_detector.observe(
+            f"{event_type}:{details}",
+            event_type=event_type
+        )
+
         event = {
             "sequence": self.sequence_number,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "event_type": event_type,
             "severity": severity,
             "details": details,
-            "previous_hash": self.current_hash
+            "previous_hash": self.current_hash,
+            "oscillation_detected": oscillation_detected
         }
-        
+
         # Create deterministic JSON for hashing
         event_json = json.dumps(event, sort_keys=True)
         event_hash = hashlib.sha256(event_json.encode()).hexdigest()
@@ -138,10 +156,23 @@ class CryptoAuditTrail:
             "total_events": len(self.events)
         }
 
+    def reset_oscillation_detector(self):
+        """
+        Reset oscillation detector history. Call this at batch boundaries
+        (e.g., start of a new hiring round or audit session) to prevent
+        cross-session contamination.
+        """
+        self.oscillation_detector.reset()
+
+    def get_oscillation_diagnostics(self) -> Dict[str, Any]:
+        """Get diagnostic information about oscillation patterns in this audit trail."""
+        return self.oscillation_detector.get_diagnostics()
+
     def print_all(self):
         """Print audit trail."""
         for e in self.events:
-            print(f"[{e['timestamp']}] {e['event_type']} (seq={e['sequence']}): {e['details']}")
+            oscillation_marker = " [OSCILLATION]" if e.get("oscillation_detected") else ""
+            print(f"[{e['timestamp']}] {e['event_type']} (seq={e['sequence']}): {e['details']}{oscillation_marker}")
 
 
 @dataclass
