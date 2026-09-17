@@ -1,0 +1,17 @@
+# Optional embedding backends for ats_embeddings.py.
+#
+# Nothing here is needed to import ats_embeddings.py or to run the test
+# suite. The default backend is lexical TF-IDF, which needs only what
+# requirements.txt installs. Each package below is imported lazily, inside
+# the _ensure() method of the single backend that uses it, so install only
+# the line for the backend you actually inject.
+#
+# These are declared in a file rather than left commented out in
+# requirements.txt because a commented-out dependency is not a declaration.
+# To a scanner reading the tree, an import of a package declared nowhere is
+# indistinguishable from an invented package name -- the shape that
+# dependency-confusion attacks rely on.
+
+sentence-transformers   # SentenceTransformerBackend
+openai                  # OpenAIEmbeddingBackend
+voyageai                # VoyageEmbeddingBackend
