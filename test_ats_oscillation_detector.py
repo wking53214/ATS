@@ -5,7 +5,6 @@ Run with: python -m pytest test_ats_oscillation_detector.py -v
 """
 
 import unittest
-import json
 from ats_oscillation_detector import OscillationDetector
 from ats_governor_fixed import CryptoAuditTrail
 
