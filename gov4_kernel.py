@@ -62,6 +62,15 @@ def public(obj: Dict[str, Any]) -> Dict[str, Any]:
 # CORE DATA MODELS & ENUMS
 # ============================================================
 class Regime(Enum):
+    """How the system is behaving, ranked by REGIME_SEVERITY below.
+
+    PANIC is the state for a payload outside the engine's declared
+    operating envelope -- see breached_ceilings. It outranks ANOMALOUS
+    because ANOMALOUS describes telemetry that is strange while still
+    inside the limits EngineCeilings declares, and this describes
+    telemetry that is not.
+    """
+
     STABLE = auto()
     SURGE = auto()
     SATURATED = auto()
@@ -98,6 +107,31 @@ REGIME_SEVERITY = {
     Regime.PANIC: 6,
 }
 
+
+
+def refuse_unranked(table_name: str, members, table, consequence: str) -> None:
+    """Refuse a severity table that does not rank every member it is for.
+
+    Both tables in this module answer "which of these is worse", and both
+    are indexed directly by code that assumes a total order. A member added
+    to the enum and forgotten here does not fail where it was forgotten: it
+    fails later, as a KeyError mid-decision or -- worse -- as a comparison
+    against a default that quietly mis-orders it. That second outcome is
+    the bug both tables were written to close, so a table that cannot
+    answer for a member says so at import rather than at the first payload
+    carrying one.
+    """
+    missing = set(members) - set(table)
+    if missing:
+        raise RuntimeError(
+            f"{table_name} does not rank "
+            f"{sorted(m.name for m in missing)}; rank every member or {consequence}"
+        )
+
+
+refuse_unranked("REGIME_SEVERITY", Regime, REGIME_SEVERITY,
+                "GovernanceChassis raises KeyError mid-step")
+
 #: Verdict severity, ascending. Regimes have had an ordering since the
 #: beginning; verdicts did not, so every place that needed one wrote
 #: `== Verdict.ISOLATE` and silently meant "severe". That is correct only
@@ -115,12 +149,8 @@ VERDICT_SEVERITY = {
 #: Adding a Verdict member without ranking it would reintroduce exactly the
 #: bug this table exists to close, so the omission is refused at import
 #: rather than discovered when the new verdict fails to escalate.
-_UNRANKED = set(Verdict) - set(VERDICT_SEVERITY)
-if _UNRANKED:
-    raise RuntimeError(
-        f"VERDICT_SEVERITY does not rank {sorted(v.name for v in _UNRANKED)}; "
-        f"rank every Verdict member or severity comparisons silently mis-order"
-    )
+refuse_unranked("VERDICT_SEVERITY", Verdict, VERDICT_SEVERITY,
+                "severity comparisons silently mis-order")
 
 #: The severity at or above which a decision is a governance event rather
 #: than a routing hint: it sets CRITICAL status and therefore requires an
@@ -575,7 +605,21 @@ def compute_entropy(payload: TrafficPayload, c: EngineCeilings) -> float:
         payload.determinism_index,
     ]
     s = sum(vals)
-    if s == 0:
+    # `s == 0` was the guard, and it was half of one. A Shannon entropy is
+    # defined over a distribution, so it needs a POSITIVE total: with a
+    # negative value in the payload the sum can go negative, every positive
+    # term then divides to a negative proportion, and math.log2 raises
+    # ValueError: math domain error.
+    #
+    # The input that triggers it is a determinism_index outside [0, 1] --
+    # exactly the malformed telemetry breached_ceilings exists to catch. So
+    # the classifier crashed on the one payload it most needed to classify,
+    # before it could reach the check. Found by the test for that check.
+    #
+    # Zero for an unreadable payload, because entropy over a non-distribution
+    # is not a number worth inventing. The regime is decided by the ceiling
+    # breach, not by this.
+    if s <= 0:
         return 0.0
     e = 0.0
     for v in vals:
@@ -599,6 +643,52 @@ def compute_lyapunov(p: TrafficPayload, stats: Dict[str, Tuple[float, float]],
     )
 
 
+def breached_ceilings(p: TrafficPayload, c: EngineCeilings) -> List[str]:
+    """Which of the engine's declared maxima this payload is outside.
+
+    WHY THIS EXISTS, AND WHY IT INVENTS NO NUMBER
+
+    EngineCeilings declares six limits and the engine enforced none of
+    them. Three were consulted only as denominators, normalising a payload
+    into a ratio for compute_entropy; MAX_LOAD_DEPTH was additionally read
+    at 85% for SATURATED. MAX_ABORT_RATE, MIN_DETERMINISM and
+    MAX_DETERMINISM were referenced nowhere at all. A class called
+    ceilings, in which half the values never acted as one.
+
+    Meanwhile Regime declared PANIC above ANOMALOUS and nothing produced
+    it -- a state the vocabulary claims and the behaviour does not have,
+    so every branch written to handle it was unreachable.
+
+    Those two facts answer each other. A payload outside a declared
+    ceiling is outside the envelope the engine says it operates in, and
+    that is what the most severe regime is for. The thresholds are the
+    ones already written in EngineCeilings; no new number is introduced
+    here, which is the point.
+
+    STRICTLY GREATER, for the maxima, and it matters. MAX_ABORT_RATE is
+    1.0 and the ATS bridge sets abort_rate to exactly 1.0 for every
+    isolated candidate. At `>=` a single candidate flagged for human
+    review would panic the whole engine, which would make the state
+    useless within a day. Being AT a limit is the limit working.
+
+    Determinism is a two-sided bound because MIN_DETERMINISM and
+    MAX_DETERMINISM declare a range, not a maximum: an index outside
+    [0, 1] is not extreme telemetry, it is telemetry that cannot be read.
+    """
+    over: List[str] = []
+    if p.latency > c.MAX_LATENCY:
+        over.append("latency")
+    if p.abort_rate > c.MAX_ABORT_RATE:
+        over.append("abort_rate")
+    if p.reentry_rate > c.MAX_REENTRY_RATE:
+        over.append("reentry_rate")
+    if p.load_depth > c.MAX_LOAD_DEPTH:
+        over.append("load_depth")
+    if not c.MIN_DETERMINISM <= p.determinism_index <= c.MAX_DETERMINISM:
+        over.append("determinism_index")
+    return over
+
+
 class RegimeClassifier:
     def __init__(self) -> None:
         self.analytics = SystemAnalytics()
@@ -609,6 +699,12 @@ class RegimeClassifier:
         e = compute_entropy(p, ceilings)
         energy = compute_lyapunov(p, stats, LyapunovConfig())
 
+        # First, because the cascade is ordered most severe first and this
+        # is the most severe thing the payload can say. Everything below
+        # describes telemetry that is strange within the declared limits;
+        # this is telemetry that is outside them.
+        if breached_ceilings(p, ceilings):
+            return Regime.PANIC, e, energy
         if p.determinism_index > 0.85 and energy > 3:
             return Regime.ANOMALOUS, e, energy
         if e > 2.0:
@@ -644,6 +740,9 @@ class GovernanceChassis:
             "previous": prev.name,
             "entropy": e,
             "energy": energy,
+            # Additive: a PANIC that does not say which limit was passed
+            # tells an operator only that something is wrong.
+            "breached": breached_ceilings(p, EngineCeilings()),
         }
 
 

@@ -11,21 +11,32 @@ silent. Something that could not do its job returned a value indistinguishable
 from having done it.
 """
 
+import dataclasses
+
 import pytest
 
 from gov4_kernel import (
     ESCALATION_THRESHOLD,
+    REGIME_SEVERITY,
     VERDICT_SEVERITY,
+    EngineCeilings,
     EventStore,
+    GovernanceChassis,
     GovernanceAuditor,
     GovernanceCoreReducer,
     Manifest,
     NormalizedEvent,
     Provenance,
+    Regime,
+    RegimeClassifier,
+    TrafficPayload,
     UnknownEventType,
     Verdict,
+    breached_ceilings,
+    compute_entropy,
     critical_requires_escalation,
     parse_verdict,
+    refuse_unranked,
     verdict_severity,
 )
 
@@ -253,3 +264,127 @@ def test_parse_verdict_reads_names_and_fails_closed():
     assert parse_verdict("THROTTLE") is Verdict.THROTTLE
     assert verdict_severity(parse_verdict("not_a_verdict")) >= ESCALATION_THRESHOLD
     assert verdict_severity(parse_verdict(None)) >= ESCALATION_THRESHOLD
+
+
+# ---------------------------------------------------------------------------
+# 4. The engine enforces the ceilings it declares
+#
+# EngineCeilings declared six limits and enforced none. Three were read only
+# as denominators; MAX_ABORT_RATE, MIN_DETERMINISM and MAX_DETERMINISM were
+# referenced nowhere at all. Regime declared PANIC above ANOMALOUS and nothing
+# produced it. A payload outside a declared ceiling is outside the envelope
+# the engine says it operates in, which is what the top regime is for.
+# ---------------------------------------------------------------------------
+
+def payload(**over):
+    base = dict(latency=1.0, abort_rate=0.0, reentry_rate=0.1,
+                load_depth=100.0, determinism_index=0.5)
+    base.update(over)
+    return TrafficPayload(**base)
+
+
+def test_every_regime_is_ranked():
+    """The chassis indexes REGIME_SEVERITY directly on every step, so an
+    unranked member is a KeyError mid-decision."""
+    assert set(REGIME_SEVERITY) == set(Regime)
+
+
+def test_an_unranked_member_is_refused_rather_than_defaulted():
+    """The guard both tables are held by. A member missing from a severity
+    table does not fail where it was forgotten -- it fails later, as a
+    KeyError mid-decision or as a comparison against a default that quietly
+    mis-orders it, which is the bug the tables exist to close."""
+    with pytest.raises(RuntimeError) as caught:
+        refuse_unranked("T", Regime, {Regime.STABLE: 1}, "something breaks")
+    assert "PANIC" in str(caught.value)
+    assert "something breaks" in str(caught.value)
+
+
+def test_a_complete_table_is_accepted():
+    """The control: the guard must not refuse a table that does rank
+    everything, or no module using it would import at all."""
+    assert refuse_unranked("T", Regime, REGIME_SEVERITY, "x") is None
+
+
+def test_panic_outranks_anomalous():
+    assert REGIME_SEVERITY[Regime.PANIC] > REGIME_SEVERITY[Regime.ANOMALOUS]
+
+
+@pytest.mark.parametrize("field,value", [
+    ("latency", 600.1),
+    ("abort_rate", 1.01),
+    ("reentry_rate", 10.1),
+    ("load_depth", 5000.1),
+    ("determinism_index", 1.1),
+    ("determinism_index", -0.1),
+])
+def test_a_payload_outside_a_declared_ceiling_panics(field, value):
+    regime, _, _ = RegimeClassifier().classify(payload(**{field: value}))
+    assert regime is Regime.PANIC
+
+
+@pytest.mark.parametrize("field,value", [
+    ("latency", 600.0),
+    ("abort_rate", 1.0),
+    ("reentry_rate", 10.0),
+    ("load_depth", 5000.0),
+    ("determinism_index", 1.0),
+    ("determinism_index", 0.0),
+])
+def test_a_payload_exactly_at_a_ceiling_does_not_panic(field, value):
+    """Being AT a limit is the limit working. This is not a nicety: the ATS
+    bridge sets abort_rate to exactly MAX_ABORT_RATE for every isolated
+    candidate, so at `>=` one candidate flagged for human review would panic
+    the whole engine and the state would be useless within a day."""
+    assert Regime.PANIC not in RegimeClassifier().classify(payload(**{field: value}))
+
+
+def test_an_ordinary_payload_does_not_panic():
+    """The control: ranking the ceilings must not have made everything severe."""
+    regime, _, _ = RegimeClassifier().classify(payload())
+    assert regime is not Regime.PANIC
+
+
+def test_the_chassis_says_which_ceiling_was_passed():
+    """A PANIC that does not name the limit tells an operator only that
+    something is wrong."""
+    status = GovernanceChassis().step(payload(load_depth=9000.0))
+    assert status["classified_as"] == "PANIC"
+    assert status["breached"] == ["load_depth"]
+
+
+def test_a_panic_is_not_downgraded_by_a_calmer_reading():
+    """The chassis holds the worst regime it has seen. A PANIC followed by an
+    ordinary payload stays PANIC until something resets it."""
+    chassis = GovernanceChassis()
+    chassis.step(payload(load_depth=9000.0))
+    assert chassis.step(payload())["regime"] == "PANIC"
+
+
+def test_every_declared_ceiling_is_enforced():
+    """The gap this closed: half of EngineCeilings was never consulted. A
+    limit nobody checks is not a limit, so a field added here and left out of
+    breached_ceilings should fail rather than sit quietly."""
+    checked = set()
+    for field, value in [("latency", 1e9), ("abort_rate", 1e9),
+                         ("reentry_rate", 1e9), ("load_depth", 1e9),
+                         ("determinism_index", 1e9)]:
+        checked.update(breached_ceilings(payload(**{field: value}), EngineCeilings()))
+    assert checked == {f.name for f in dataclasses.fields(TrafficPayload)}
+
+
+def test_entropy_survives_a_payload_it_cannot_read():
+    """Found by the ceiling tests above. A Shannon entropy needs a positive
+    total: with a negative value the sum can go negative, every positive term
+    divides to a negative proportion, and math.log2 raises. The input that
+    does it is a determinism_index outside [0, 1] -- so the classifier
+    crashed on the one payload it most needed to classify, before it could
+    reach the check written for it."""
+    assert compute_entropy(payload(determinism_index=-0.1), EngineCeilings()) == 0.0
+    regime, _, _ = RegimeClassifier().classify(payload(determinism_index=-0.1))
+    assert regime is Regime.PANIC
+
+
+def test_entropy_is_unchanged_for_a_readable_payload():
+    """The control: the guard must not have flattened the ordinary case."""
+    assert compute_entropy(payload(), EngineCeilings()) > 0
