@@ -94,7 +94,7 @@ dependency module; its behavior is exercised by
      TF-IDF (`scikit-learn`) with no backend injected; optional
      backends (sentence-transformers/OpenAI/Voyage/custom callable) are
      lazy-imported and only needed if you use them — see
-     `requirements.txt`
+     `requirements-optional.txt`
    - Run directly for a demo (`python3 ats_embeddings.py`)
 
 5. **ats_governance_kernel_bridge.py** (26KB)
@@ -264,7 +264,8 @@ Candidate 002:
 - Python 3.8+
 - `pip install -r requirements.txt` (numpy/scipy/scikit-learn — needed
   by `ats_statistics.py`/`ats_embeddings.py`; everything else here is
-  standard library)
+  standard library). `requirements-optional.txt` declares the non-default
+  embedding backends; install it only if you inject one.
 - Access to candidate data
 - Access to hiring decisions
 - Email for alerts
