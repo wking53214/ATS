@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
-from enum import Enum
 import collections
 import uuid
 import csv
@@ -12,15 +11,8 @@ import hashlib
 from ats_oscillation_detector import OscillationDetector
 
 # =============================================================================
-# 1. CORE DATA STRUCTURES, ENUMS & LOGIFIERS
+# 1. CORE DATA STRUCTURES & LOGIFIERS
 # =============================================================================
-
-class BiasLevel(Enum):
-    NONE = "NONE"
-    SUSPICIOUS = "SUSPICIOUS"
-    SIGNIFICANT = "SIGNIFICANT"
-    CRITICAL = "CRITICAL"
-
 
 @dataclass
 class BiasSignature:

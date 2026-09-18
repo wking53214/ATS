@@ -1,0 +1,1294 @@
+{
+  "schema": 1,
+  "totals": {
+    "runs": 22
+  },
+  "runs": [
+    {
+      "run_id": "2026-09-17T19:55:24+00:00:746885a2f3d5",
+      "at": "2026-09-17T19:55:24+00:00",
+      "commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "could_not_run",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "4a8820a5340243e9",
+      "counts": {
+        "found": 33,
+        "primary": 33,
+        "found_remembered": 33,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T19:56:25+00:00:746885a2f3d5",
+      "at": "2026-09-17T19:56:25+00:00",
+      "commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "9e1e0d57dfbf0831",
+      "counts": {
+        "found": 32,
+        "primary": 32,
+        "found_remembered": 32,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T19:56:41+00:00:746885a2f3d5",
+      "at": "2026-09-17T19:56:41+00:00",
+      "commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "ran",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "a85155868dbf4bb1",
+      "counts": {
+        "found": 32,
+        "primary": 32,
+        "found_remembered": 32,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:00:32+00:00:746885a2f3d5",
+      "at": "2026-09-17T20:00:32+00:00",
+      "commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "603596ee518c1744",
+      "counts": {
+        "found": 29,
+        "primary": 29,
+        "found_remembered": 29,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:01:57+00:00:1227dfa86e81",
+      "at": "2026-09-17T20:01:57+00:00",
+      "commit": "1227dfa86e8162a3edbff1bfb9a72ecb660c4b38",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "578c434e968302cb",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:03:39+00:00:dfd23713ccfa",
+      "at": "2026-09-17T20:03:39+00:00",
+      "commit": "dfd23713ccfa569bca15434b687ce9c3b5071cc4",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "ran",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "059242cacf84147d",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:04:18+00:00:dfd23713ccfa",
+      "at": "2026-09-17T20:04:18+00:00",
+      "commit": "dfd23713ccfa569bca15434b687ce9c3b5071cc4",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "ran",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "06577abc61b8e544",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 22
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:14:01+00:00:332c230e5382",
+      "at": "2026-09-17T20:14:01+00:00",
+      "commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "2d6d28eafba44d50",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:14:11+00:00:332c230e5382",
+      "at": "2026-09-17T20:14:11+00:00",
+      "commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "618a5e92b779c733",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:14:12+00:00:332c230e5382",
+      "at": "2026-09-17T20:14:12+00:00",
+      "commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "7e88b0f256f93f64",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:15:35+00:00:332c230e5382",
+      "at": "2026-09-17T20:15:35+00:00",
+      "commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "ran",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "4ef91199fc9e7814",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T20:15:47+00:00:332c230e5382",
+      "at": "2026-09-17T20:15:47+00:00",
+      "commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "tool_version": "1.7.8",
+      "checks": {
+        "structural": "ran",
+        "mutate": "ran",
+        "kernel": "not_run",
+        "boundary": "not_run",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "8dd2fc5134264a2d",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:00:33+00:00:5b1aee337c61",
+      "at": "2026-09-17T21:00:33+00:00",
+      "commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "tool_version": "1.8.0",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "9587f31e3088159d",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:00:44+00:00:5b1aee337c61",
+      "at": "2026-09-17T21:00:44+00:00",
+      "commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "tool_version": "1.8.0",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "ab46d8af93c48abe",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:00:45+00:00:5b1aee337c61",
+      "at": "2026-09-17T21:00:45+00:00",
+      "commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "tool_version": "1.8.0",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "3e19954d2c2be1c7",
+      "counts": {
+        "found": 30,
+        "primary": 30,
+        "found_remembered": 30,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:05:33+00:00:945cab274ece",
+      "at": "2026-09-17T21:05:33+00:00",
+      "commit": "945cab274ece686dd67a0d8ab1a2807e1ee42585",
+      "tool_version": "1.8.0",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "8454a9fac50f16eb",
+      "counts": {
+        "found": 26,
+        "primary": 26,
+        "found_remembered": 26,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:13:31+00:00:a0b0f2393ebb",
+      "at": "2026-09-17T21:13:31+00:00",
+      "commit": "a0b0f2393ebb152252e360fc44058143898eca9d",
+      "tool_version": "1.8.0",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "9dbafd8bd2b5ede9",
+      "counts": {
+        "found": 25,
+        "primary": 25,
+        "found_remembered": 25,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:24:13+00:00:8b540e776207",
+      "at": "2026-09-17T21:24:13+00:00",
+      "commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "tool_version": "1.8.1",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "7cf713db7b7eeaca",
+      "counts": {
+        "found": 25,
+        "primary": 25,
+        "found_remembered": 25,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:24:30+00:00:8b540e776207",
+      "at": "2026-09-17T21:24:30+00:00",
+      "commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "tool_version": "1.8.1",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "fbf57bc0a6c95ef1",
+      "counts": {
+        "found": 25,
+        "primary": 25,
+        "found_remembered": 25,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:24:50+00:00:8b540e776207",
+      "at": "2026-09-17T21:24:50+00:00",
+      "commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "tool_version": "1.8.1",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "declined",
+        "project": "ran",
+        "secrets": "declined",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "95aadfb66dd66baf",
+        "casefile": "absent"
+      },
+      "link": "312a2b11fc91e950",
+      "counts": {
+        "found": 24,
+        "primary": 24,
+        "found_remembered": 24,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:41:48+00:00:0930a0a83072",
+      "at": "2026-09-17T21:41:48+00:00",
+      "commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "tool_version": "1.8.1",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "ea4af95734fe2713",
+        "casefile": "absent"
+      },
+      "link": "06741ae5331d7238",
+      "counts": {
+        "found": 20,
+        "primary": 20,
+        "found_remembered": 20,
+        "scanned": 23
+      }
+    },
+    {
+      "run_id": "2026-09-17T21:42:43+00:00:0930a0a83072",
+      "at": "2026-09-17T21:42:43+00:00",
+      "commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "tool_version": "1.8.1",
+      "checks": {
+        "structural": "ran",
+        "mutate": "not_run",
+        "kernel": "not_run",
+        "boundary": "not_applicable",
+        "structure": "ran",
+        "branches": "ran",
+        "tests": "ran",
+        "project": "ran",
+        "secrets": "ran",
+        "correlate": "ran",
+        "ledger": "ran"
+      },
+      "records": {
+        "baseline": "ea4af95734fe2713",
+        "casefile": "cefacb19c07bb710"
+      },
+      "link": "49307756b86ff136",
+      "counts": {
+        "found": 20,
+        "primary": 20,
+        "found_remembered": 20,
+        "scanned": 23
+      }
+    }
+  ],
+  "findings": {
+    "ghost-0429af1d5b97": {
+      "detector": "structure",
+      "file": "user/ATS",
+      "summary": "unresolvable dependency: 'voyageai' is imported but is not standard library, not installed here, not provided by this repository, and declared nowhere",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T19:56:41+00:00",
+      "last_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "runs_seen": 3,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-0d1a245e5791": {
+      "detector": "name_disagreement",
+      "file": "ats_governor_fixed.py",
+      "summary": "`job` and `j` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-0eaf52b8ed9e": {
+      "detector": "structure",
+      "file": "user/ATS",
+      "summary": "unresolvable dependency: 'sklearn' is imported but is not standard library, not installed here, not provided by this repository, and declared nowhere",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T19:55:24+00:00",
+      "last_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "runs_seen": 1,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-20de3ee66659": {
+      "detector": "dead_code",
+      "file": "ats_embeddings.py",
+      "summary": "'OpenAIEmbeddingBackend' is defined but never referenced anywhere in the scanned set",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-265f51829d0c": {
+      "detector": "unreachable_declared_state",
+      "file": "ats_governor_fixed.py",
+      "summary": "'BiasLevel.NONE' is declared and no code ever puts anything into it, though 1 other member(s) of BiasLevel are produced",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:00:45+00:00",
+      "last_commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "runs_seen": 15,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-27a592c6c268": {
+      "detector": "name_disagreement",
+      "file": "ats_governor_fixed.py",
+      "summary": "`stage` and `s` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-2873e5e1821d": {
+      "detector": "unreachable_declared_state",
+      "file": "gov4_kernel.py",
+      "summary": "'Verdict.HALT' is declared and only test code puts anything into it, though 3 other member(s) of Verdict are produced",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T20:14:01+00:00",
+      "first_commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "last_seen": "2026-09-17T21:13:31+00:00",
+      "last_commit": "a0b0f2393ebb152252e360fc44058143898eca9d",
+      "runs_seen": 10,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-2cf4779bd556": {
+      "detector": "structure",
+      "file": "user/ATS",
+      "summary": "unresolvable dependency: 'sentence-transformers' is imported but is not standard library, not installed here, not provided by this repository, and declared nowhere",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T19:56:41+00:00",
+      "last_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "runs_seen": 3,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-2feaf029911b": {
+      "detector": "name_disagreement",
+      "file": "ats_embeddings.py",
+      "summary": "`texts` and `all_texts` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-33bbf21878e9": {
+      "detector": "intra_function_duplicate_block",
+      "file": "ats_counter_system.py",
+      "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 68-68, 92-92, 116-116): same shape, names/literals differ",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:24:50+00:00",
+      "last_commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "runs_seen": 20,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-3f428a26a5c4": {
+      "detector": "name_disagreement",
+      "file": "ats_gsa_core.py",
+      "summary": "`packet` and `ghost_packet` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-421548f8dac8": {
+      "detector": "long_function",
+      "file": "ats_counter_system.py",
+      "summary": "'detect_correlated_rejection_patterns' spans 83 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:24:50+00:00",
+      "last_commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "runs_seen": 20,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-50819b541fb5": {
+      "detector": "intra_function_duplicate_block",
+      "file": "ats_counter_system.py",
+      "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 69-69, 93-93, 117-117): same shape, names/literals differ",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:24:50+00:00",
+      "last_commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "runs_seen": 20,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-57fd92469a00": {
+      "detector": "long_function",
+      "file": "ats_governance_kernel_bridge.py",
+      "summary": "'evaluate_candidate' spans 91 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T21:00:33+00:00",
+      "first_commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 10,
+      "consecutive": 10,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-5aa19a93e8ea": {
+      "detector": "unmerged_branch",
+      "file": ".git/refs/remotes/origin/claude/ghost-tools-ats-9tzf7i",
+      "summary": "branch 'origin/claude/ghost-tools-ats-9tzf7i' has commits not reflected in 'origin/main'",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T21:41:48+00:00",
+      "first_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 2,
+      "consecutive": 2,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-62f008898c66": {
+      "detector": "structure",
+      "file": "user/ATS",
+      "summary": "unresolvable dependency: 'openai' is imported but is not standard library, not installed here, not provided by this repository, and declared nowhere",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T19:56:41+00:00",
+      "last_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "runs_seen": 3,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-6b32dd704ebd": {
+      "detector": "long_function",
+      "file": "ats_governor_fixed.py",
+      "summary": "'apply_to_job' spans 90 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-6e2da9904077": {
+      "detector": "unmerged_branch",
+      "file": ".git/refs/heads/claude/ghost-tools-ats-9tzf7i",
+      "summary": "branch 'claude/ghost-tools-ats-9tzf7i' has commits not reflected in 'origin/main'",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T20:01:57+00:00",
+      "first_commit": "1227dfa86e8162a3edbff1bfb9a72ecb660c4b38",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 18,
+      "consecutive": 18,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-79be1f5af101": {
+      "detector": "name_disagreement",
+      "file": "ats_governor_fixed.py",
+      "summary": "`fraud` and `contradictions` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-7ed1c14f0d6c": {
+      "detector": "long_function",
+      "file": "ats_governance_kernel_bridge.py",
+      "summary": "'evaluate_candidate' spans 92 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T20:15:35+00:00",
+      "first_commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "last_seen": "2026-09-17T20:15:47+00:00",
+      "last_commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "runs_seen": 2,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-83135f5fb072": {
+      "detector": "loop_invariant_call",
+      "file": "ats_embeddings.py",
+      "summary": "ats_embeddings.py:295 `zip(...)` with arguments the loop never changes inside a loop",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-83f61593fd87": {
+      "detector": "dead_code",
+      "file": "gov4_kernel.py",
+      "summary": "'verify' is defined but never referenced anywhere in the scanned set",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-8a4c3c4c364f": {
+      "detector": "name_disagreement",
+      "file": "ats_embeddings.py",
+      "summary": "`a` and `rv` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-90712adf995b": {
+      "detector": "intra_function_duplicate_block",
+      "file": "ats_counter_system.py",
+      "summary": "'detect_correlated_rejection_patterns' repeats the same 4-statement block 3 times (lines 64-68, 88-92, 112-116): same shape, names/literals differ",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:24:50+00:00",
+      "last_commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "runs_seen": 20,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-91a6595eaf2d": {
+      "detector": "dead_code",
+      "file": "ats_embeddings.py",
+      "summary": "'SentenceTransformerBackend' is defined but never referenced anywhere in the scanned set",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-93a97eba5c51": {
+      "detector": "unreachable_declared_state",
+      "file": "gov4_kernel.py",
+      "summary": "'Verdict.HALT' is produced only by reading stored data, and nothing says so",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:24:30+00:00",
+      "last_commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "runs_seen": 9,
+      "consecutive": 0,
+      "returns": 1,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-a537945b9573": {
+      "detector": "name_disagreement",
+      "file": "ats_governor_fixed.py",
+      "summary": "`harm` and `recommendations` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-abd6dd4738ea": {
+      "detector": "dead_code",
+      "file": "ats_governor_fixed.py",
+      "summary": "'BiasLevel' is defined but never referenced anywhere in the scanned set",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:00:45+00:00",
+      "last_commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "runs_seen": 15,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-b3af4d069768": {
+      "detector": "intra_function_duplicate_block",
+      "file": "ats_counter_system.py",
+      "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 6 times (lines 64-64, 65-65, 88-88, 89-89, 112-112, 113-113): same shape, names/literals differ",
+      "renamed_from": "",
+      "severity": "major",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:24:50+00:00",
+      "last_commit": "8b540e77620777b1e4e142912c7f96260b89a7ea",
+      "runs_seen": 20,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-b4a3ad4c6fe6": {
+      "detector": "long_function",
+      "file": "ats_governance_kernel_bridge.py",
+      "summary": "'evaluate_candidate' spans 89 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T20:04:18+00:00",
+      "last_commit": "dfd23713ccfa569bca15434b687ce9c3b5071cc4",
+      "runs_seen": 7,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-b9a28db77e60": {
+      "detector": "long_function",
+      "file": "ats_governance_kernel_bridge.py",
+      "summary": "'evaluate_candidate' spans 102 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T20:14:01+00:00",
+      "first_commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "last_seen": "2026-09-17T20:14:12+00:00",
+      "last_commit": "332c230e538291dd183b69283a11bdd8f0bf5d4e",
+      "runs_seen": 3,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-ba0912113dfa": {
+      "detector": "unreachable_declared_state",
+      "file": "ats_governor_fixed.py",
+      "summary": "'BiasLevel.CRITICAL' is declared and no code ever puts anything into it, though 1 other member(s) of BiasLevel are produced",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:00:45+00:00",
+      "last_commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "runs_seen": 15,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-bb3eb399b6fa": {
+      "detector": "placeholder_name",
+      "file": "ats_governor_fixed.py",
+      "summary": "ats_governor_fixed.py holds 1 placeholder or versioned name(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-ca3d4a4e13db": {
+      "detector": "unreachable_declared_state",
+      "file": "gov4_kernel.py",
+      "summary": "'Regime.PANIC' is declared and no code ever puts anything into it, though 5 other member(s) of Regime are produced",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:05:33+00:00",
+      "last_commit": "945cab274ece686dd67a0d8ab1a2807e1ee42585",
+      "runs_seen": 16,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-d8d5bd3aad4a": {
+      "detector": "loop_invariant_call",
+      "file": "ats_statistics.py",
+      "summary": "ats_statistics.py:169 `range(...)` with arguments the loop never changes inside a loop",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-e39235c0b02e": {
+      "detector": "long_function",
+      "file": "ats_statistics.py",
+      "summary": "'test_cohort' spans 85 lines (threshold 80)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-f2b807dd2ba5": {
+      "detector": "unreachable_declared_state",
+      "file": "ats_governor_fixed.py",
+      "summary": "'BiasLevel.SUSPICIOUS' is declared and no code ever puts anything into it, though 1 other member(s) of BiasLevel are produced",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:00:45+00:00",
+      "last_commit": "5b1aee337c61685b560d178cae9dfb3e0a235742",
+      "runs_seen": 15,
+      "consecutive": 0,
+      "returns": 0,
+      "absent_last_run": true,
+      "dispositions": []
+    },
+    "ghost-fcd859d6ea88": {
+      "detector": "dead_code",
+      "file": "ats_embeddings.py",
+      "summary": "'VoyageEmbeddingBackend' is defined but never referenced anywhere in the scanned set",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    },
+    "ghost-fd1bfcf90c49": {
+      "detector": "name_disagreement",
+      "file": "ats_embeddings.py",
+      "summary": "`b` and `cv` are one value under two names, across 1 file(s)",
+      "renamed_from": "",
+      "severity": "minor",
+      "first_seen": "2026-09-17T19:55:24+00:00",
+      "first_commit": "746885a2f3d5ec64a409cd5780474dca3063264c",
+      "last_seen": "2026-09-17T21:42:43+00:00",
+      "last_commit": "0930a0a830722efb3f5f1b8610bdc032f744c6c1",
+      "runs_seen": 22,
+      "consecutive": 22,
+      "returns": 0,
+      "absent_last_run": false,
+      "dispositions": []
+    }
+  }
+}
