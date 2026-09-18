@@ -13,8 +13,11 @@ This module does four things:
 2. FORENSIC POLICIES
    Wires ATS scoring signals (keyword density, semantic similarity, decision
    outcome) into the kernel's Policy VM. Each policy has a predicate (what
-   triggers it) and an action (what happens). Policies produce Verdicts:
-   ALLOW, THROTTLE, ISOLATE, HALT.
+   triggers it) and an action (what happens). The policies here produce
+   ALLOW, THROTTLE and ISOLATE. HALT is part of the kernel's verdict
+   vocabulary and ranks above ISOLATE, so a HALT arriving from a stored
+   record or from a policy added later escalates and stops; no policy in
+   this module emits one today, and this line used to claim otherwise.
 
 3. MANIFEST INVARIANTS
    Structural rules that must hold across every state transition. If a resume
@@ -57,7 +60,11 @@ from gov4_kernel import (
     TrafficPayload,
     Verdict,
     WAL,
+    ESCALATION_THRESHOLD,
+    VERDICT_SEVERITY,
     critical_requires_escalation,
+    parse_verdict,
+    verdict_severity,
 )
 
 
@@ -195,7 +202,10 @@ def _make_low_confidence_policy() -> Policy:
 
     def action(state: Dict[str, Any]) -> Dict[str, Any]:
         out = dict(state)
-        if out.get("verdict") != Verdict.ISOLATE.name:  # don't downgrade ISOLATE
+        # Ranked, so nothing more severe is downgraded -- not just ISOLATE.
+        # Compared against the name alone, a HALT already in state was not
+        # ISOLATE, so this branch overwrote it with THROTTLE.
+        if verdict_severity(out.get("verdict")) < VERDICT_SEVERITY[Verdict.THROTTLE]:
             out["verdict"] = Verdict.THROTTLE.name
             out["flag_reason"] = "low_confidence_near_boundary"
         return out
@@ -251,12 +261,32 @@ def _make_geographic_anomaly_policy() -> Policy:
 
     def action(state: Dict[str, Any]) -> Dict[str, Any]:
         out = dict(state)
-        if out.get("verdict") != Verdict.ISOLATE.name:
+        if verdict_severity(out.get("verdict")) < VERDICT_SEVERITY[Verdict.THROTTLE]:
             out["verdict"] = Verdict.THROTTLE.name
             out["flag_reason"] = "geographic_anomaly_perfect_score"
         return out
 
     return Policy("geographic_anomaly_detector", predicate, action)
+
+
+def resolve_verdict(vm_result: Dict[str, Any]) -> Tuple[Verdict, str]:
+    """The policy VM's verdict as a member, with the reason to record.
+
+    `Verdict[name]` raised KeyError on any name outside the enum, and it
+    raised it at the point of lookup -- before the ledger commit, so the
+    decision left no record at all. In a tamper-evident ledger the worst
+    outcome is not a bad entry, it is no entry: the evaluation that went
+    wrong is the one that vanishes.
+
+    So an unreadable verdict is ranked at maximum severity instead (see
+    gov4_kernel.verdict_severity), which routes it through the ordinary
+    escalation path, and the reason says what could not be read rather
+    than letting it pass as an ordinary decision.
+    """
+    raw = vm_result.get("verdict", Verdict.ALLOW.name)
+    if raw not in Verdict.__members__:
+        return parse_verdict(raw), f"unrecognised_verdict:{raw}"
+    return parse_verdict(raw), vm_result.get("flag_reason", "none")
 
 
 def build_forensic_policy_vm() -> PolicyVM:
@@ -277,20 +307,30 @@ def isolate_requires_escalation(
     before, event: NormalizedEvent, after
 ) -> Tuple[bool, str]:
     """
-    If a resume verdict is ISOLATE, escalation_logged MUST be True.
-    If it isn't, the manifest is breached. This catches the case where
+    If a resume verdict is ISOLATE OR MORE SEVERE, escalation_logged MUST be
+    True. If it isn't, the manifest is breached. This catches the case where
     the system flags a candidate for isolation but no human is notified.
+
+    It did not catch the strictly worse case. Against `== "ISOLATE"` a HALT
+    decision with nobody notified was not a breach, so the invariant written
+    to guarantee a human sees the severe decisions passed clean on the most
+    severe one this vocabulary has. Ranked, so severity is the question
+    being asked rather than a single name standing in for it.
     """
     verdict = None
     if event.event_type == "hiring_decision":
         verdict = event.delta.get("verdict")
     elif after.get("last_decision"):
         verdict = after["last_decision"].get("verdict")
+    else:
+        return True, "OK"   # no decision in view; nothing to rank
 
-    if verdict == "ISOLATE" and not after.get("escalation_logged", False):
+    if (verdict_severity(verdict) >= ESCALATION_THRESHOLD
+            and not after.get("escalation_logged", False)):
         return False, (
-            f"Manifest breach: candidate {event.entity_id} flagged ISOLATE "
-            f"but escalation not logged. Decision is not litigation-ready."
+            f"Manifest breach: candidate {event.entity_id} flagged "
+            f"{parse_verdict(verdict).name} but escalation not logged. "
+            f"Decision is not litigation-ready."
         )
     return True, "OK"
 
@@ -373,8 +413,7 @@ class ATSGovernorKernel:
 
         # 2. Run forensic policies
         vm_result, triggered_policies = self.policy_vm.step(vm_state)
-        verdict = Verdict[vm_result.get("verdict", "ALLOW")]
-        flag_reason = vm_result.get("flag_reason", "none")
+        verdict, flag_reason = resolve_verdict(vm_result)
 
         # 3. Commit to ledger
         event, block_hash = self.adapter.commit(self.store, signals, verdict)
@@ -413,7 +452,10 @@ class ATSGovernorKernel:
         # itself is behaving anomalously (burst of ISOLATE verdicts, etc.)
         tp = TrafficPayload(
             latency=signals.keyword_score,           # repurposed: score as "processing load"
-            abort_rate=1.0 if verdict == Verdict.ISOLATE else 0.0,
+            # Ranked: against `== ISOLATE`, a HALT scored 0.0 -- the value
+            # ALLOW scores -- so the classifier read the calmest possible
+            # pipeline at the moment the strongest stop was issued.
+            abort_rate=1.0 if verdict_severity(verdict) >= ESCALATION_THRESHOLD else 0.0,
             reentry_rate=signals.keyword_density,     # density as "reentry signal"
             load_depth=signals.resume_word_count,
             determinism_index=signals.semantic_similarity,

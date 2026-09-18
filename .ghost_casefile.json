@@ -1,0 +1,184 @@
+{
+  "cases": [
+    {
+      "detector": "dead_code",
+      "shape": "dead_code",
+      "outcome": "false",
+      "note": "Injection API. The three EmbeddingScorer backends exist to be constructed by a caller and passed in; nothing here referencing them is the design, not rot. Declared in requirements-optional.txt.",
+      "when": "2026-09-17T21:42:33.023093+00:00",
+      "finding_id": "ghost-91a6595eaf2d",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "dead_code",
+      "shape": "dead_code",
+      "outcome": "false",
+      "note": "Injection API, as above: a backend the caller constructs and injects.",
+      "when": "2026-09-17T21:42:33.023106+00:00",
+      "finding_id": "ghost-20de3ee66659",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "dead_code",
+      "shape": "dead_code",
+      "outcome": "false",
+      "note": "Injection API, as above: a backend the caller constructs and injects.",
+      "when": "2026-09-17T21:42:33.023112+00:00",
+      "finding_id": "ghost-fcd859d6ea88",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "dead_code",
+      "shape": "dead_code",
+      "outcome": "false",
+      "note": "Public surface of the audit trail. Callers verify a chain they hold; no internal caller is expected.",
+      "when": "2026-09-17T21:42:33.023117+00:00",
+      "finding_id": "ghost-83f61593fd87",
+      "file": "gov4_kernel.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "long_function",
+      "shape": "long_function",
+      "outcome": "false",
+      "note": "90 lines of flat sequence, not deep branching. Splitting it would spread one pipeline across several names without reducing what a reader must hold.",
+      "when": "2026-09-17T21:42:33.023121+00:00",
+      "finding_id": "ghost-57fd92469a00",
+      "file": "ats_governance_kernel_bridge.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "long_function",
+      "shape": "long_function",
+      "outcome": "false",
+      "note": "Deferred deliberately. evaluate_candidate is the bridge pipeline end to end and a split is a real refactor with no defect driving it; re-open if it grows again.",
+      "when": "2026-09-17T21:42:33.023126+00:00",
+      "finding_id": "ghost-6b32dd704ebd",
+      "file": "ats_governor_fixed.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "long_function",
+      "shape": "long_function",
+      "outcome": "false",
+      "note": "The hypothesis test itself: contingency build, power guard, test selection, effect size, result assembly. Each step is named in sequence and the length is the procedure.",
+      "when": "2026-09-17T21:42:33.023130+00:00",
+      "finding_id": "ghost-e39235c0b02e",
+      "file": "ats_statistics.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "placeholder_name",
+      "shape": "placeholder_name",
+      "outcome": "false",
+      "note": "event_copy is a defensive copy, not a version marker. The name says what it is.",
+      "when": "2026-09-17T21:42:33.023140+00:00",
+      "finding_id": "ghost-bb3eb399b6fa",
+      "file": "ats_governor_fixed.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023146+00:00",
+      "finding_id": "ghost-8a4c3c4c364f",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023151+00:00",
+      "finding_id": "ghost-fd1bfcf90c49",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023155+00:00",
+      "finding_id": "ghost-79be1f5af101",
+      "file": "ats_governor_fixed.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023159+00:00",
+      "finding_id": "ghost-a537945b9573",
+      "file": "ats_governor_fixed.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023163+00:00",
+      "finding_id": "ghost-0d1a245e5791",
+      "file": "ats_governor_fixed.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023167+00:00",
+      "finding_id": "ghost-3f428a26a5c4",
+      "file": "ats_gsa_core.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023171+00:00",
+      "finding_id": "ghost-27a592c6c268",
+      "file": "ats_governor_fixed.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "name_disagreement",
+      "shape": "name_disagreement",
+      "outcome": "false",
+      "note": "Cosmetic naming. Real, and which of the two names should win is a judgement nobody has made; deferred as a batch rather than decided one at a time under no deadline.",
+      "when": "2026-09-17T21:42:33.023175+00:00",
+      "finding_id": "ghost-2feaf029911b",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "loop_invariant_call",
+      "shape": "loop_invariant_call|kind=loop_invariant_call",
+      "outcome": "false",
+      "note": "Cosmetic. Hoisting is a judgement the tree cannot make and no measurement says this costs anything.",
+      "when": "2026-09-17T21:42:33.023180+00:00",
+      "finding_id": "ghost-83135f5fb072",
+      "file": "ats_embeddings.py",
+      "decision": "suppress"
+    },
+    {
+      "detector": "loop_invariant_call",
+      "shape": "loop_invariant_call|kind=loop_invariant_call",
+      "outcome": "false",
+      "note": "Cosmetic, as above.",
+      "when": "2026-09-17T21:42:33.023184+00:00",
+      "finding_id": "ghost-d8d5bd3aad4a",
+      "file": "ats_statistics.py",
+      "decision": "suppress"
+    }
+  ]
+}

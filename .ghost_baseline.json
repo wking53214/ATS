@@ -1,5 +1,6 @@
 [
   {
+    "attributes": {},
     "category": "dead_code",
     "confidence": null,
     "detail": "No ast.Name, ast.Attribute, or string-subscript-key node anywhere in the scanned files resolves to this identifier. Scope limit: getattr-by-string and decorator-based registration are still not traced, so this can false-positive on names only reached that way -- confirm before deleting.",
@@ -7,13 +8,14 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_embeddings.py",
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
       "line_end": null,
       "line_start": null,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.024923+00:00",
+    "first_seen": "2026-09-17T21:41:20.727403+00:00",
     "id": "ghost-91a6595eaf2d",
     "layer": "mechanical",
     "severity": "minor",
@@ -21,6 +23,7 @@
     "summary": "'SentenceTransformerBackend' is defined but never referenced anywhere in the scanned set"
   },
   {
+    "attributes": {},
     "category": "dead_code",
     "confidence": null,
     "detail": "No ast.Name, ast.Attribute, or string-subscript-key node anywhere in the scanned files resolves to this identifier. Scope limit: getattr-by-string and decorator-based registration are still not traced, so this can false-positive on names only reached that way -- confirm before deleting.",
@@ -28,13 +31,14 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_embeddings.py",
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
       "line_end": null,
       "line_start": null,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.025021+00:00",
+    "first_seen": "2026-09-17T21:41:20.727637+00:00",
     "id": "ghost-20de3ee66659",
     "layer": "mechanical",
     "severity": "minor",
@@ -42,6 +46,7 @@
     "summary": "'OpenAIEmbeddingBackend' is defined but never referenced anywhere in the scanned set"
   },
   {
+    "attributes": {},
     "category": "dead_code",
     "confidence": null,
     "detail": "No ast.Name, ast.Attribute, or string-subscript-key node anywhere in the scanned files resolves to this identifier. Scope limit: getattr-by-string and decorator-based registration are still not traced, so this can false-positive on names only reached that way -- confirm before deleting.",
@@ -49,13 +54,14 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_embeddings.py",
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
       "line_end": null,
       "line_start": null,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.025052+00:00",
+    "first_seen": "2026-09-17T21:41:20.727688+00:00",
     "id": "ghost-fcd859d6ea88",
     "layer": "mechanical",
     "severity": "minor",
@@ -63,6 +69,7 @@
     "summary": "'VoyageEmbeddingBackend' is defined but never referenced anywhere in the scanned set"
   },
   {
+    "attributes": {},
     "category": "dead_code",
     "confidence": null,
     "detail": "No ast.Name, ast.Attribute, or string-subscript-key node anywhere in the scanned files resolves to this identifier. Scope limit: getattr-by-string and decorator-based registration are still not traced, so this can false-positive on names only reached that way -- confirm before deleting.",
@@ -70,55 +77,14 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
+      "absolute_file": "/home/user/ATS/gov4_kernel.py",
+      "file": "gov4_kernel.py",
       "line_end": null,
       "line_start": null,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.025063+00:00",
-    "id": "ghost-abd6dd4738ea",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'BiasLevel' is defined but never referenced anywhere in the scanned set"
-  },
-  {
-    "category": "dead_code",
-    "confidence": null,
-    "detail": "No ast.Name, ast.Attribute, or string-subscript-key node anywhere in the scanned files resolves to this identifier. Scope limit: getattr-by-string and decorator-based registration are still not traced, so this can false-positive on names only reached that way -- confirm before deleting.",
-    "detector": "dead_code",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py",
-      "line_end": null,
-      "line_start": null,
-      "related_files": [],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.025075+00:00",
-    "id": "ghost-54daa8c85a0c",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'RuleResult' is defined but never referenced anywhere in the scanned set"
-  },
-  {
-    "category": "dead_code",
-    "confidence": null,
-    "detail": "No ast.Name, ast.Attribute, or string-subscript-key node anywhere in the scanned files resolves to this identifier. Scope limit: getattr-by-string and decorator-based registration are still not traced, so this can false-positive on names only reached that way -- confirm before deleting.",
-    "detector": "dead_code",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py",
-      "line_end": null,
-      "line_start": null,
-      "related_files": [],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.025100+00:00",
+    "first_seen": "2026-09-17T21:41:20.727742+00:00",
     "id": "ghost-83f61593fd87",
     "layer": "mechanical",
     "severity": "minor",
@@ -126,6 +92,7 @@
     "summary": "'verify' is defined but never referenced anywhere in the scanned set"
   },
   {
+    "attributes": {},
     "category": "complexity",
     "confidence": null,
     "detail": "Line-count proxy for the 'Long Method' smell, not true cyclomatic complexity -- a long function that's mostly a flat sequence of simple statements is a weaker signal than a short function with deep branching. Treat as a prompt to look, not a verdict.",
@@ -133,20 +100,22 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 126,
-      "line_start": 43,
+      "absolute_file": "/home/user/ATS/ats_governance_kernel_bridge.py",
+      "file": "ats_governance_kernel_bridge.py",
+      "line_end": 487,
+      "line_start": 396,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.030629+00:00",
-    "id": "ghost-421548f8dac8",
+    "first_seen": "2026-09-17T21:41:20.732679+00:00",
+    "id": "ghost-57fd92469a00",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' spans 83 lines (threshold 80)"
+    "summary": "'evaluate_candidate' spans 91 lines (threshold 80)"
   },
   {
+    "attributes": {},
     "category": "complexity",
     "confidence": null,
     "detail": "Line-count proxy for the 'Long Method' smell, not true cyclomatic complexity -- a long function that's mostly a flat sequence of simple statements is a weaker signal than a short function with deep branching. Treat as a prompt to look, not a verdict.",
@@ -154,34 +123,14 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 450,
-      "line_start": 361,
+      "absolute_file": "/home/user/ATS/ats_governor_fixed.py",
+      "file": "ats_governor_fixed.py",
+      "line_end": 875,
+      "line_start": 785,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.040839+00:00",
-    "id": "ghost-b4a3ad4c6fe6",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'evaluate_candidate' spans 89 lines (threshold 80)"
-  },
-  {
-    "category": "complexity",
-    "confidence": null,
-    "detail": "Line-count proxy for the 'Long Method' smell, not true cyclomatic complexity -- a long function that's mostly a flat sequence of simple statements is a weaker signal than a short function with deep branching. Treat as a prompt to look, not a verdict.",
-    "detector": "long_function",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 851,
-      "line_start": 761,
-      "related_files": [],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.050485+00:00",
+    "first_seen": "2026-09-17T21:41:20.736237+00:00",
     "id": "ghost-6b32dd704ebd",
     "layer": "mechanical",
     "severity": "minor",
@@ -189,6 +138,7 @@
     "summary": "'apply_to_job' spans 90 lines (threshold 80)"
   },
   {
+    "attributes": {},
     "category": "complexity",
     "confidence": null,
     "detail": "Line-count proxy for the 'Long Method' smell, not true cyclomatic complexity -- a long function that's mostly a flat sequence of simple statements is a weaker signal than a short function with deep branching. Treat as a prompt to look, not a verdict.",
@@ -196,13 +146,14 @@
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_statistics.py",
-      "line_end": 207,
-      "line_start": 122,
+      "absolute_file": "/home/user/ATS/ats_statistics.py",
+      "file": "ats_statistics.py",
+      "line_end": 209,
+      "line_start": 124,
       "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.067681+00:00",
+    "first_seen": "2026-09-17T21:41:20.746165+00:00",
     "id": "ghost-e39235c0b02e",
     "layer": "mechanical",
     "severity": "minor",
@@ -210,914 +161,276 @@
     "summary": "'test_cohort' spans 85 lines (threshold 80)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "event_copy.\nAn `_old` beside a `_new` is two implementations sharing a scope, and a `_v2` is a decision nobody came back to. Neither is wrong on its own, which is why this is MINOR: it names where the code remembers being written rather than what it does.",
+    "detector": "placeholder_name",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 64,
-      "line_start": 64,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:88-88",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:112-112"
-      ],
+      "absolute_file": "/home/user/ATS/ats_governor_fixed.py",
+      "file": "ats_governor_fixed.py",
+      "line_end": null,
+      "line_start": null,
+      "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.147044+00:00",
-    "id": "ghost-1f5220084dd7",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 64-64, 88-88, 112-112): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 69,
-      "line_start": 65,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:89-93",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:113-117"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.147086+00:00",
-    "id": "ghost-f66a9c63d50c",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same 4-statement block 3 times (lines 65-69, 89-93, 113-117): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 65,
-      "line_start": 65,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:66-66",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:89-89",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:90-90",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:113-113",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:114-114"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.147101+00:00",
-    "id": "ghost-a19fabe2baa8",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 6 times (lines 65-65, 66-66, 89-89, 90-90, 113-113, 114-114): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 69,
-      "line_start": 69,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:93-93",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:117-117"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.147111+00:00",
-    "id": "ghost-50819b541fb5",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 69-69, 93-93, 117-117): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 70,
-      "line_start": 70,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:94-94",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:118-118"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.147121+00:00",
-    "id": "ghost-f53f34da6871",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 70-70, 94-94, 118-118): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 272,
-      "line_start": 272,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:281-281",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:290-290"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.149148+00:00",
-    "id": "ghost-0da157bd89c0",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'propose_system_safeguards' repeats the same single statement 3 times (lines 272-272, 281-281, 290-290): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py",
-      "line_end": 299,
-      "line_start": 299,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:307-307",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:273-273",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:282-282",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_counter_system.py:291-291"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.149164+00:00",
-    "id": "ghost-7d853db63b8d",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'propose_system_safeguards' repeats the same single statement 5 times (lines 299-299, 307-307, 273-273, 282-282, 291-291): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_embeddings.py",
-      "line_end": 166,
-      "line_start": 166,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_embeddings.py:167-167"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.155103+00:00",
-    "id": "ghost-400761edb7fb",
+    "first_seen": "2026-09-17T21:41:20.960060+00:00",
+    "id": "ghost-bb3eb399b6fa",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'_cosine' repeats the same single statement 2 times (lines 166-166, 167-167): same shape, names/literals differ"
+    "summary": "ats_governor_fixed.py holds 1 placeholder or versioned name(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `a` is only ever passed a variable named `rv`, and `rv` is only ever passed to `a` -- 1 call site(s) in ats_embeddings.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 352,
-      "line_start": 352,
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
+      "line_end": null,
+      "line_start": 162,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py:356-356"
+        "ats_embeddings.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.168178+00:00",
-    "id": "ghost-95e00c82c319",
+    "first_seen": "2026-09-17T21:41:21.023457+00:00",
+    "id": "ghost-8a4c3c4c364f",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 2 times (lines 352-352, 356-356): same shape, names/literals differ"
+    "summary": "`a` and `rv` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `b` is only ever passed a variable named `cv`, and `cv` is only ever passed to `b` -- 1 call site(s) in ats_embeddings.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 388,
-      "line_start": 388,
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
+      "line_end": null,
+      "line_start": 162,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py:412-412"
+        "ats_embeddings.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.170131+00:00",
-    "id": "ghost-c9abe9111225",
+    "first_seen": "2026-09-17T21:41:21.023647+00:00",
+    "id": "ghost-fd1bfcf90c49",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'evaluate_candidate' repeats the same single statement 2 times (lines 388-388, 412-412): same shape, names/literals differ"
+    "summary": "`b` and `cv` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `fraud` is only ever passed a variable named `contradictions`, and `contradictions` is only ever passed to `fraud` -- 1 call site(s) in ats_governor_fixed.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 389,
-      "line_start": 389,
+      "absolute_file": "/home/user/ATS/ats_governor_fixed.py",
+      "file": "ats_governor_fixed.py",
+      "line_end": null,
+      "line_start": 569,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governance_kernel_bridge.py:413-413"
+        "ats_governor_fixed.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.170157+00:00",
-    "id": "ghost-908e63b8b0e7",
+    "first_seen": "2026-09-17T21:41:21.023726+00:00",
+    "id": "ghost-79be1f5af101",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'evaluate_candidate' repeats the same single statement 2 times (lines 389-389, 413-413): same shape, names/literals differ"
+    "summary": "`fraud` and `contradictions` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `harm` is only ever passed a variable named `recommendations`, and `recommendations` is only ever passed to `harm` -- 1 call site(s) in ats_governor_fixed.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 159,
-      "line_start": 159,
+      "absolute_file": "/home/user/ATS/ats_governor_fixed.py",
+      "file": "ats_governor_fixed.py",
+      "line_end": null,
+      "line_start": 569,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:160-160"
+        "ats_governor_fixed.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.183839+00:00",
-    "id": "ghost-aa0026b19890",
+    "first_seen": "2026-09-17T21:41:21.023800+00:00",
+    "id": "ghost-a537945b9573",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'__post_init__' repeats the same single statement 2 times (lines 159-159, 160-160): same shape, names/literals differ"
+    "summary": "`harm` and `recommendations` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `job` is only ever passed a variable named `j`, and `j` is only ever passed to `job` -- 1 call site(s) in ats_governor_fixed.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 197,
-      "line_start": 197,
+      "absolute_file": "/home/user/ATS/ats_governor_fixed.py",
+      "file": "ats_governor_fixed.py",
+      "line_end": null,
+      "line_start": 877,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:203-203",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:204-204",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:205-205"
+        "ats_governor_fixed.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.184253+00:00",
-    "id": "ghost-35c8352ffd7f",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'__post_init__' repeats the same single statement 4 times (lines 197-197, 203-203, 204-204, 205-205): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 307,
-      "line_start": 307,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:310-310"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.186328+00:00",
-    "id": "ghost-3515cf01ff49",
+    "first_seen": "2026-09-17T21:41:21.023869+00:00",
+    "id": "ghost-0d1a245e5791",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'_gap' repeats the same single statement 2 times (lines 307-307, 310-310): same shape, names/literals differ"
+    "summary": "`job` and `j` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `packet` is only ever passed a variable named `ghost_packet`, and `ghost_packet` is only ever passed to `packet` -- 1 call site(s) in ats_gsa_core.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 724,
-      "line_start": 724,
+      "absolute_file": "/home/user/ATS/ats_gsa_core.py",
+      "file": "ats_gsa_core.py",
+      "line_end": null,
+      "line_start": 267,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:725-725",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:726-726"
+        "ats_gsa_core.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.192531+00:00",
-    "id": "ghost-a990472f63b0",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 3 times (lines 724-724, 725-725, 726-726): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 941,
-      "line_start": 941,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:942-942"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-03T03:41:22.195874+00:00",
-    "id": "ghost-6c390505bb2b",
+    "first_seen": "2026-09-17T21:41:21.023941+00:00",
+    "id": "ghost-3f428a26a5c4",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'load_json' repeats the same single statement 2 times (lines 941-941, 942-942): same shape, names/literals differ"
+    "summary": "`packet` and `ghost_packet` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `stage` is only ever passed a variable named `s`, and `s` is only ever passed to `stage` -- 1 call site(s) in ats_governor_fixed.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py",
-      "line_end": 953,
-      "line_start": 953,
+      "absolute_file": "/home/user/ATS/ats_governor_fixed.py",
+      "file": "ats_governor_fixed.py",
+      "line_end": null,
+      "line_start": 929,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_governor_fixed.py:954-954"
+        "ats_governor_fixed.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.196193+00:00",
-    "id": "ghost-d998cb9672d1",
+    "first_seen": "2026-09-17T21:41:21.024009+00:00",
+    "id": "ghost-27a592c6c268",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'run_system_wide_audit' repeats the same single statement 2 times (lines 953-953, 954-954): same shape, names/literals differ"
+    "summary": "`stage` and `s` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {},
+    "category": "naming",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "The parameter `texts` is only ever passed a variable named `all_texts`, and `all_texts` is only ever passed to `texts` -- 1 call site(s) in ats_embeddings.py.\nA one-to-one correspondence is the only case where two names provably denote the same thing: a parameter taking several variables is doing its job, and renaming it would collide with a name legitimately in use. Which of the two should win is yours to pick -- the parameter is the contract, the variable is the caller's local, and neither is automatically right.",
+    "detector": "name_disagreement",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_gsa_core.py",
-      "line_end": 370,
-      "line_start": 370,
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
+      "line_end": null,
+      "line_start": 225,
       "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_gsa_core.py:372-372"
+        "ats_embeddings.py"
       ],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.214416+00:00",
-    "id": "ghost-c9ad6147aa27",
+    "first_seen": "2026-09-17T21:41:21.024128+00:00",
+    "id": "ghost-2feaf029911b",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 2 times (lines 370-370, 372-372): same shape, names/literals differ"
+    "summary": "`texts` and `all_texts` are one value under two names, across 1 file(s)"
   },
   {
-    "category": "duplication",
+    "attributes": {
+      "kind": "loop_invariant_call"
+    },
+    "category": "complexity",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "/home/user/ATS/ats_embeddings.py:295\nThe arguments never mention the loop variable, so the call computes the same thing every iteration -- unless it has a side effect or reads something that changes, which the tree cannot see. Reported, never hoisted for you.\nMeasured redundancy across a whole run is a different finding: see `ghost-buster --profile`.",
+    "detector": "loop_invariant_call",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_gsa_core.py",
-      "line_end": 371,
-      "line_start": 371,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/ats_gsa_core.py:375-375"
-      ],
+      "absolute_file": "/home/user/ATS/ats_embeddings.py",
+      "file": "ats_embeddings.py",
+      "line_end": null,
+      "line_start": 295,
+      "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.214443+00:00",
-    "id": "ghost-52b214c35851",
+    "first_seen": "2026-09-17T21:41:21.219407+00:00",
+    "id": "ghost-83135f5fb072",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 2 times (lines 371-371, 375-375): same shape, names/literals differ"
+    "summary": "ats_embeddings.py:295 `zip(...)` with arguments the loop never changes inside a loop"
   },
   {
-    "category": "duplication",
+    "attributes": {
+      "kind": "loop_invariant_call"
+    },
+    "category": "complexity",
     "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
+    "detail": "/home/user/ATS/ats_statistics.py:169\nThe arguments never mention the loop variable, so the call computes the same thing every iteration -- unless it has a side effect or reads something that changes, which the tree cannot see. Reported, never hoisted for you.\nMeasured redundancy across a whole run is a different finding: see `ghost-buster --profile`.",
+    "detector": "loop_invariant_call",
     "disposition": null,
     "disposition_note": "",
     "evidence": {
-      "file": "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py",
-      "line_end": 382,
-      "line_start": 382,
-      "related_files": [
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py:383-383",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py:384-384",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py:385-385",
-        "/tmp/claude-1000/-home-wking53214/f7f86960-5cd3-4e63-a084-1fe153210437/scratchpad/ghost_survey/clones/ATS/gov4_kernel.py:386-386"
-      ],
+      "absolute_file": "/home/user/ATS/ats_statistics.py",
+      "file": "ats_statistics.py",
+      "line_end": null,
+      "line_start": 169,
+      "related_files": [],
       "snippet": null
     },
-    "first_seen": "2026-09-03T03:41:22.236902+00:00",
-    "id": "ghost-7e0207896d81",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'update' repeats the same single statement 5 times (lines 382-382, 383-383, 384-384, 385-385, 386-386): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 63,
-      "line_start": 63,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:87-87",
-        "/home/wking53214/ATS/ats_counter_system.py:111-111"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.261766+00:00",
-    "id": "ghost-2635bd65c5b3",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 63-63, 87-87, 111-111): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 68,
-      "line_start": 64,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:88-92",
-        "/home/wking53214/ATS/ats_counter_system.py:112-116"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.261910+00:00",
-    "id": "ghost-90712adf995b",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same 4-statement block 3 times (lines 64-68, 88-92, 112-116): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 64,
-      "line_start": 64,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:65-65",
-        "/home/wking53214/ATS/ats_counter_system.py:88-88",
-        "/home/wking53214/ATS/ats_counter_system.py:89-89",
-        "/home/wking53214/ATS/ats_counter_system.py:112-112",
-        "/home/wking53214/ATS/ats_counter_system.py:113-113"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.261989+00:00",
-    "id": "ghost-b3af4d069768",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 6 times (lines 64-64, 65-65, 88-88, 89-89, 112-112, 113-113): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 68,
-      "line_start": 68,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:92-92",
-        "/home/wking53214/ATS/ats_counter_system.py:116-116"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.262087+00:00",
-    "id": "ghost-33bbf21878e9",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'detect_correlated_rejection_patterns' repeats the same single statement 3 times (lines 68-68, 92-92, 116-116): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 271,
-      "line_start": 271,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:280-280",
-        "/home/wking53214/ATS/ats_counter_system.py:289-289"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.264258+00:00",
-    "id": "ghost-c22210343f67",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'propose_system_safeguards' repeats the same single statement 3 times (lines 271-271, 280-280, 289-289): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 298,
-      "line_start": 298,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:306-306",
-        "/home/wking53214/ATS/ats_counter_system.py:272-272",
-        "/home/wking53214/ATS/ats_counter_system.py:281-281",
-        "/home/wking53214/ATS/ats_counter_system.py:290-290"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.264340+00:00",
-    "id": "ghost-6437d709253f",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'propose_system_safeguards' repeats the same single statement 5 times (lines 298-298, 306-306, 272-272, 281-281, 290-290): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_embeddings.py",
-      "line_end": 165,
-      "line_start": 165,
-      "related_files": [
-        "/home/wking53214/ATS/ats_embeddings.py:166-166"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.269331+00:00",
-    "id": "ghost-99e41f90deb4",
+    "first_seen": "2026-09-17T21:41:21.219539+00:00",
+    "id": "ghost-d8d5bd3aad4a",
     "layer": "mechanical",
     "severity": "minor",
     "status": "suppressed",
-    "summary": "'_cosine' repeats the same single statement 2 times (lines 165-165, 166-166): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 347,
-      "line_start": 347,
-      "related_files": [
-        "/home/wking53214/ATS/ats_governance_kernel_bridge.py:351-351"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.282736+00:00",
-    "id": "ghost-32f5217a8adf",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 2 times (lines 347-347, 351-351): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 383,
-      "line_start": 383,
-      "related_files": [
-        "/home/wking53214/ATS/ats_governance_kernel_bridge.py:407-407"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.284067+00:00",
-    "id": "ghost-e4537c0b8835",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'evaluate_candidate' repeats the same single statement 2 times (lines 383-383, 407-407): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_governance_kernel_bridge.py",
-      "line_end": 384,
-      "line_start": 384,
-      "related_files": [
-        "/home/wking53214/ATS/ats_governance_kernel_bridge.py:408-408"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.284158+00:00",
-    "id": "ghost-c4b84ebcb544",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'evaluate_candidate' repeats the same single statement 2 times (lines 384-384, 408-408): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_governor_fixed.py",
-      "line_end": 725,
-      "line_start": 725,
-      "related_files": [
-        "/home/wking53214/ATS/ats_governor_fixed.py:726-726",
-        "/home/wking53214/ATS/ats_governor_fixed.py:727-727"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.303970+00:00",
-    "id": "ghost-2b19f4c01b9c",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 3 times (lines 725-725, 726-726, 727-727): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_governor_fixed.py",
-      "line_end": 942,
-      "line_start": 942,
-      "related_files": [
-        "/home/wking53214/ATS/ats_governor_fixed.py:943-943"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.307674+00:00",
-    "id": "ghost-48218e4ad35d",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'load_json' repeats the same single statement 2 times (lines 942-942, 943-943): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_governor_fixed.py",
-      "line_end": 954,
-      "line_start": 954,
-      "related_files": [
-        "/home/wking53214/ATS/ats_governor_fixed.py:955-955"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.308109+00:00",
-    "id": "ghost-dc12ca87a0e8",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'run_system_wide_audit' repeats the same single statement 2 times (lines 954-954, 955-955): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/gov4_kernel.py",
-      "line_end": 215,
-      "line_start": 215,
-      "related_files": [
-        "/home/wking53214/ATS/gov4_kernel.py:220-220"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.343634+00:00",
-    "id": "ghost-d91db06c130f",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'__init__' repeats the same single statement 2 times (lines 215-215, 220-220): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/gov4_kernel.py",
-      "line_end": 472,
-      "line_start": 472,
-      "related_files": [
-        "/home/wking53214/ATS/gov4_kernel.py:473-473",
-        "/home/wking53214/ATS/gov4_kernel.py:474-474",
-        "/home/wking53214/ATS/gov4_kernel.py:475-475",
-        "/home/wking53214/ATS/gov4_kernel.py:476-476"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:43:38.346937+00:00",
-    "id": "ghost-f9b92e56357a",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'update' repeats the same single statement 5 times (lines 472-472, 473-473, 474-474, 475-475, 476-476): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 283,
-      "line_start": 283,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:292-292",
-        "/home/wking53214/ATS/ats_counter_system.py:301-301"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:47:02.448304+00:00",
-    "id": "ghost-4a5481b25033",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'propose_system_safeguards' repeats the same single statement 3 times (lines 283-283, 292-292, 301-301): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/ats_counter_system.py",
-      "line_end": 310,
-      "line_start": 310,
-      "related_files": [
-        "/home/wking53214/ATS/ats_counter_system.py:318-318",
-        "/home/wking53214/ATS/ats_counter_system.py:284-284",
-        "/home/wking53214/ATS/ats_counter_system.py:293-293",
-        "/home/wking53214/ATS/ats_counter_system.py:302-302"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:47:02.448387+00:00",
-    "id": "ghost-7bfc3029cff0",
-    "layer": "mechanical",
-    "severity": "major",
-    "status": "suppressed",
-    "summary": "'propose_system_safeguards' repeats the same single statement 5 times (lines 310-310, 318-318, 284-284, 293-293, 302-302): same shape, names/literals differ"
-  },
-  {
-    "category": "duplication",
-    "confidence": null,
-    "detail": "Structural fingerprint match within one function, not a whole-function match (near_duplicate_function's detection is blind to this shape). Typical real cause: several branches each hand-build the same kind of object or perform the same sequence of calls -- worth a single shared helper if the branches really are doing the same thing, not just a coincidental resemblance.",
-    "detector": "intra_function_duplicate_block",
-    "disposition": null,
-    "disposition_note": "",
-    "evidence": {
-      "file": "/home/wking53214/ATS/test_ats_counter_system.py",
-      "line_end": 83,
-      "line_start": 83,
-      "related_files": [
-        "/home/wking53214/ATS/test_ats_counter_system.py:85-85"
-      ],
-      "snippet": null
-    },
-    "first_seen": "2026-09-08T03:47:02.543123+00:00",
-    "id": "ghost-857e0aab8590",
-    "layer": "mechanical",
-    "severity": "minor",
-    "status": "suppressed",
-    "summary": "'test_gap_at_threshold_is_not_flagged' repeats the same single statement 2 times (lines 83-83, 85-85): same shape, names/literals differ"
+    "summary": "ats_statistics.py:169 `range(...)` with arguments the loop never changes inside a loop"
   }
 ]

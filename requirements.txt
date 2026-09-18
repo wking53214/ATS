@@ -3,11 +3,8 @@ numpy
 scipy
 scikit-learn
 
-# Optional - only needed if you inject the corresponding EmbeddingScorer
-# backend in ats_embeddings.py. The default backend is TF-IDF (scikit-learn
-# only, above) and needs none of these. Each is a lazy import, so nothing
-# below is required just to import ats_embeddings.py.
-#
-# sentence-transformers   # SentenceTransformerBackend
-# openai                  # OpenAIEmbeddingBackend
-# voyageai                # VoyageEmbeddingBackend
+# Optional - the non-default EmbeddingScorer backends in ats_embeddings.py
+# are declared in requirements-optional.txt. The default backend is TF-IDF
+# (scikit-learn only, above) and needs none of them, and each is a lazy
+# import, so nothing in that file is required to import ats_embeddings.py or
+# to run the tests. Install it only if you inject one of those backends.
