@@ -10,6 +10,8 @@ import hmac
 import hashlib
 from ats_oscillation_detector import OscillationDetector
 
+from ats_oscillation_detector import OscillationDetector
+
 # =============================================================================
 # 1. CORE DATA STRUCTURES & LOGIFIERS
 # =============================================================================
@@ -83,26 +85,26 @@ class CryptoAuditTrail:
         # Create deterministic JSON for hashing
         event_json = json.dumps(event, sort_keys=True)
         event_hash = hashlib.sha256(event_json.encode()).hexdigest()
-        
+
         # Sign with HMAC
         event_hmac = hmac.new(
             self.signing_key.encode(),
             event_json.encode(),
             hashlib.sha256
         ).hexdigest()
-        
+
         # Add hash and signature to event
         event["hash"] = event_hash
         event["hmac"] = event_hmac
-        
+
         # Write to disk immediately (write-ahead log)
         with open(self.log_file, "a") as f:
             f.write(json.dumps(event) + "\n")
-        
+
         # Store in memory
         self.events.append(event)
         self.current_hash = event_hash
-        
+
         return event_hash
 
     def verify_integrity(self) -> Dict[str, Any]:
