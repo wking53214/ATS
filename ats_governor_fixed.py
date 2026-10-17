@@ -10,8 +10,6 @@ import hmac
 import hashlib
 from ats_oscillation_detector import OscillationDetector
 
-from ats_oscillation_detector import OscillationDetector
-
 # =============================================================================
 # 1. CORE DATA STRUCTURES & LOGIFIERS
 # =============================================================================
