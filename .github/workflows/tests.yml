@@ -26,3 +26,27 @@ jobs:
         run: python -m pytest -q
       - name: Lint (hard gate)
         run: ruff check .
+
+  cns:
+    # The optional CNS connector (ats_cns_connector.py), with CNS installed. ATS_REQUIRE_CNS=1 turns a
+    # missing cns into a failure, so these tests cannot silently skip here.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install with the CNS requirements
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-cns.txt
+      - name: Test with CNS present
+        env:
+          ATS_REQUIRE_CNS: "1"
+        run: python -m pytest -q -rs
