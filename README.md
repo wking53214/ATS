@@ -59,4 +59,12 @@ ATS demos  --copy of GOV4-->  gov4_kernel.py (in-tree)
            ✗ sentinel_os, ✗ δ, ✗ observe-perceive
 ```
 
+## Optional CNS connection
+
+ATS does not need CNS. Nothing in ATS imports it, no main requirements file lists it, and `test_ats_cns_independence.py` checks this with CNS blocked. `ats_cns_connector.py` is the one place that knows CNS exists, and it imports `cns.gate` only when a function that needs it is called. Install with `pip install -r requirements-cns.txt`; without CNS those calls raise `CnsNotInstalled` and nothing else changes.
+
+What it binds: the counter audit (`CounterATS.audit_adversarial_system`) and the evidence package (`ATSGovernorProduction.run_full_audit`). For each there is a `*_content` (deterministic, JSON-like), a `*_digest` (`cns.gate.subject_digest` of it) and an `*_binds(result, output)` that is true only for a `cns.gate.GateResult` issued against exactly that output. The content holds identifiers, the bias measurements and their values, the thresholds the report states, and ATS's own labels. It never holds applicant names, emails or resume text, and volatile fields (report clock and signature, streaming alerts, audit trail state) are left out.
+
+Binding only: this is not a gate. It maps no ATS finding to a CNS outcome and invents no verdict semantics, so that a verdict about a finding, from wherever it comes, can be checked against the finding. ATS stays a demo off any live decision path.
+
 Apache-2.0. Start at `ats_seam_inventory.md`, not the package marketing list.

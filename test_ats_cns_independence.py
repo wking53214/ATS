@@ -8,12 +8,14 @@ never skip.
 
 import ast
 import os
+import re
 import subprocess
 import sys
 import textwrap
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+PIN = "cns @ git+https://github.com/wking53214/CNS.git@v1.8.0"
 BLOCK = "import sys; sys.modules['cns'] = None; sys.modules['cns.gate'] = None\n"
 # The parent's own PYTHONPATH is kept so that, where CNS is on it, "even when
 # installed" really means installed.
@@ -42,6 +44,11 @@ def own_modules():
 
 def library_modules():
     return [p.stem for p in own_modules() if not p.name.startswith("test_")]
+
+
+def requirement_lines(path):
+    lines = (line.split(" #")[0].strip() for line in path.read_text(encoding="utf-8").splitlines())
+    return [line for line in lines if line and not line.startswith("#")]
 
 
 def test_the_connector_imports_with_cns_blocked(tmp_path):
@@ -138,3 +145,20 @@ def test_the_connector_is_binding_only():
             func = node.func
             name = func.attr if isinstance(func, ast.Attribute) else getattr(func, "id", "")
             assert name != "GateResult", "the connector must not construct a verdict"
+
+
+def test_cns_is_not_a_main_requirement_and_has_its_own_pinned_file():
+    for name in ("requirements.txt", "requirements-optional.txt"):
+        for line in requirement_lines(ROOT / name):
+            assert not re.match(r"(?i)cns\b", line), (name, line)
+        assert "wking53214/CNS" not in "\n".join(requirement_lines(ROOT / name))
+    assert requirement_lines(ROOT / "requirements-cns.txt") == [PIN]
+
+
+def test_ci_runs_cns_in_its_own_job_and_not_in_the_main_one():
+    text = (ROOT / ".github" / "workflows" / "tests.yml").read_text(encoding="utf-8")
+    main, _, cns_job = text.partition("\n  cns:\n")
+    assert cns_job, "the workflow has no cns job"
+    assert "cns" not in main.lower()
+    assert "requirements-cns.txt" in cns_job
+    assert 'ATS_REQUIRE_CNS: "1"' in cns_job
