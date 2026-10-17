@@ -1,0 +1,2 @@
+# Optional: lets ats_cns_connector bind ATS outputs to CNS verdicts. Nothing in ATS imports CNS otherwise.
+cns @ git+https://github.com/wking53214/CNS.git@v1.8.0
