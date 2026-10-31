@@ -15,7 +15,7 @@ import textwrap
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-PIN = "cns @ git+https://github.com/wking53214/CNS.git@v1.9.0"
+PIN = "cns @ git+https://github.com/wking53214/CNS.git@v2.3.0"
 BLOCK = "import sys; sys.modules['cns'] = None; sys.modules['cns.gate'] = None\n"
 # The parent's own PYTHONPATH is kept so that, where CNS is on it, "even when
 # installed" really means installed.
