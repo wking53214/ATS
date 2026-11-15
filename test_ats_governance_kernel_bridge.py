@@ -171,3 +171,45 @@ def test_a_halt_registers_as_an_abort_not_a_calm_pipeline(tmp_path, monkeypatch)
     kernel.evaluate_candidate(_signals())
 
     assert seen["abort_rate"] == 1.0
+
+
+# ------------------------------------ diagnostics are observation-only
+
+_DECISION_FIELDS = ("verdict", "flag_reason", "triggered_policies",
+                    "manifest_valid", "escalation_forced", "decision")
+
+
+@pytest.mark.parametrize("over", [
+    {},                                                         # ALLOW path
+    dict(keyword_coverage=0.9, keyword_density=0.9),            # stuffing path
+    dict(location_distance_miles=3000.0, keyword_score=1.0,     # geographic path
+         keyword_coverage=1.0, semantic_similarity=1.0),
+])
+def test_an_oscillation_diagnostic_cannot_change_a_decision(tmp_path, over):
+    plain = ATSGovernorKernel(wal_path=str(tmp_path / "a.log"))
+    flagged = ATSGovernorKernel(wal_path=str(tmp_path / "b.log"))
+
+    r_plain = plain.evaluate_candidate(_signals(**over))
+    r_flagged = flagged.evaluate_candidate(
+        _signals(**over), diagnostics={"oscillation_detected": True}
+    )
+
+    for field in _DECISION_FIELDS:
+        assert r_flagged[field] == r_plain[field], field
+    assert r_flagged["diagnostics"] == {"oscillation_detected": True}
+    assert "diagnostics" not in r_plain
+
+
+def test_a_diagnostic_never_reaches_the_policy_vm_state(tmp_path, monkeypatch):
+    kernel = ATSGovernorKernel(wal_path=str(tmp_path / "wal.log"))
+    seen = {}
+
+    def spy(state):
+        seen["state"] = state
+        return ({"verdict": Verdict.ALLOW.name}, [])
+
+    monkeypatch.setattr(kernel.policy_vm, "step", spy)
+    kernel.evaluate_candidate(_signals(), diagnostics={"oscillation_detected": True})
+
+    assert "diagnostics" not in seen["state"]
+    assert "oscillation_detected" not in str(seen["state"])

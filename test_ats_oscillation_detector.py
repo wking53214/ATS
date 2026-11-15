@@ -229,6 +229,46 @@ class TestOscillationInAuditTrail(unittest.TestCase):
         self.assertTrue(events[1]["oscillation_detected"])
 
 
+class TestProvenanceUnchanged(unittest.TestCase):
+    """The signed payload must be exactly what it was before oscillation
+    detection existed: the diagnostic flag is attached after hashing."""
+
+    def setUp(self):
+        import tempfile, os, json  # noqa
+        self._dir = tempfile.mkdtemp()
+        self.trail = CryptoAuditTrail(signing_key="k", log_file=os.path.join(self._dir, "a.log"))
+
+    def _legacy_hash_and_hmac(self, event):
+        import hashlib
+        import hmac
+        import json
+        payload = {k: v for k, v in event.items()
+                   if k not in ("hash", "hmac", "oscillation_detected")}
+        blob = json.dumps(payload, sort_keys=True)
+        return (hashlib.sha256(blob.encode()).hexdigest(),
+                hmac.new(b"k", blob.encode(), hashlib.sha256).hexdigest())
+
+    def test_hash_and_hmac_match_pre_oscillation_payload(self):
+        self.trail.log("DECISION", "same")
+        self.trail.log("DECISION", "same")  # flagged as repeat
+        for e in self.trail.events:
+            h, m = self._legacy_hash_and_hmac(e)
+            self.assertEqual(e["hash"], h)
+            self.assertEqual(e["hmac"], m)
+
+    def test_flag_is_outside_signed_content(self):
+        self.trail.log("DECISION", "same")
+        self.trail.log("DECISION", "same")
+        # Flipping the advisory flag does not (and must not) invalidate the chain.
+        self.trail.events[1]["oscillation_detected"] = False
+        self.assertTrue(self.trail.verify_integrity()["valid"])
+
+    def test_tampering_with_signed_fields_still_detected(self):
+        self.trail.log("DECISION", "APPROVED")
+        self.trail.events[0]["details"] = "REJECTED"
+        self.assertFalse(self.trail.verify_integrity()["valid"])
+
+
 class TestGovernanceNeutrality(unittest.TestCase):
     """Verify oscillation detection is non-authoritative."""
 
