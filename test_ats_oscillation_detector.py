@@ -4,7 +4,6 @@ Tests for OscillationDetector and its integration with ATS audit trail.
 Run with: python -m pytest test_ats_oscillation_detector.py -v
 """
 
-import json
 import unittest
 from ats_oscillation_detector import OscillationDetector
 from ats_governor_fixed import CryptoAuditTrail
@@ -240,7 +239,9 @@ class TestProvenanceUnchanged(unittest.TestCase):
         self.trail = CryptoAuditTrail(signing_key="k", log_file=os.path.join(self._dir, "a.log"))
 
     def _legacy_hash_and_hmac(self, event):
-        import hashlib, hmac, json
+        import hashlib
+        import hmac
+        import json
         payload = {k: v for k, v in event.items()
                    if k not in ("hash", "hmac", "oscillation_detected")}
         blob = json.dumps(payload, sort_keys=True)
