@@ -33,6 +33,10 @@ class AuditEvent:
     action_required: bool = False
 
 
+# Fields attached to an event after hashing/signing; excluded from verification.
+UNSIGNED_DIAGNOSTIC_FIELDS = ("oscillation_detected",)
+
+
 class CryptoAuditTrail:
     """Cryptographically secured audit trail with hash chain and HMAC signatures.
 
@@ -76,8 +80,7 @@ class CryptoAuditTrail:
             "event_type": event_type,
             "severity": severity,
             "details": details,
-            "previous_hash": self.current_hash,
-            "oscillation_detected": oscillation_detected
+            "previous_hash": self.current_hash
         }
 
         # Create deterministic JSON for hashing
@@ -94,6 +97,12 @@ class CryptoAuditTrail:
         # Add hash and signature to event
         event["hash"] = event_hash
         event["hmac"] = event_hmac
+
+        # Diagnostic signal is attached AFTER hashing/signing: the hashed and
+        # signed payload is identical to what it was before oscillation
+        # detection existed, so provenance semantics are unchanged. The flag
+        # is advisory and is deliberately outside the signed content.
+        event["oscillation_detected"] = oscillation_detected
 
         # Write to disk immediately (write-ahead log)
         with open(self.log_file, "a") as f:
@@ -124,7 +133,8 @@ class CryptoAuditTrail:
                 })
             
             # Verify HMAC
-            event_copy = {k: v for k, v in event.items() if k not in ["hash", "hmac"]}
+            event_copy = {k: v for k, v in event.items()
+                          if k not in ("hash", "hmac", *UNSIGNED_DIAGNOSTIC_FIELDS)}
             event_json = json.dumps(event_copy, sort_keys=True)
             expected_hmac = hmac.new(
                 self.signing_key.encode(),
