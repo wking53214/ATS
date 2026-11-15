@@ -44,7 +44,7 @@ import os
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from gov4_kernel import (
     EventStore,
@@ -393,10 +393,22 @@ class ATSGovernorKernel:
         self.wal = WAL(wal_path)
         self.decisions: List[Dict[str, Any]] = []
 
-    def evaluate_candidate(self, signals: CandidateSignals) -> Dict[str, Any]:
+    def evaluate_candidate(
+        self,
+        signals: CandidateSignals,
+        diagnostics: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
         """
         Full pipeline: score → policy → ledger → audit → WAL.
         Returns the complete decision record.
+
+        ``diagnostics`` is an optional, observation-only channel for advisory
+        signals (e.g. ``{"oscillation_detected": True}`` from the audit trail).
+        It is copied into the WAL record verbatim and is NEVER placed in the
+        PolicyVM state, the ledger event, or any verdict computation: it
+        cannot change a verdict, a score, or an escalation. Turning a
+        diagnostic into a consequence requires an explicit Policy, which this
+        method deliberately does not define.
         """
         # 1. Inject signals into policy VM state
         vm_state = {
@@ -481,6 +493,8 @@ class ATSGovernorKernel:
             "decision": signals.decision,
             "algorithm_version": signals.algorithm_version,
         }
+        if diagnostics:
+            record["diagnostics"] = dict(diagnostics)
         self.wal.append(record)
         self.decisions.append(record)
 

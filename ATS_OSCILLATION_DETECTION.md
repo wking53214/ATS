@@ -129,13 +129,17 @@ event = {
 
 ### Hash Chain Integrity
 
-The oscillation flag is included in the event JSON before hashing, so it contributes to the hash chain but does not break it. Hash verification still works:
+`oscillation_detected` is attached to the event **after** the hash and HMAC are computed. The hashed and signed payload is byte-for-byte what it was before oscillation detection existed, so provenance semantics are unchanged. `verify_integrity()` ignores the flag (`UNSIGNED_DIAGNOSTIC_FIELDS`).
 
-```python
-integrity = audit_trail.verify_integrity()
-# Returns: {"status": "VALID", "valid": True, "violations": []}
-# Even with oscillation_detected in all events
-```
+Consequence: the flag is advisory and **not tamper-evident**. Editing it does not invalidate the chain; editing any signed field still does. Tests: `TestProvenanceUnchanged`.
+
+### Governance-layer channel (observation only)
+
+`ATSGovernorKernel.evaluate_candidate(signals, diagnostics=None)` accepts an optional dict of advisory signals (e.g. `{"oscillation_detected": True}`). It is copied into the WAL record under `diagnostics` and is never placed in the PolicyVM state, the ledger event, or any verdict computation. It cannot change a verdict, score, or escalation (tests: `test_an_oscillation_diagnostic_cannot_change_a_decision`, `test_a_diagnostic_never_reaches_the_policy_vm_state`). No policy maps oscillation to any action. Doing so would be a new, explicit policy decision, and none exists.
+
+### What this is, and is not
+
+This is **recurrence (repeat) detection**: an event whose normalized text (strip + lowercase) matches one still in a bounded history window of 64. It is *not* general cycle or semantic-oscillation detection; `A -> B -> A` is flagged only because `A` recurs, and a paraphrased repeat is not flagged. Scope of observation is the audit-trail event stream, not candidate scores or hiring decisions.
 
 ## Usage Examples
 
@@ -215,7 +219,7 @@ if audit_trail.get_oscillation_diagnostics()["is_potentially_oscillating"]:
 - Normalized repeats detected
 - Reset works in audit trail
 - Diagnostics available
-- Hash chain unaffected
+- Signed payload unchanged (flag attached after hashing)
 - Audit report includes oscillation status
 
 ### Governance Neutrality (3 tests)
