@@ -35,6 +35,7 @@ Honest map: `ats_seam_inventory.md` (`[OBSERVED]` vs `[DOCUMENTED]` vs `[NO EVID
 | Gap | Detail |
 |---|---|
 | HMAC key | No default key. `CryptoAuditTrail` (and so `ATS` and `ATSGovernorProduction`) raises `ValueError` unless a `signing_key` is passed or `AUDIT_KEY` is set. `ATSGovernorProduction` signs the litigation report with the same key as its audit trail. |
+| Log locations | No default path. The audit log needs `log_file` or `ATS_AUDIT_LOG_PATH`; the bridge WAL needs `wal_path` or `ATS_WAL_PATH` (it used to default to a shared `/tmp` file). Both are created owner-only (0600) and refuse a symlink at the path. |
 | Marketing vs code | README historically claimed `<5% FPR`, `85%+`, litigation-ready. Treat as **working demos with documented gaps**. |
 | Kafka/Slack/PagerDuty | Claimed in ops docs; **zero code**. |
 | `_is_vowel_heavy` | Crude >0.4 vowel ratio. |

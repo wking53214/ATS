@@ -267,7 +267,11 @@ class WAL:
         self.path = path
         if os.path.dirname(path):
             os.makedirs(os.path.dirname(path), exist_ok=True)
-        self.f = open(path, "a+", encoding="utf-8", buffering=1)
+        # Owner-only (0600) when created, and a symlink at the path is refused
+        # rather than followed (same pattern as DGK's open_private_append).
+        flags = os.O_RDWR | os.O_CREAT | os.O_APPEND | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(path, flags, 0o600)
+        self.f = os.fdopen(fd, "a+", encoding="utf-8", buffering=1)
 
     def append(self, record: Dict[str, Any]) -> None:
         self.f.write(canonical(record) + "\n")
@@ -277,7 +281,8 @@ class WAL:
 
     def replay(self) -> List[Dict[str, Any]]:
         self.f.flush()
-        with open(self.path, "r", encoding="utf-8") as f:
+        fd = os.open(self.path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        with os.fdopen(fd, "r", encoding="utf-8") as f:
             return [json.loads(x) for x in f if x.strip()]
 
 

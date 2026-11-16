@@ -59,8 +59,9 @@ FALSIFIED = {
 
 @pytest.fixture(autouse=True)
 def _in_tmp(tmp_path, monkeypatch):
-    """CryptoAuditTrail writes audit.log into the working directory."""
+    """CryptoAuditTrail writes its log to ATS_AUDIT_LOG_PATH, kept in tmp_path."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("ATS_AUDIT_LOG_PATH", str(tmp_path / "audit.log"))
     monkeypatch.delenv("AUDIT_KEY", raising=False)
 
 

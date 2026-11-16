@@ -20,9 +20,9 @@ from ats_governor_fixed import ATS, ATSGovernorProduction, CryptoAuditTrail
 
 @pytest.fixture(autouse=True)
 def _no_env_key(tmp_path, monkeypatch):
-    """No AUDIT_KEY unless a test sets one; any default audit log lands in tmp_path."""
+    """No AUDIT_KEY unless a test sets one; the audit log goes to tmp_path."""
     monkeypatch.delenv("AUDIT_KEY", raising=False)
-    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("ATS_AUDIT_LOG_PATH", str(tmp_path / "audit.log"))
 
 
 def _pool():
