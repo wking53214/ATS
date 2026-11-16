@@ -41,6 +41,7 @@ DEPENDENCY CHAIN
 from __future__ import annotations
 
 import os
+import tempfile
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -66,6 +67,9 @@ from gov4_kernel import (
     parse_verdict,
     verdict_severity,
 )
+
+# Environment variable naming the WAL file when ATSGovernorKernel gets no wal_path.
+WAL_PATH_ENV = "ATS_WAL_PATH"
 
 
 # ============================================================
@@ -379,9 +383,20 @@ class ATSGovernorKernel:
       8. Lyapunov classifier tracks system stability across decisions
 
     All of this is reconstructable from the WAL.
+
+    The WAL holds candidate ids, verdicts and scores, so it has no default
+    location (it used to be a fixed, shared /tmp path): pass ``wal_path`` or
+    set the ATS_WAL_PATH environment variable, otherwise ValueError. The
+    file is created owner-only (0600) and a symlink at the path is refused.
     """
 
-    def __init__(self, wal_path: str = "/tmp/ats_kernel_bridge.log"):
+    def __init__(self, wal_path: Optional[str] = None):
+        wal_path = wal_path or os.environ.get(WAL_PATH_ENV)
+        if not wal_path:
+            raise ValueError(
+                "ATSGovernorKernel needs a WAL path: pass wal_path or set the "
+                f"{WAL_PATH_ENV} environment variable. There is no default location."
+            )
         self.store = EventStore()
         self.reducer = GovernanceCoreReducer()
         self.runtime = ExecutionRuntime(self.store, self.reducer)
@@ -561,10 +576,10 @@ def _make_signals(
 
 if __name__ == "__main__":
 
-    wal_path = "/tmp/ats_kernel_bridge_test.log"
-    # Clean previous test WAL
-    if os.path.exists(wal_path):
-        os.remove(wal_path)
+    # A new private directory for this run's WAL, not a fixed shared /tmp
+    # path. ATS_WAL_PATH is not used here, because replay below expects a WAL
+    # that holds only this run's records.
+    wal_path = os.path.join(tempfile.mkdtemp(prefix="ats-kernel-bridge-"), "wal.log")
 
     kernel = ATSGovernorKernel(wal_path=wal_path)
     job_id = "job-principal-ai-engineer"
@@ -724,6 +739,7 @@ if __name__ == "__main__":
     wal_replay = WAL(wal_path)
     records = wal_replay.replay()
     wal_replay.close()
+    print(f"  WAL file:            {wal_path}")
     print(f"  WAL records on disk: {len(records)}")
     print(f"  In-memory decisions: {len(kernel.decisions)}")
     match = all(

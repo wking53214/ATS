@@ -4,6 +4,7 @@ Tests for OscillationDetector and its integration with ATS audit trail.
 Run with: python -m pytest test_ats_oscillation_detector.py -v
 """
 
+import secrets
 import unittest
 from ats_oscillation_detector import OscillationDetector
 from ats_governor_fixed import CryptoAuditTrail
@@ -141,7 +142,7 @@ class TestOscillationInAuditTrail(unittest.TestCase):
     """Test OscillationDetector integration with CryptoAuditTrail."""
 
     def setUp(self):
-        self.audit_trail = CryptoAuditTrail(log_file="test_audit.log")
+        self.audit_trail = CryptoAuditTrail(signing_key=secrets.token_hex(16), log_file="test_audit.log")
 
     def tearDown(self):
         import os
@@ -274,7 +275,7 @@ class TestGovernanceNeutrality(unittest.TestCase):
 
     def test_oscillation_doesnt_change_event_type(self):
         """Oscillation detection should not modify event_type."""
-        audit_trail = CryptoAuditTrail(log_file="test_gov.log")
+        audit_trail = CryptoAuditTrail(signing_key=secrets.token_hex(16), log_file="test_gov.log")
         audit_trail.log("DECISION", "APPROVED")
         audit_trail.log("DECISION", "APPROVED")  # Repeat
 
@@ -284,7 +285,7 @@ class TestGovernanceNeutrality(unittest.TestCase):
 
     def test_oscillation_doesnt_change_severity(self):
         """Oscillation detection should not modify severity."""
-        audit_trail = CryptoAuditTrail(log_file="test_gov.log")
+        audit_trail = CryptoAuditTrail(signing_key=secrets.token_hex(16), log_file="test_gov.log")
         audit_trail.log("ALERT", "Critical bias", severity="CRITICAL")
         audit_trail.log("ALERT", "Critical bias", severity="CRITICAL")  # Repeat
 
@@ -293,7 +294,7 @@ class TestGovernanceNeutrality(unittest.TestCase):
 
     def test_oscillation_signal_only(self):
         """Oscillation is purely informational, not prescriptive."""
-        audit_trail = CryptoAuditTrail(log_file="test_gov.log")
+        audit_trail = CryptoAuditTrail(signing_key=secrets.token_hex(16), log_file="test_gov.log")
 
         # Log a decision three times (oscillating)
         audit_trail.log("DECISION", "Candidate C001: APPROVED")

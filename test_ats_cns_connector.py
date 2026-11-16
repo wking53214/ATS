@@ -59,8 +59,9 @@ FALSIFIED = {
 
 @pytest.fixture(autouse=True)
 def _in_tmp(tmp_path, monkeypatch):
-    """CryptoAuditTrail writes audit.log into the working directory."""
+    """CryptoAuditTrail writes its log to ATS_AUDIT_LOG_PATH, kept in tmp_path."""
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("ATS_AUDIT_LOG_PATH", str(tmp_path / "audit.log"))
     monkeypatch.delenv("AUDIT_KEY", raising=False)
 
 
@@ -246,7 +247,7 @@ def _report_paths(report):
 
 def test_changing_any_stable_field_of_the_litigation_report_changes_the_digest(package):
     base = conn.evidence_digest(package)
-    report = json.loads(package["litigation_report"])
+    report = json.loads(package["litigation_report"])["report"]
     paths = _report_paths(report)
     assert len(paths) > 20
     for path in paths:
@@ -255,7 +256,7 @@ def test_changing_any_stable_field_of_the_litigation_report_changes_the_digest(p
 
 
 def test_the_methodology_thresholds_are_bound(package):
-    report = json.loads(package["litigation_report"])
+    report = json.loads(package["litigation_report"])["report"]
     for key in ("significance_level_alpha", "minimum_cohort_n", "approval_rate_threshold"):
         edited = copy.deepcopy(report)
         edited["methodology"][key] += 1
@@ -334,7 +335,7 @@ def test_volatile_parts_of_the_evidence_package_are_not_bound(package):
 def test_the_reports_clock_and_signature_are_not_bound(package, monkeypatch):
     base = conn.evidence_digest(package)
     # unsigned form carries a warning, and a different clock
-    report = json.loads(package["litigation_report"])
+    report = json.loads(package["litigation_report"])["report"]
     report["generated"] = "2001-01-01T00:00:00+00:00"
     report["generated_by"] = "someone-else"
     report["warning"] = "UNSIGNED: Provide signing_key for cryptographic verification"

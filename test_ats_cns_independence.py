@@ -72,7 +72,7 @@ def test_the_repos_own_code_still_works_with_cns_blocked(tmp_path):
             decs.append({"id": f"{i:03d}", "decision": "REJECTED" if remote else "APPROVED"})
         audit = CounterATS().audit_adversarial_system(cands, decs, {"approval_rate": 0.9})
         assert audit["audit_verdict"] == "SYSTEMATIC_BIAS_DETECTED", audit
-        package = ATSGovernorProduction(signing_key="k" * 32).run_full_audit(cands, decs, {"approval_rate": 0.9})
+        package = ATSGovernorProduction(signing_key="k" * 32, log_file="audit.log").run_full_audit(cands, decs, {"approval_rate": 0.9})
         assert package["detected_biases"], package
         # building the content needs no CNS; only digesting and binding do
         assert c.audit_content(audit)["audit_verdict"] == "SYSTEMATIC_BIAS_DETECTED"

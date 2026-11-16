@@ -8,6 +8,8 @@ import json
 import os
 import hmac
 import hashlib
+import secrets
+import tempfile
 from ats_oscillation_detector import OscillationDetector
 
 # =============================================================================
@@ -36,26 +38,72 @@ class AuditEvent:
 # Fields attached to an event after hashing/signing; excluded from verification.
 UNSIGNED_DIAGNOSTIC_FIELDS = ("oscillation_detected",)
 
+# Environment variable naming the audit log file when no log_file is passed.
+AUDIT_LOG_PATH_ENV = "ATS_AUDIT_LOG_PATH"
+
+# SHA-256 of signing keys this public repository has already published (the
+# old built-in fallback and the old demo key). Anyone can read them in the
+# history, so they are refused like a missing key. Only the hashes are kept,
+# so the keys themselves are not written into the source again.
+_RETIRED_KEY_SHA256 = frozenset({
+    "81ad96e9a3c56ee1dd08fe9cd08f52e92f516576a66214fd12623a93cb6ad6b4",
+    "ae864d8f7b7f78e0e1b9e919a17877165d8e46e81b2cc72882d60dfb5a409332",
+})
+
+
+def _open_private_append(path: str):
+    """Open ``path`` for appending, owner-only (0600), refusing a symlink at the path.
+
+    Same pattern as DGK's dgk/audit.py open_private_append. The audit log
+    holds candidate ids and decisions, so a new file is not readable by other
+    users, and a symlink planted at the path is refused instead of followed.
+    """
+    flags = os.O_RDWR | os.O_CREAT | os.O_APPEND | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(path, flags, 0o600)
+    return os.fdopen(fd, "a+", encoding="utf-8", buffering=1)
+
 
 class CryptoAuditTrail:
     """Cryptographically secured audit trail with hash chain and HMAC signatures.
 
     Includes non-authoritative oscillation detection to identify repeated events.
     Oscillation is a diagnostic signal only; it does not modify decisions or policy.
+
+    The signing key comes from ``signing_key`` or, failing that, the AUDIT_KEY
+    environment variable. There is no built-in key: with neither set the
+    constructor raises ValueError, because a key printed in the source lets
+    anyone who reads it forge signatures. A key that is only whitespace, or
+    one this repository has published, is refused the same way.
+
+    The log file comes from ``log_file`` or, failing that, the
+    ATS_AUDIT_LOG_PATH environment variable. There is no default location:
+    with neither set the constructor raises ValueError. The file is created
+    owner-only (0600) and a symlink at the path is refused.
     """
-    def __init__(self, signing_key: Optional[str] = None, log_file: str = "audit.log"):
+    def __init__(self, signing_key: Optional[str] = None, log_file: Optional[str] = None):
         self.events: List[Dict[str, Any]] = []
-        self.signing_key = signing_key or os.environ.get("AUDIT_KEY", "default_key_change_me")
-        self.log_file = log_file
+        self.signing_key = signing_key or os.environ.get("AUDIT_KEY")
+        if (not self.signing_key or not self.signing_key.strip()
+                or hashlib.sha256(self.signing_key.strip().encode()).hexdigest() in _RETIRED_KEY_SHA256):
+            raise ValueError(
+                "CryptoAuditTrail needs a signing key: pass signing_key or set the "
+                "AUDIT_KEY environment variable. There is no default key; a blank key "
+                "or one this repository has published is refused."
+            )
+        self.log_file = log_file or os.environ.get(AUDIT_LOG_PATH_ENV)
+        if not self.log_file:
+            raise ValueError(
+                "CryptoAuditTrail needs a log path: pass log_file or set the "
+                f"{AUDIT_LOG_PATH_ENV} environment variable. There is no default location."
+            )
         self.current_hash = hashlib.sha256(b"GENESIS").hexdigest()
         self.sequence_number = 0
         self.oscillation_detector = OscillationDetector(max_history=64)
         self._ensure_log_exists()
 
     def _ensure_log_exists(self):
-        """Ensure log file exists (write-ahead logging)."""
-        if not os.path.exists(self.log_file):
-            open(self.log_file, "w").close()
+        """Ensure log file exists (write-ahead logging), owner-only, not through a symlink."""
+        _open_private_append(self.log_file).close()
 
     def log(self, event_type: str, details: str, severity: str = "INFO") -> str:
         """
@@ -105,7 +153,7 @@ class CryptoAuditTrail:
         event["oscillation_detected"] = oscillation_detected
 
         # Write to disk immediately (write-ahead log)
-        with open(self.log_file, "a") as f:
+        with _open_private_append(self.log_file) as f:
             f.write(json.dumps(event) + "\n")
 
         # Store in memory
@@ -142,7 +190,11 @@ class CryptoAuditTrail:
                 hashlib.sha256
             ).hexdigest()
             
-            if event.get("hmac") != expected_hmac:
+            # Constant-time comparison, so timing does not reveal how much of a
+            # forged signature matched.
+            stored_hmac = event.get("hmac")
+            if not isinstance(stored_hmac, str) or not hmac.compare_digest(
+                    stored_hmac.encode(), expected_hmac.encode()):
                 violations.append({
                     "sequence": i,
                     "error": "HMAC_SIGNATURE_INVALID",
@@ -668,11 +720,11 @@ class ATSGovernor:
 
 class ATSGovernorProduction:
     """Unified Orchestration Pipeline executing all v2.0 + Final components seamlessly."""
-    def __init__(self, signing_key: Optional[str] = None):
+    def __init__(self, signing_key: Optional[str] = None, log_file: Optional[str] = None):
         self.streaming_monitor = StreamingBiasMonitor(batch_size=100)
         self.safeguard_verifier = SafeguardVerifier()
         self.legal_packager = LegalEvidencePackager()
-        self.audit_trail = CryptoAuditTrail(signing_key=signing_key)
+        self.audit_trail = CryptoAuditTrail(signing_key=signing_key, log_file=log_file)
         self.alert_log = []
         self.critical_alerts = []
 
@@ -714,9 +766,11 @@ class ATSGovernorProduction:
         corrections = neutralizer.recommend_candidate_rescores(candidates)
 
         harm_evidence = self.legal_packager.package_harm_evidence(corrections)
+        # The report is signed with the same key as this pipeline's audit trail
+        # (the signing_key passed in, or AUDIT_KEY when none was passed).
         litigation_report = self.legal_packager.create_litigation_report(
             statistical_evidence, contradiction_evidence, harm_evidence,
-            signing_key=os.environ.get("AUDIT_KEY")
+            signing_key=self.audit_trail.signing_key
         )
 
         # Log audit completion
@@ -753,14 +807,15 @@ class ATS:
     STAGES = ["Applied", "Screen", "Interview", "Offer", "Hired", "Rejected"]
     ALGORITHM_VERSION = "v2.0_tfidf_similarity+keyword_coverage"  # Track algorithm version
 
-    def __init__(self, signing_key: Optional[str] = None, scorer: Optional[Any] = None):
+    def __init__(self, signing_key: Optional[str] = None, scorer: Optional[Any] = None,
+                 log_file: Optional[str] = None):
         from ats_statistics import SemanticScorer
         self.jobs: Dict[str, JobPosting] = {}
         self.candidates: Dict[str, Candidate] = {}
         self.decision_records: Dict[str, DecisionRecord] = {}  # NEW: immutable decisions
-        self.audit = CryptoAuditTrail(signing_key=signing_key)
+        self.audit = CryptoAuditTrail(signing_key=signing_key, log_file=log_file)
         self.governor = ATSGovernor()
-        self.pipeline_orchestrator = ATSGovernorProduction(signing_key=signing_key)
+        self.pipeline_orchestrator = ATSGovernorProduction(signing_key=signing_key, log_file=log_file)
         # Drop-in scorer: defaults to lexical TF-IDF; inject EmbeddingScorer for
         # semantic matching without touching any other code.
         self.scorer = scorer or SemanticScorer()
@@ -1002,10 +1057,16 @@ class ATS:
 if __name__ == "__main__":
     print("🚀 Initializing Remediated ATS Governor Framework...")
     
-    # Set signing key for audit trail
-    os.environ["AUDIT_KEY"] = "test_signing_key_change_in_production"
-    
-    system = ATS(signing_key="test_signing_key_change_in_production")
+    # No key is written into the source. The demo uses AUDIT_KEY when it is
+    # set, and otherwise a random key that exists only for this run.
+    demo_key = os.environ.get("AUDIT_KEY") or secrets.token_hex(32)
+    # Likewise no fixed log location: ATS_AUDIT_LOG_PATH when it is set,
+    # otherwise a new private directory made for this run.
+    demo_log = os.environ.get(AUDIT_LOG_PATH_ENV) or os.path.join(
+        tempfile.mkdtemp(prefix="ats-audit-"), "audit.log")
+    print(f"Audit log: {demo_log}")
+
+    system = ATS(signing_key=demo_key, log_file=demo_log)
 
     job = system.create_job(
         title="Principal AI Research Engineer",
