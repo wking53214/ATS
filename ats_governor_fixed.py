@@ -41,6 +41,15 @@ UNSIGNED_DIAGNOSTIC_FIELDS = ("oscillation_detected",)
 # Environment variable naming the audit log file when no log_file is passed.
 AUDIT_LOG_PATH_ENV = "ATS_AUDIT_LOG_PATH"
 
+# SHA-256 of signing keys this public repository has already published (the
+# old built-in fallback and the old demo key). Anyone can read them in the
+# history, so they are refused like a missing key. Only the hashes are kept,
+# so the keys themselves are not written into the source again.
+_RETIRED_KEY_SHA256 = frozenset({
+    "81ad96e9a3c56ee1dd08fe9cd08f52e92f516576a66214fd12623a93cb6ad6b4",
+    "ae864d8f7b7f78e0e1b9e919a17877165d8e46e81b2cc72882d60dfb5a409332",
+})
+
 
 def _open_private_append(path: str):
     """Open ``path`` for appending, owner-only (0600), refusing a symlink at the path.
@@ -63,7 +72,8 @@ class CryptoAuditTrail:
     The signing key comes from ``signing_key`` or, failing that, the AUDIT_KEY
     environment variable. There is no built-in key: with neither set the
     constructor raises ValueError, because a key printed in the source lets
-    anyone who reads it forge signatures.
+    anyone who reads it forge signatures. A key that is only whitespace, or
+    one this repository has published, is refused the same way.
 
     The log file comes from ``log_file`` or, failing that, the
     ATS_AUDIT_LOG_PATH environment variable. There is no default location:
@@ -73,10 +83,12 @@ class CryptoAuditTrail:
     def __init__(self, signing_key: Optional[str] = None, log_file: Optional[str] = None):
         self.events: List[Dict[str, Any]] = []
         self.signing_key = signing_key or os.environ.get("AUDIT_KEY")
-        if not self.signing_key:
+        if (not self.signing_key or not self.signing_key.strip()
+                or hashlib.sha256(self.signing_key.strip().encode()).hexdigest() in _RETIRED_KEY_SHA256):
             raise ValueError(
                 "CryptoAuditTrail needs a signing key: pass signing_key or set the "
-                "AUDIT_KEY environment variable. There is no default key."
+                "AUDIT_KEY environment variable. There is no default key; a blank key "
+                "or one this repository has published is refused."
             )
         self.log_file = log_file or os.environ.get(AUDIT_LOG_PATH_ENV)
         if not self.log_file:

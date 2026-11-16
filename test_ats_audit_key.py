@@ -55,6 +55,45 @@ def test_an_empty_audit_key_is_an_error(tmp_path, monkeypatch):
         CryptoAuditTrail(log_file=str(tmp_path / "trail.log"))
 
 
+# Keys that are blank or already public: whitespace only, and the two literals
+# this repository once published (the old fallback and the old demo key). The
+# literals are built from parts so neither is written whole into this file.
+_UNUSABLE_KEYS = [
+    " ",
+    "\n",
+    " \t\r\n",
+    "default_key_" + "change_me",
+    "test_signing_key_" + "change_in_production",
+    "default_key_" + "change_me\n",
+]
+
+
+@pytest.mark.parametrize("key", _UNUSABLE_KEYS)
+def test_a_blank_or_published_signing_key_is_an_error(tmp_path, key):
+    log = tmp_path / "trail.log"
+    with pytest.raises(ValueError, match="signing key"):
+        CryptoAuditTrail(signing_key=key, log_file=str(log))
+    assert not log.exists(), "a refused trail must not create its log"
+
+
+@pytest.mark.parametrize("key", _UNUSABLE_KEYS)
+def test_a_blank_or_published_audit_key_is_an_error(tmp_path, monkeypatch, key):
+    monkeypatch.setenv("AUDIT_KEY", key)
+    log = tmp_path / "trail.log"
+    with pytest.raises(ValueError, match="signing key"):
+        CryptoAuditTrail(log_file=str(log))
+    assert not log.exists(), "a refused trail must not create its log"
+
+
+@pytest.mark.parametrize("key", _UNUSABLE_KEYS)
+def test_the_pipelines_refuse_a_blank_or_published_key(monkeypatch, key):
+    with pytest.raises(ValueError, match="signing key"):
+        ATSGovernorProduction(signing_key=key)
+    monkeypatch.setenv("AUDIT_KEY", key)
+    with pytest.raises(ValueError, match="signing key"):
+        ATS()
+
+
 def test_the_pipelines_refuse_to_start_without_a_key():
     with pytest.raises(ValueError, match="signing key"):
         ATSGovernorProduction()
