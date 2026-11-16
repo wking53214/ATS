@@ -8,6 +8,7 @@ import json
 import os
 import hmac
 import hashlib
+import secrets
 from ats_oscillation_detector import OscillationDetector
 
 # =============================================================================
@@ -42,10 +43,20 @@ class CryptoAuditTrail:
 
     Includes non-authoritative oscillation detection to identify repeated events.
     Oscillation is a diagnostic signal only; it does not modify decisions or policy.
+
+    The signing key comes from ``signing_key`` or, failing that, the AUDIT_KEY
+    environment variable. There is no built-in key: with neither set the
+    constructor raises ValueError, because a key printed in the source lets
+    anyone who reads it forge signatures.
     """
     def __init__(self, signing_key: Optional[str] = None, log_file: str = "audit.log"):
         self.events: List[Dict[str, Any]] = []
-        self.signing_key = signing_key or os.environ.get("AUDIT_KEY", "default_key_change_me")
+        self.signing_key = signing_key or os.environ.get("AUDIT_KEY")
+        if not self.signing_key:
+            raise ValueError(
+                "CryptoAuditTrail needs a signing key: pass signing_key or set the "
+                "AUDIT_KEY environment variable. There is no default key."
+            )
         self.log_file = log_file
         self.current_hash = hashlib.sha256(b"GENESIS").hexdigest()
         self.sequence_number = 0
@@ -142,7 +153,11 @@ class CryptoAuditTrail:
                 hashlib.sha256
             ).hexdigest()
             
-            if event.get("hmac") != expected_hmac:
+            # Constant-time comparison, so timing does not reveal how much of a
+            # forged signature matched.
+            stored_hmac = event.get("hmac")
+            if not isinstance(stored_hmac, str) or not hmac.compare_digest(
+                    stored_hmac.encode(), expected_hmac.encode()):
                 violations.append({
                     "sequence": i,
                     "error": "HMAC_SIGNATURE_INVALID",
@@ -714,9 +729,11 @@ class ATSGovernorProduction:
         corrections = neutralizer.recommend_candidate_rescores(candidates)
 
         harm_evidence = self.legal_packager.package_harm_evidence(corrections)
+        # The report is signed with the same key as this pipeline's audit trail
+        # (the signing_key passed in, or AUDIT_KEY when none was passed).
         litigation_report = self.legal_packager.create_litigation_report(
             statistical_evidence, contradiction_evidence, harm_evidence,
-            signing_key=os.environ.get("AUDIT_KEY")
+            signing_key=self.audit_trail.signing_key
         )
 
         # Log audit completion
@@ -1002,10 +1019,11 @@ class ATS:
 if __name__ == "__main__":
     print("🚀 Initializing Remediated ATS Governor Framework...")
     
-    # Set signing key for audit trail
-    os.environ["AUDIT_KEY"] = "test_signing_key_change_in_production"
-    
-    system = ATS(signing_key="test_signing_key_change_in_production")
+    # No key is written into the source. The demo uses AUDIT_KEY when it is
+    # set, and otherwise a random key that exists only for this run.
+    demo_key = os.environ.get("AUDIT_KEY") or secrets.token_hex(32)
+
+    system = ATS(signing_key=demo_key)
 
     job = system.create_job(
         title="Principal AI Research Engineer",

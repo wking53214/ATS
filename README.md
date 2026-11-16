@@ -34,7 +34,7 @@ Honest map: `ats_seam_inventory.md` (`[OBSERVED]` vs `[DOCUMENTED]` vs `[NO EVID
 
 | Gap | Detail |
 |---|---|
-| Default HMAC | `CryptoAuditTrail.signing_key` defaults to **`"default_key_change_me"`**. Theater unless `AUDIT_KEY` set. |
+| HMAC key | No default key. `CryptoAuditTrail` (and so `ATS` and `ATSGovernorProduction`) raises `ValueError` unless a `signing_key` is passed or `AUDIT_KEY` is set. `ATSGovernorProduction` signs the litigation report with the same key as its audit trail. |
 | Marketing vs code | README historically claimed `<5% FPR`, `85%+`, litigation-ready. Treat as **working demos with documented gaps**. |
 | Kafka/Slack/PagerDuty | Claimed in ops docs; **zero code**. |
 | `_is_vowel_heavy` | Crude >0.4 vowel ratio. |
@@ -46,7 +46,7 @@ numpy/scipy/sklearn required. Optional ST/OpenAI/Voyage lazy. CI pytest+ruff.
 
 ## 5. Core Invariants & Guarantees
 
-Statistical tests exist. Oscillation **reports**, does not halt. Multiple independent hash chains (`GENESIS` variants) — recompute locally, not a shared custody plane. Fail-open on missing HMAC key.
+Statistical tests exist. Oscillation **reports**, does not halt. Multiple independent hash chains (`GENESIS` variants); recompute locally, not a shared custody plane. Fails closed on a missing HMAC key: no key, no audit trail.
 
 ## 6. Inputs, Outputs & Type Contracts
 
