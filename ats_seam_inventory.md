@@ -1,3 +1,9 @@
+> **Status note (2026-11-15).** This inventory predates some changes. For example,
+> C5 (`ats_governance_kernel_bridge_source_copy.txt`) no longer exists in the repo
+> (INSPECTED). Labels below are as written then and were not re-checked.
+> One later change is known: since commit `18cc2cb` (2026-11-16) the bridge's WAL has no
+> default path, so the `/tmp` path in C20 and in the bridge seam entry no longer applies (see `README.md`).
+
 # ATS Seam Inventory (v1)
 
 Scope: files and named interfaces at the ATS root only. [OBSERVED]
