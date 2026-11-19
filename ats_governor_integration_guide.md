@@ -1,3 +1,13 @@
+> **Status notice (2026-11-15).** This document predates the current code and
+> makes claims the code does not support. Read `README.md` first. No four-fifths
+> ratio is implemented anywhere in this repo. Bias findings use an absolute
+> rejection-rate gap, so they do not show which group was disadvantaged. The
+> demo code can reject candidates automatically. "Production-ready",
+> "EEOC-compliant" and "litigation" or legal-evidence wording below is not
+> established, and no legal compliance is claimed. This is not legal advice.
+> The original text is kept unchanged below until the owner decides whether to
+> rewrite or withdraw it.
+
 # ATS GOVERNOR v2.0 - INTEGRATION & DEPLOYMENT GUIDE
 ## Real-World Operationalization of Bias Detection
 
