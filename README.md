@@ -10,7 +10,7 @@ Status: demo. Flat Python modules, not a package. Last checked 2026-11-19 at com
 - **What it owns.** Its own bias measurements (geographic, employment-volatility, name-proxy, remote-work gaps), its own audit trail, and a vendored copy of a policy kernel (`gov4_kernel.py`).
 - **What it contributes.** A worked example of the same governance ideas in a second domain. Parallel in concept to `interconnected_delta` fairness. No import in either direction.
 - **What it does not own.** Enforcement, authorization, authentication, or any real hiring decision. HALT does not pause a real ATS. It does not share a ledger with sentinel_os.
-- **Depends on.** numpy, scipy, scikit-learn. Optionally CNS v4.0.0 (`requirements-cns.txt`) for the binding connector only.
+- **Depends on.** numpy, scipy, scikit-learn. Optionally CNS v4.1.0 (`requirements-cns.txt`) for the binding connector only.
 - **Depended on by.** UNKNOWN. No consumer was found or inspected.
 - **Verified versus declared.** The CNS connector is optional and tested in CI with CNS installed; nothing else here imports CNS (`test_ats_cns_independence.py` checks this with CNS blocked). The ≡TACK `STACK.md` names observe-perceive as a hub; no import links them (INSPECTED). Kafka, Slack and PagerDuty appear in operations docs with zero code.
 - **Governance and control design.** None of its output is authoritative. The connector only binds a finding to a CNS verdict issued elsewhere. It maps no ATS finding to a CNS outcome and invents no verdict semantics.
