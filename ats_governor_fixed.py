@@ -362,13 +362,17 @@ class StreamingBiasMonitor:
             lambda c: c.get("location_distance_miles", 0) > 100
         )
 
+        geo_higher = self._higher_rejection_cohort(
+            candidates, decisions, lambda c: c.get("location_distance_miles", 0) > 100, "remote", "local")
+
         if geo_gap > 0.15:
             events.append(
                 AuditEvent(
                     timestamp=datetime.now(timezone.utc).isoformat(),
                     event_type="GEOGRAPHIC_DISPARITY",
                     severity="CRITICAL" if geo_gap > 0.30 else "WARN",
-                    details={"gap": geo_gap, "note": "Gap >= 0.15; use p-value for significance"},
+                    details={"gap": geo_gap, "higher_rejection_cohort": geo_higher,
+                             "note": "Gap >= 0.15; use p-value for significance"},
                     action_required=geo_gap > 0.20
                 )
             )
@@ -380,6 +384,18 @@ class StreamingBiasMonitor:
             "total_biases_detected": len(events),
             "note": "WARNING: Gaps are not p-value adjusted. Use DecisionFunctionAnalyzer for statistical rigor."
         }
+
+    def _higher_rejection_cohort(self, candidates, decisions, predicate, a_label, b_label):
+        """Which cohort was rejected more often. `_gap` is unsigned, so this is where the direction lives."""
+        a = [d for c, d in zip(candidates, decisions) if predicate(c)]
+        b = [d for c, d in zip(candidates, decisions) if not predicate(c)]
+        if not a or not b:
+            return None
+        a_rate = sum(1 for d in a if d.get("decision") == "REJECTED") / len(a)
+        b_rate = sum(1 for d in b if d.get("decision") == "REJECTED") / len(b)
+        if a_rate == b_rate:
+            return "neither"
+        return a_label if a_rate > b_rate else b_label
 
     def _gap(self, candidates, decisions, predicate) -> float:
         """Calculate rejection rate gap between cohorts."""
@@ -468,14 +484,17 @@ class DecisionFunctionAnalyzer:
         self.last_test_result = result  # exposed for the audit trail / litigation record
 
         if result.significance == Significance.SIGNIFICANT:
+            # The gap is unsigned, so ask who was worse off. "Penalty" only when remote candidates were rejected
+            # more; otherwise report the finding under a neutral name with the local candidates as affected.
+            remote_worse_off = result.disadvantaged == "remote"
             affected = [
                 (c.get("id") if "id" in c else c.get("candidate_id"))
                 for c, d in zip(self.candidate_database, self.decision_database)
-                if remote_pred(c) and d.get("decision") == "REJECTED"
+                if remote_pred(c) == remote_worse_off and d.get("decision") == "REJECTED"
             ]
             signatures.append(
                 BiasSignature(
-                    bias_type="GEOGRAPHIC_PENALTY",
+                    bias_type="GEOGRAPHIC_PENALTY" if remote_worse_off else "REMOTE_FAVOURED_OVER_LOCAL",
                     affected_candidates=affected,
                     correlation_strength=(result.effect_size or 0.0),  # phi, a real effect size
                     hidden_factor="location_distance_miles",

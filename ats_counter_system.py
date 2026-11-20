@@ -145,13 +145,18 @@ class DecisionFunctionInverter:
         for (bias_type, hidden_factor, predicate, _a, _b), result in zip(COHORT_TESTS, results):
             if result.significance is not Significance.SIGNIFICANT:
                 continue
+            # The gap is unsigned, so ask who was worse off. A "penalty" and its safeguard apply only when the
+            # tested cohort was rejected more. When the other cohort was, the finding is still reported, under a
+            # neutral name that says who was favoured, with the other cohort's rejected candidates as affected.
+            tested_was_worse_off = result.disadvantaged == _a
+            label = bias_type if tested_was_worse_off else f"{_a}_favoured_over_{_b}"
             affected = [
                 (c.get("id") if "id" in c else c.get("candidate_id"))
                 for c, d in zip(self.candidate_database, self.decision_database)
-                if predicate(c) and d.get("decision") == "REJECTED"
+                if predicate(c) == tested_was_worse_off and d.get("decision") == "REJECTED"
             ]
             signatures.append(BiasSignature(
-                bias_type=bias_type,
+                bias_type=label,
                 affected_candidates=affected,
                 correlation_strength=(result.effect_size or 0.0),   # phi
                 hidden_factor=hidden_factor,

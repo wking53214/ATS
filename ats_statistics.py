@@ -65,6 +65,18 @@ class BiasTestResult:
     rate_gap: Optional[float]
     contingency: List[List[int]] = field(default_factory=list)
     notes: List[str] = field(default_factory=list)
+    #: The label of the cohort with the higher rejection rate ("neither" when equal, None when a rate is unknown).
+    #: `rate_gap` is an absolute size and carries no direction; this says who was worse off.
+    disadvantaged: Optional[str] = None
+
+
+def _higher_rejection_cohort(a_rate: Optional[float], b_rate: Optional[float], a_label: str, b_label: str) -> Optional[str]:
+    """Which cohort was rejected more often: the one that was worse off. The gap itself is unsigned."""
+    if a_rate is None or b_rate is None:
+        return None
+    if a_rate == b_rate:
+        return "neither"
+    return a_label if a_rate > b_rate else b_label
 
 
 # Cohen's conventions for phi / Cramer's V (df=1): 0.1 small, 0.3 medium, 0.5 large.
@@ -140,6 +152,7 @@ class StatisticalBiasDetector:
         a_rate = (a_rej / a_n) if a_n else None
         b_rate = (b_rej / b_n) if b_n else None
         gap = (abs(a_rate - b_rate) if (a_rate is not None and b_rate is not None) else None)
+        disadvantaged = _higher_rejection_cohort(a_rate, b_rate, cohort_a_label, cohort_b_label)
 
         # Power guard: both cohorts must clear the floor.
         if a_n < self.min_cohort_n or b_n < self.min_cohort_n:
@@ -157,6 +170,7 @@ class StatisticalBiasDetector:
                 cohort_a_label=cohort_a_label, cohort_a_n=a_n, cohort_a_reject_rate=a_rate,
                 cohort_b_label=cohort_b_label, cohort_b_n=b_n, cohort_b_reject_rate=b_rate,
                 rate_gap=gap, contingency=[[a_rej, a_keep], [b_rej, b_keep]], notes=notes,
+                disadvantaged=disadvantaged,
             )
 
         table = [[a_rej, a_keep], [b_rej, b_keep]]
@@ -206,6 +220,7 @@ class StatisticalBiasDetector:
             cohort_a_label=cohort_a_label, cohort_a_n=a_n, cohort_a_reject_rate=a_rate,
             cohort_b_label=cohort_b_label, cohort_b_n=b_n, cohort_b_reject_rate=b_rate,
             rate_gap=gap, contingency=table, notes=notes,
+            disadvantaged=disadvantaged,
         )
 
     @staticmethod
