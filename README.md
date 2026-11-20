@@ -39,7 +39,7 @@ Name-proxy detection and `SafeguardVerifier.verify_independent_validation` did n
 
 ## Domain warning: automated decisions
 
-The demo code makes decisions about example candidates. `ats_governor_fixed.py` sets "APPROVED" or "REJECTED" from a keyword score (`keyword_score >= 20`). `ats_gsa_core.py` returns a `HIRED`, `HUMAN_REVIEW` or `REJECTED` status. Do not point this at real applicants. Bias findings use the absolute rejection-rate gap between groups (`abs(...)` in `_gap`), so a finding does not say which group was disadvantaged (INSPECTED).
+The demo code makes decisions about example candidates. `ats_governor_fixed.py` sets "APPROVED" or "REJECTED" from a keyword score (`keyword_score >= 20`). `ats_gsa_core.py` returns a `HIRED`, `HUMAN_REVIEW` or `REJECTED` status. Do not point this at real applicants. Bias findings size the rejection-rate gap as an absolute number (`abs(...)` in `_gap` and in `rate_gap`), and each result now also says which group was rejected more often (`disadvantaged`, and `higher_rejection_cohort` on the batch event). A significant gap is called a penalty, and its safeguard proposed, only when the tested group was the one rejected more. When the other group was, the finding is reported under a neutral name such as `remote_favoured_over_local`, with that other group's rejected candidates as the affected ones (EXECUTED 2026-11-20).
 
 ## Architecture
 

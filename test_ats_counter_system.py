@@ -356,3 +356,59 @@ class TestCounterATS:
         assert audit["biases_found"] == []
         assert audit["candidate_corrections"] == []
         assert audit["summary"]["total_candidates_affected"] == 0
+
+
+class TestTheGapHasADirection:
+    """The rejection-rate gap is unsigned, so the finding must say who was worse off."""
+
+    @staticmethod
+    def _pool(remote_rejected, local_rejected):
+        cands, decs = [], []
+        half = POOL // 2
+        for i in range(POOL):
+            remote = i >= half
+            cands.append(_cand(i, miles=500 if remote else 5))
+            k = i - half if remote else i
+            limit = remote_rejected if remote else local_rejected
+            decs.append(_dec(i, "REJECTED" if k < limit else "APPROVED"))
+        return cands, decs
+
+    def test_remote_rejected_more_is_a_penalty_naming_the_remote_candidates(self):
+        cands, decs = self._pool(remote_rejected=half_pool(), local_rejected=0)
+        inv = DecisionFunctionInverter()
+        inv.ingest_decisions(cands, decs)
+        found = inv.detect_correlated_rejection_patterns()
+        assert [b.bias_type for b in found] == ["geographic_penalty"]
+        assert all(int(c) >= half_pool() for c in found[0].affected_candidates)
+        result = next(r for r in inv.last_test_results if r.cohort_label == "geographic_penalty")
+        assert result.disadvantaged == "remote"
+
+    def test_local_rejected_more_is_reported_but_not_as_a_geographic_penalty(self):
+        cands, decs = self._pool(remote_rejected=0, local_rejected=half_pool())
+        inv = DecisionFunctionInverter()
+        inv.ingest_decisions(cands, decs)
+        found = inv.detect_correlated_rejection_patterns()
+        assert [b.bias_type for b in found] == ["remote_favoured_over_local"]
+        assert found[0].affected_candidates and all(int(c) < half_pool() for c in found[0].affected_candidates)
+        result = next(r for r in inv.last_test_results if r.cohort_label == "geographic_penalty")
+        assert result.disadvantaged == "local" and result.rate_gap == pytest.approx(1.0)
+
+    def test_a_favoured_cohort_finding_does_not_trigger_the_geographic_safeguard(self):
+        cands, decs = self._pool(remote_rejected=0, local_rejected=half_pool())
+        inv = DecisionFunctionInverter()
+        inv.ingest_decisions(cands, decs)
+        engine = BiasNeutralizationEngine()
+        engine.ingest_biases(inv.detect_correlated_rejection_patterns())
+        assert "Geographic_Blind_Scoring" not in [s["safeguard"] for s in engine.propose_system_safeguards()]
+
+    def test_equal_rates_have_no_disadvantaged_cohort(self):
+        cands, decs = self._pool(remote_rejected=10, local_rejected=10)
+        inv = DecisionFunctionInverter()
+        inv.ingest_decisions(cands, decs)
+        inv.detect_correlated_rejection_patterns()
+        result = next(r for r in inv.last_test_results if r.cohort_label == "geographic_penalty")
+        assert result.disadvantaged == "neither"
+
+
+def half_pool():
+    return POOL // 2
