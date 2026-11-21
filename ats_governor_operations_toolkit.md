@@ -1,3 +1,13 @@
+> **Status notice (2026-11-21).** This document predates the current code and
+> may make claims the code does not support. Read `README.md` first. This repo
+> is a demonstration, not a compliance tool. No four-fifths ratio is implemented
+> anywhere in it, and bias findings use an absolute rejection-rate gap. Wording
+> below about legal evidence, legally binding answers, admissibility,
+> "production-ready" use or regulatory compliance is not established, and no
+> legal compliance is claimed. This document was not reviewed by a lawyer and is
+> not legal advice. The original text is kept unchanged below until the owner
+> decides whether to rewrite or withdraw it.
+
 # ATS GOVERNOR IMPLEMENTATION TOOLKIT
 ## Practical Detection & Remediation Framework
 
